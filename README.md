@@ -1,4 +1,4 @@
-# fix-trading-simulator
+# Fix Trading Simulator
 
 - [Overview](#overview)
 - [Project Structure](#project-structure)
@@ -20,9 +20,9 @@ The plan is to package each piece of this system in a Docker container and run e
   - Back-end - Quarkus;
   - Front-end - Angular;
 - PostgreSQL
-  - One schema for each participant
+  - One schema for each back-end.
 
-Although it's an ambitious project, it mainly has a study objective.
+Although it's an ambitious project, it only has a study objective.
 
 I intend to start it slowly adding a few features at a time.
 
@@ -31,15 +31,15 @@ If you want to join the project, just open an issue!
 
 # Project Structure
 
-## Broker back-end
+Broker back-end
 
-## Broker front-end
+Broker front-end
 
-## Stock exchange back-end
+Stock exchange back-end
 
-## Stock exchange front-end
+Stock exchange front-end
 
-## Documentation
+Documentation
 
 
 # Milestones
