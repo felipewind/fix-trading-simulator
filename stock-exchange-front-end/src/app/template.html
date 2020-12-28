@@ -1,3 +1,27 @@
 <div class="bg-info text-white m-2 p-2">
 	There are {{model.getOrders().length}} orders in the model
 </div>
+
+<table class="table table-sm table-bordered mt-1 text-dark">
+	<tr>
+		<th>Id</th>
+		<th>SymbolCode</th>
+		<th>SymbolName</th>
+		<th>SideCode</th>
+		<th>SideName</th>
+		<th>OrderQty</th>
+		<th>Price</th>
+		<th>Account</th>
+	</tr>
+	<tr *ngFor="let item of getOrders(); let i = index; let odd = odd" class="text-white" [class.bg-primary]="odd"
+		[class.bg-secondary]="!odd">
+		<td>{{item.id}}</td>
+		<td>{{item.symbolCode}}</td>
+		<td>{{item.sideName}}</td>
+		<td>{{item.sideCode}}</td>
+		<td>{{item.sideName}}</td>
+		<td>{{item.orderQty}}</td>
+		<td>{{item.price}}</td>
+		<td>{{item.account}}</td>
+	</tr>
+</table>
