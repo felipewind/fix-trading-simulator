@@ -18,7 +18,7 @@ import quickfix.SessionSettings;
 public class SessionSettingsFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(SessionSettingsFactory.class.getName());
-    
+
     @ConfigProperty(name = "quickfix")
     List<String> quickfixSessionSettings;
 
@@ -30,14 +30,13 @@ public class SessionSettingsFactory {
 
         LOG.info("getSessionSettings");
 
-        LOG.info("quickfixSessionSettings - original parameter: \n"
-                + quickfixSessionSettings.stream().collect(Collectors.joining("\n")));
+        LOG.info("quickfixSessionSettings - original parameter: \n" + quickfixSessionSettings.stream().collect(Collectors.joining("\n")));
 
         byte[] bytes = quickfixSessionSettings.stream().collect(Collectors.joining("\n")).getBytes();
 
         InputStream inputStream = new ByteArrayInputStream(bytes);
 
-        SessionSettings sessionSettings = new SessionSettings(inputStream); 
+        SessionSettings sessionSettings = new SessionSettings(inputStream);
 
         return sessionSettings;
 

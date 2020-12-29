@@ -8,9 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.agroal.api.AgroalDataSource;
-import quickfix.Acceptor;
 import quickfix.ConfigError;
 import quickfix.DefaultMessageFactory;
+import quickfix.Initiator;
 import quickfix.JdbcLogFactory;
 import quickfix.JdbcStoreFactory;
 import quickfix.LogFactory;
@@ -21,12 +21,16 @@ import quickfix.ScreenLogFactory;
 import quickfix.Session;
 import quickfix.SessionID;
 import quickfix.SessionSettings;
-import quickfix.SocketAcceptor;
+import quickfix.SocketInitiator;
 
 @Singleton
-public class StockExchange {
+public class Trader {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StockExchange.class.getName());
+    @ConfigProperty(name = "quickfix.appVersion")
+    String appVersion;
+
+    @ConfigProperty(name = "quickfix.password")
+    String password;
 
     @ConfigProperty(name = "quickfix.useDatabase")
     boolean useDatabase;
@@ -38,18 +42,18 @@ public class StockExchange {
     AgroalDataSource dataSource;
 
     @Inject
-    StockExchangeApplication stockExchangeApplication;
+    TraderApplication traderApplication;
 
+    private static final Logger LOG = LoggerFactory.getLogger(Trader.class.getName());
+    private boolean initiatorStarted;
     private SessionSettings sessionSettings;
-    private boolean acceptorStarted;
-    private Acceptor acceptor;
+    private Initiator initiator;
 
-    public StockExchange() {
+    public Trader() {
         LOG.info("Constructor");
     }
 
     public void init() {
-
         LOG.info("init");
 
         try {
@@ -63,7 +67,7 @@ public class StockExchange {
 
             if (useDatabase) {
 
-                LOG.info("Acceptor creation with database");
+                LOG.info("Initiator creation with database");
 
                 JdbcStoreFactory jdbcStoreFactory = new JdbcStoreFactory(sessionSettings);
 
@@ -81,7 +85,7 @@ public class StockExchange {
 
             } else {
 
-                LOG.info("Acceptor creation without database");
+                LOG.info("Initiator creation without database");
 
                 messageStoreFactory = new MemoryStoreFactory();
                 LOG.info("MessageStoreFactory created - MemoryStoreFactory");
@@ -94,32 +98,32 @@ public class StockExchange {
             MessageFactory messageFactory = new DefaultMessageFactory();
             LOG.info("MessageFactory created - DefaultMessageFactory");
 
-            acceptor = new SocketAcceptor(stockExchangeApplication, messageStoreFactory, sessionSettings, logFactory,
+            initiator = new SocketInitiator(traderApplication, messageStoreFactory, sessionSettings, logFactory,
                     messageFactory);
-            LOG.info("Acceptor created - SocketAcceptor");
 
-            start();
+            LOG.info("Initiator created - SocketInitiator");
+
+            logon();
 
         } catch (ConfigError e) {
-            LOG.error("ConfigError" + e);
+            LOG.error("ConfigError \n" + e);
             e.printStackTrace();
-            if (acceptorStarted) {
+            if (initiatorStarted) {
                 stop();
             }
         }
-
     }
 
-    public synchronized void start() throws ConfigError {
-        LOG.info("start");
-        if (!acceptorStarted) {
-            acceptor.start();
-            LOG.info("Acceptor start - \nSessionID created: " + acceptor.getSessions() + "\n");
-            acceptorStarted = true;
+    public synchronized void logon() throws ConfigError {
+        LOG.info("logon");
+        if (!initiatorStarted) {
+            initiator.start();
+            LOG.info("Initiator start - logon solicited \nSessionID created: " + initiator.getSessions() + "\n");
+            initiatorStarted = true;
         } else {
-            for (SessionID sessionID : acceptor.getSessions()) {
+            for (SessionID sessionID : initiator.getSessions()) {
                 Session.lookupSession(sessionID).logon();
-                LOG.info("Logon solicited \nSessionID created: " + acceptor.getSessions() + "\n");
+                LOG.info("Logon solicited \nSessionID created: " + initiator.getSessions() + "\n");
             }
         }
 
@@ -127,14 +131,37 @@ public class StockExchange {
 
     public synchronized void stop() {
         LOG.info("stop");
-        if (!acceptorStarted) {
-            acceptor.stop();
-            acceptorStarted = false;
+        if (initiatorStarted) {
+            initiator.stop();
+            initiatorStarted = false;
+        }
+    }
+
+    public synchronized void logout() {
+        LOG.info("logout");
+        for (SessionID sessionId : initiator.getSessions()) {
+            Session.lookupSession(sessionId).logout("user requested");
+        }
+    }
+
+    public SessionID getSessionID() {
+        if (initiatorStarted) {
+            return initiator.getSessions().get(0);
+        } else {
+            throw new RuntimeException("Initiator stopped");
         }
     }
 
     public SessionSettings getSessionSettings() {
         return sessionSettings;
+    }
+
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
 }

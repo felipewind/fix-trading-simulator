@@ -3,8 +3,6 @@ package com.helesto.core;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.helesto.service.ExecutionReportService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,22 +11,27 @@ import quickfix.DoNotSend;
 import quickfix.FieldNotFound;
 import quickfix.IncorrectDataFormat;
 import quickfix.IncorrectTagValue;
+import quickfix.LogUtil;
 import quickfix.Message;
 import quickfix.MessageCracker;
+import quickfix.MessageUtils;
 import quickfix.RejectLogon;
 import quickfix.SessionID;
 import quickfix.UnsupportedMessageType;
+import quickfix.field.MsgType;
+import quickfix.field.RawData;
+import quickfix.field.RawDataLength;
 
 @Singleton
-public class StockExchangeApplication extends MessageCracker implements Application {
+public class TraderApplication extends MessageCracker implements Application {
 
-	private static final Logger LOG = LoggerFactory.getLogger(StockExchangeApplication.class);
+	private static final Logger LOG = LoggerFactory.getLogger(TraderApplication.class);
 
 	@Inject
-	ExecutionReportService executionReportService;
+	Bootstrap bootstrap;
 
-	public StockExchangeApplication() {
-		LOG.info("Constructor");
+	public TraderApplication() {
+		LOG.info("Constructor");		
 	}
 
 	@Override
@@ -49,6 +52,9 @@ public class StockExchangeApplication extends MessageCracker implements Applicat
 	@Override
 	public void toAdmin(Message message, SessionID sessionID) {
 		LOG.info("toAdmin");
+		if (isMessageOfType(message, MsgType.LOGON)) {
+			addLogonField(message, sessionID);
+		}
 	}
 
 	@Override
@@ -68,11 +74,29 @@ public class StockExchangeApplication extends MessageCracker implements Applicat
 		LOG.info("fromApp");
 	}
 
-	public void onMessage(quickfix.fix44.NewOrderSingle newOrderSingle, SessionID sessionID)
-			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
-		LOG.info("onMessage quickfix.fix44.NewOrderSingle");
-		executionReportService.executionReport(newOrderSingle, sessionID);
+	private void addLogonField(Message message, SessionID sessionID) {
+		// Tag 95 RawDataLength
+		message.getHeader().setField(new RawDataLength(bootstrap.getTrader().getPassword().length()));
 
+		// Tag 96 RawData
+		message.getHeader().setField(new RawData(bootstrap.getTrader().getPassword()));
+
+		// Tag 58 Text
+		// message.getHeader().setField(new Text(bootstrap.getTrader().getAppVersion()));
+
+	}
+
+	private boolean isMessageOfType(Message message, String type) {
+		try {
+			return type.equals(message.getHeader().getField(new MsgType()).getValue());
+		} catch (FieldNotFound e) {
+			logErrorToSessionLog(message, e);
+			return false;
+		}
+	}
+
+	private void logErrorToSessionLog(Message message, FieldNotFound e) {
+		LogUtil.logThrowable(MessageUtils.getSessionID(message), e.getMessage(), e);
 	}
 
 }

@@ -1,0 +1,17 @@
+# Image layer
+FROM maven:3.6.3-jdk-11-slim
+ENV MVNW_VERBOSE=true
+ENV JAVA_OPTIONS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,address=5005,server=y,suspend=n"
+ENV AB_ENABLED=jmx_exporter
+
+# Image layer
+WORKDIR /app
+ADD pom.xml /app
+RUN mvn verify clean --fail-never
+
+# Image layer with the application
+COPY . .
+RUN  mvn package
+
+# Starts the application
+CMD ["/bin/bash", "-c", "/app/mvnw compile quarkus:dev"]
