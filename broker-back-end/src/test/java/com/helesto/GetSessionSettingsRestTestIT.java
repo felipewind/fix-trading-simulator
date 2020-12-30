@@ -1,4 +1,4 @@
-package com.helsto;
+package com.helesto;
 
 import io.quarkus.test.junit.NativeImageTest;
 

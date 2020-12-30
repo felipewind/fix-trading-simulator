@@ -1,4 +1,4 @@
-package com.helsto;
+package com.helesto;
 
 import static io.restassured.RestAssured.given;
 
