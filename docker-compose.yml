@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  exchange-back-end:
+    container_name: exchange-back-end
+    image: exchange-back-end:latest    
+    build:
+      context: ./exchange-back-end/
+      dockerfile: ./src/main/docker/Dockerfile.fast-jar
+      
+    ports:
+      - 8090:8090
+    networks:
+      - fix-trading-simulator-net
+    environment:
+      - QUICKFIX=[default],
+          [session],
+          BeginString=FIX.4.4,
+          SenderCompID=EXEC,
+          TargetCompID=BANZAI,
+          ConnectionType=acceptor,
+          StartTime=00:00:00,
+          EndTime=00:00:00,
+          SocketAcceptPort=9880,
+          ScreenLogShowHeartBeats=Y
+
+  # broker-back-end:
+  #   container_name: broker-back-end
+  #   image: broker-back-end:latest    
+  #   build:
+  #     context: ./brocker-back-end
+  #     dockerfile: ./src/main/docker/Dockerfile.fast-jar
+  #   environment:      
+  #     - QUICKFIX=[default],
+  #         [session],
+  #         BeginString=FIX.4.4,
+  #         SenderCompID=BANZAI,
+  #         TargetCompID=EXEC,
+  #         ConnectionType=initiator,
+  #         StartTime=00:00:00,
+  #         EndTime=00:00:00,
+  #         ReconnectInterval=5,
+  #         HeartBtInt=30,
+  #         SocketConnectHost=exchange-back-end,
+  #         SocketConnectPort=9880,
+  #         ScreenLogShowHeartBeats=Y
+  #   ports:
+  #     - 8080:8080
+  #   networks:
+  #     - fix-trading-simulator-net
+
+networks:
+  fix-trading-simulator-net:
+    driver: bridge
