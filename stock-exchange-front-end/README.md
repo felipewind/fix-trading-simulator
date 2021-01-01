@@ -1,1 +1,0 @@
-# Stock exchange front-end
