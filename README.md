@@ -1,8 +1,8 @@
 # Fix Trading Simulator
 
 - [Overview](#overview)
-- [Current version](#current-version)
 - [Project Structure](#project-structure)
+- [Current version](#current-version)
 - [Help Queries](#help-queries)
 
 
@@ -16,10 +16,10 @@ The Stock Exchange system will be responsible for matching the orders and notify
 
 The plan is to package each piece of this system in a Docker container and run everything using Docker Compose. So we would have the following containers running:
 - Stock exchange:
-  - Back-end - Quarkus;
+  - Back-end - Quarkus + QuickFIX/J;
   - Front-end - Angular;
 - Two instances of a broker:
-  - Back-end - Quarkus;
+  - Back-end - Quarkus + QuickFIX/J;
   - Front-end - Angular;
 - PostgreSQL
   - One schema for each back-end.
@@ -29,6 +29,19 @@ Although it's an ambitious project, it only has a study objective.
 I intend to start it slowly adding a few features at a time.
 
 If you want to join the project, just open an issue!
+
+
+# Project Structure
+
+[Broker back-end](./broker-back-end/README.md)
+
+[Broker front-end](./broker-front-end/README.md)
+
+[Exchange back-end](./exchange-back-end/README.md)
+
+[Exchange front-end](./exchange-front-end/README.md)
+
+[Documentation](./documentation/README.md)
 
 
 # Current version
@@ -93,7 +106,7 @@ chmod +x ./run.sh
 
 ### Without docker-compose
 
-This version will run only the two Quarkus back-end projects, each one with H2 data base.
+This version will run only the two Quarkus back-end projects, each one with H2 data base (in memory).
 
 It's possible to change the `application.properties` and set them to run with PostgreSQL, in this case you should start a PostgreSQL container:
 ```
@@ -110,20 +123,6 @@ docker run -d --name postgres-qfj -p 5432:5432 -e POSTGRES_USER=postgres -e POST
 ```
 ./mvnw compile quarkus:dev
 ```
-
-
-
-# Project Structure
-
-[Broker back-end](./broker-back-end/README.md)
-
-[Broker front-end](./broker-front-end/README.md)
-
-[Exchange back-end](./exchange-back-end/README.md)
-
-[Exchange front-end](./exchange-front-end/README.md)
-
-[Documentation](./documentation/README.md)
 
 
 # Help Queries
