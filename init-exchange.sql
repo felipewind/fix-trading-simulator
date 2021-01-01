@@ -1,6 +1,10 @@
-create table sometable(id int);
-
 CREATE SCHEMA IF NOT EXISTS exchange;
+
+CREATE TABLE IF NOT EXISTS exchange.orders (
+       NR_SEQ_ORD INTEGER not null,
+        DT_ORD DATE not null,
+        primary key (NR_SEQ_ORD, DT_ORD)
+    );
 
 CREATE TABLE IF NOT EXISTS exchange.sessions (
   beginstring CHAR(8) NOT NULL,

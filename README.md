@@ -3,15 +3,16 @@
 - [Overview](#overview)
 - [Current version](#current-version)
 - [Project Structure](#project-structure)
-- [Milestones](#milestones)
+- [Help Queries](#help-queries)
+
 
 # Overview
 
-A trading simulator between a broker and a stock exchange using the [Financial Information eXchange (FIX) Protocol](https://www.fixtrading.org/). It's a study project using [Quickfixj](https://www.quickfixj.org/), [Quarkus](https://quarkus.io/), [Angular](https://angular.io/) and [PostgreSQL](https://www.postgresql.org/).
+A trading simulator between a Broker and a Stock Exchange using the [Financial Information eXchange (FIX) Protocol](https://www.fixtrading.org/). It's a study project using [Quickfixj](https://www.quickfixj.org/), [Quarkus](https://quarkus.io/), [Angular](https://angular.io/) and [PostgreSQL](https://www.postgresql.org/).
 
-The project idea is to run a stock exchange system and allow it to receive connection from broker instances. Both systems will be build with Quarkus and PostgreSQL on the back-end and Angular on the front-end. The communication will be done with the FIX protocol using Quickfixj.
+The project idea is to run a Stock Exchange system and allow it to receive connection from Broker instances. Both systems will be build with Quarkus and PostgreSQL on the back-end and Angular on the front-end. The communication will be done with the FIX protocol using Quickfixj.
 
-The stock exchange system will be responsible for matching the orders and notifying the brokers. 
+The Stock Exchange system will be responsible for matching the orders and notifying the brokers. 
 
 The plan is to package each piece of this system in a Docker container and run everything using Docker Compose. So we would have the following containers running:
 - Stock exchange:
@@ -36,12 +37,11 @@ At this moment, only the initial version of the back-end of the broker and the b
 
 You can run them with H2 database (in memory) or PostgreSQL. 
 
-In this scenario:
+Features:
 - `Broker` makes a logon request to `Exchange`;
 - They exchange heart beat messages;
 - The `Broker` has an endpoint by which you can send a New Single Order to the `Exchange`;
 - The `Exchange` automatically executes the orders and respond with an Exeution Report message.
-
 
 ## Exchange
 
@@ -126,30 +126,20 @@ docker run -d --name postgres-qfj -p 5432:5432 -e POSTGRES_USER=postgres -e POST
 [Documentation](./documentation/README.md)
 
 
-# Milestones
-
-## 0.1.0
-
-Run with Docker Compose the back-end of the exchange and the back end of the broker, both connected with PostgreSQL. In this first version, there will be only one instance of the broker.
-
-Exchange:
-- Exchange **heartbeat** message;
-- Receive **New Order Single** message  and return a **Execution Report** message;
-
-Broker:
-- Exchange **heartbeat** message;
-- Endpoint in swagger-ui to receive a **New Order Single** solicitation;
-
-## 0.2.0
-
-Run two instances of the broker.
+# Help Queries
 
 
-## 0.3.0
+```sql
+select * from broker.sessions;
+select * from broker.messages;
+select * from broker.event_log  order by id desc;
+select * from broker.messages_log_incoming order by id desc;
+select * from broker.messages_log_outgoing order by id desc;
 
-Create the first version of the front-end of the exchange.
+select * from exchange.sessions;
+select * from exchange.messages;
+select * from exchange.event_log  order by id desc;
+select * from exchange.messages_log_incoming order by id desc;
+select * from exchange.messages_log_outgoing order by id desc;
+```
 
-
-## 0.4.0 
-
-Create the first version of the front-end of the broker.

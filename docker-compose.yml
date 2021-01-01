@@ -1,74 +1,90 @@
 version: "3.8"
 
 services:
-  # exchange-back-end:
-  #   container_name: exchange-back-end
-  #   image: exchange-back-end:latest    
-  #   build:
-  #     context: ./exchange-back-end/
-  #     dockerfile: ./src/main/docker/Dockerfile.fast-jar
-  #   ports:
-  #     - 8090:8090
-  #   networks:
-  #     - fix-trading-simulator-net
-  #   depends_on:
-  #     - postgresql          
-  #   environment:
-  #     - QUARKUS_DATASOURCE_JDBC_URL=jdbc:postgresql://postgresql:5432/postgres?currentSchema=exchange
-  #     - QUARKUS_DATASOURCE_USERNAME=postgres
-  #     - QUARKUS_DATASOURCE_PASSWORD=postgres      
-  #     - QUICKFIX=[default],
-  #         [session],
-  #         BeginString=FIX.4.4,
-  #         SenderCompID=EXEC,
-  #         TargetCompID=BANZAI,
-  #         ConnectionType=acceptor,
-  #         StartTime=00:00:00,
-  #         EndTime=00:00:00,
-  #         SocketAcceptPort=9880,
-  #         ScreenLogShowHeartBeats=Y
+  exchange-back-end:
+    container_name: exchange-back-end
+    image: exchange-back-end:latest    
+    build:
+      context: ./exchange-back-end/
+      dockerfile: ./src/main/docker/Dockerfile.fast-jar
+    ports:
+      - 8090:8090
+    networks:
+      - fix-trading-simulator-net
+    depends_on:
+      - postgresql-qfj         
+    environment:
+      - QUARKUS_DATASOURCE_JDBC_URL=jdbc:postgresql://postgresql-qfj:5432/postgres?currentSchema=exchange
+      - QUARKUS_DATASOURCE_USERNAME=postgres
+      - QUARKUS_DATASOURCE_PASSWORD=postgres
+      - QUICKFIX=[default],
+          [session],
+          BeginString=FIX.4.4,
+          SenderCompID=EXEC,
+          TargetCompID=BANZAI,
+          ConnectionType=acceptor,
+          StartTime=00:00:00,
+          EndTime=00:00:00,
+          SocketAcceptPort=9880,
+          ScreenLogShowHeartBeats=Y,
+          JdbcStoreMessagesTableName=messages,
+          JdbcStoreSessionsTableName=sessions,
+          JdbcLogHeartBeats=Y,
+          JdbcLogIncomingTable=messages_log_incoming,
+          JdbcLogOutgoingTable=messages_log_outgoing,
+          JdbcLogEventTable=event_log,
+          JdbcSessionIdDefaultPropertyValue=not_null
 
-  # broker-back-end:
-  #   container_name: broker-back-end
-  #   image: broker-back-end:latest    
-  #   build:
-  #     context: ./brocker-back-end
-  #     dockerfile: ./src/main/docker/Dockerfile.fast-jar
-  #   ports:
-  #     - 8080:8080
-  #   networks:
-  #     - fix-trading-simulator-net
-  #   depends_on:
-  #     - postgresql            
-  #   environment:      
-  #     - QUICKFIX=[default],
-  #         [session],
-  #         BeginString=FIX.4.4,
-  #         SenderCompID=BANZAI,
-  #         TargetCompID=EXEC,
-  #         ConnectionType=initiator,
-  #         StartTime=00:00:00,
-  #         EndTime=00:00:00,
-  #         ReconnectInterval=5,
-  #         HeartBtInt=30,
-  #         SocketConnectHost=exchange-back-end,
-  #         SocketConnectPort=9880,
-  #         ScreenLogShowHeartBeats=Y
+  broker-back-end:
+    container_name: broker-back-end
+    image: broker-back-end:latest    
+    build:
+      context: ./broker-back-end
+      dockerfile: ./src/main/docker/Dockerfile.fast-jar
+    ports:
+      - 8080:8080
+    networks:
+      - fix-trading-simulator-net
+    depends_on:
+      - postgresql-qfj           
+    environment:      
+      - QUARKUS_DATASOURCE_JDBC_URL=jdbc:postgresql://postgresql-qfj:5432/postgres?currentSchema=broker
+      - QUARKUS_DATASOURCE_USERNAME=postgres
+      - QUARKUS_DATASOURCE_PASSWORD=postgres
+      - QUICKFIX=[default],
+          [session],
+          BeginString=FIX.4.4,
+          SenderCompID=BANZAI,
+          TargetCompID=EXEC,
+          ConnectionType=initiator,
+          StartTime=00:00:00,
+          EndTime=00:00:00,
+          ReconnectInterval=5,
+          HeartBtInt=30,
+          SocketConnectHost=exchange-back-end,
+          SocketConnectPort=9880,
+          ScreenLogShowHeartBeats=Y,
+          JdbcStoreMessagesTableName=messages,
+          JdbcStoreSessionsTableName=sessions,
+          JdbcLogHeartBeats=Y,
+          JdbcLogIncomingTable=messages_log_incoming,
+          JdbcLogOutgoingTable=messages_log_outgoing,
+          JdbcLogEventTable=event_log,
+          JdbcSessionIdDefaultPropertyValue=not_null          
 
-
-  # https://onexlab-io.medium.com/docker-compose-postgres-initdb-ba0021deef76
-  postgresql:
+  postgresql-qfj:
     image: postgres
     environment:
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=usersdb
+      - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
     ports:
         - 5432:5432
     networks:
       - fix-trading-simulator-net
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql      
+      - ./init-exchange.sql:/docker-entrypoint-initdb.d/init-exchange.sql
+      - ./init-broker.sql:/docker-entrypoint-initdb.d/init-broker.sql
 
 networks:
   fix-trading-simulator-net:
