@@ -8,9 +8,9 @@
 
 # Overview
 
-A trading simulator between a Broker and a Stock Exchange using the [Financial Information eXchange (FIX) Protocol](https://www.fixtrading.org/). It's a study project using [Quickfixj](https://www.quickfixj.org/), [Quarkus](https://quarkus.io/), [Angular](https://angular.io/) and [PostgreSQL](https://www.postgresql.org/).
+A trading simulator between a Broker and a Stock Exchange using the [Financial Information eXchange (FIX) Protocol](https://www.fixtrading.org/). It's a study project using [QuickFIX/J](https://www.quickfixj.org/), [Quarkus](https://quarkus.io/), [Angular](https://angular.io/) and [PostgreSQL](https://www.postgresql.org/).
 
-The project idea is to run a Stock Exchange system and allow it to receive connection from Broker instances. Both systems will be build with Quarkus and PostgreSQL on the back-end and Angular on the front-end. The communication will be done with the FIX protocol using Quickfixj.
+The project idea is to run a Stock Exchange system and allow it to receive connection from Broker instances. Both systems will be build with Quarkus and PostgreSQL on the back-end and Angular on the front-end. The communication will be done with the FIX protocol using QuickFIX/J.
 
 The Stock Exchange system will be responsible for matching the orders and notifying the brokers. 
 
