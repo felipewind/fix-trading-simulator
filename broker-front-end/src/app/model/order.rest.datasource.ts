@@ -1,36 +1,36 @@
 import { Injectable, Inject, InjectionToken } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, throwError } from "rxjs"; 
-import { Product } from "./product.model";
+import { Order } from "./order.model";
 import { catchError } from "rxjs/operators";
 
 export const REST_URL = new InjectionToken("rest_url");
 
 @Injectable()
-export class RestDataSource {
+export class OrderRestDataSource {
     constructor(private http: HttpClient,
         @Inject(REST_URL) private url: string) {}
     
-    getData(): Observable<Product[]> {
-        return this.sendRequest<Product[]>("GET", this.url);
+    getData(): Observable<Order[]> {
+        return this.sendRequest<Order[]>("GET", this.url);
     }
 
-    saveProduct(product: Product): Observable<Product> {
-        return this.sendRequest<Product>("POST", this.url, product);
+    saveOrder(Order: Order): Observable<Order> {
+        return this.sendRequest<Order>("POST", this.url, Order);
     }
 
-    updateProduct(product: Product): Observable<Product> {
-        return this.sendRequest<Product>("PUT", `${this.url}/${product.id}`, product);
+    updateOrder(Order: Order): Observable<Order> {
+        return this.sendRequest<Order>("PUT", `${this.url}/${Order.clOrdId}`, Order);
     }
 
-    deleteProduct(id: number): Observable<Product> {
-        return this.sendRequest<Product>("DELETE", `${this.url}/${id}`);
+    deleteOrder(clOrdId: string): Observable<Order> {
+        return this.sendRequest<Order>("DELETE", `${this.url}/${clOrdId}`);
     }
 
-    private sendRequest<T>(verb: string, url: string, body?: Product): Observable<T> {
+    private sendRequest<T>(verb: string, url: string, body?: Order): Observable<T> {
         let myHeaders = new HttpHeaders();
         myHeaders = myHeaders.set("Access-Key", "<secret>");
-        myHeaders = myHeaders.set("Application-Names", ["exampleApp", "proAngular"]);
+        myHeaders = myHeaders.set("Application-Names", ["broker-front-end", "fix-simulator"]);
         return this.http.request<T>(verb, url, { 
             body: body ,
             headers: myHeaders

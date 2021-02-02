@@ -43,13 +43,6 @@ public class NewOrderSingleRest {
     @Operation(summary = "Send New Order Single")
     @APIResponse(responseCode = "200", description = "NewOrderSingleRest", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = NewOrderSingleResponseDto.class)) })
-    // @APIResponse(responseCode = "422", description = "Negocial error", content =
-    // {
-    // @Content(mediaType = "application/json", schema = @Schema(implementation =
-    // Error.class)) })
-    // @APIResponse(responseCode = "500", description = "System error", content = {
-    // @Content(mediaType = "application/json", schema = @Schema(implementation =
-    // Error.class)) })
     public Response newOrderSingleRest(NewOrderSingleRequestDto request) throws SessionNotFound {
 
         LOG.info("Request");
