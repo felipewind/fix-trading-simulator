@@ -1,20 +1,20 @@
 import { Injectable } from "@angular/core";
 import { Order } from "./order.model";
-// import { OrderRestDataSource } from "./order.rest.datasource";
-import { OrderStaticDataSource } from "./order.static.datasource";
+import { OrderRestDataSource } from "./order.rest.datasource";
+// import { OrderStaticDataSource } from "./order.static.datasource";
 
 @Injectable()
 export class OrderRepository {
     private orders: Order[] = new Array<Order>();
     private locator = (p: Order, clOrdId: string) => p.clOrdId == clOrdId;
 
-    constructor(private dataSource: OrderStaticDataSource) {
-        this.orders = this.dataSource.getData();
-    }
-
-    // constructor(private dataSource: OrderRestDataSource) {
-    //     this.dataSource.getData().subscribe(data => this.Orders = data);
+    // constructor(private dataSource: OrderStaticDataSource) {
+    //     this.orders = this.dataSource.getData();
     // }
+
+    constructor(private dataSource: OrderRestDataSource) {
+        this.dataSource.getData().subscribe(data => this.orders = data);
+    }
 
     getOrders(): Order[] {
         return this.orders;
