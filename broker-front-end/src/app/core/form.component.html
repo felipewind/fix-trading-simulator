@@ -1,0 +1,38 @@
+<div class="bg-primary text-white p-2">
+    <h5>New Single Order</h5>
+</div>
+<br>
+<form novalidate #form="ngForm" (ngSubmit)="submitForm(form)" (reset)="resetForm()">
+
+    <div class="form-group">
+        <label>ClOrdId</label>
+        <input class="form-control" name="clOrdId" [(ngModel)]="order.clOrdId" required />
+    </div>
+
+    <div class="form-group">
+        <label>Symbol</label>
+        <input class="form-control" name="symbol" [(ngModel)]="order.symbol" required />
+    </div>
+
+    <div class="form-group">
+        <label>Price</label>
+        <input class="form-control" name="orderQty" [(ngModel)]="order.orderQty" required pattern="^[0-9]" />
+    </div>
+
+    <div class="form-group">
+        <label>Price</label>
+        <input class="form-control" name="price" [(ngModel)]="order.price" required pattern="^[0-9\.]+$" />
+    </div>
+
+    <div class="form-group">
+        <label>Account</label>
+        <input class="form-control" name="account" [(ngModel)]="order.account" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary m-1"> <!--[disabled]="form.invalid"> -->
+        Send New Order Single
+    </button>
+
+
+
+</form>

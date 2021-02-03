@@ -1,22 +1,22 @@
-<div class="container-fluid">
-    <div class="row">
-        <table class="table table-sm table-bordered table-striped">
-            <tr>
-                <th>ClOrdId</th>
-                <th>Symbol</th>
-                <th>Side</th>
-                <th>OrderQty</th>
-                <th>Price</th>
-                <th>Account</th>
-            </tr>
-            <tr *ngFor="let item of getOrders()">
-                <td>{{item.clOrdId}}</td>
-                <td>{{item.symbol}}</td>
-                <td>{{item.side}}</td>
-                <td>{{item.orderQty}}</td>
-                <td>{{item.price | currency:"USD" }}</td>
-                <td>{{item.account}}</td>
-            </tr>
-        </table>
-    </div>
+<div class="bg-primary text-white p-2">
+    <h5>List of Orders</h5>    
 </div>
+<br>
+<table class="table table-sm table-bordered table-striped">
+    <tr>
+        <th>ClOrdId</th>
+        <th>Symbol</th>
+        <th>Side</th>
+        <th>OrderQty</th>
+        <th>Price</th>
+        <th>Account</th>
+    </tr>
+    <tr *ngFor="let item of getOrders()">
+        <td>{{item.clOrdId}}</td>
+        <td>{{item.symbol}}</td>
+        <td>{{item.side}}</td>
+        <td>{{item.orderQty}}</td>
+        <td>{{item.price | currency:"USD" }}</td>
+        <td>{{item.account}}</td>
+    </tr>
+</table>

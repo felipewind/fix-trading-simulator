@@ -5,5 +5,5 @@ export class Order {
                 public side?: string,
                 public orderQty?: number,
                 public price?: number,
-                private account?: string) {}
+                public account?: string) {}
 }

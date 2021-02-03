@@ -11,7 +11,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.helesto.dto.OrderDto;
-import com.helesto.dto.OrderListDto;
 import com.helesto.exceptions.BusinessError;
 import com.helesto.exceptions.BusinessErrorException;
 
@@ -34,7 +33,7 @@ public class OrdersRest {
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @Operation(summary = "List Orders", description = "List all Orders")
     @APIResponse(responseCode = "200", description = "Orders", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = OrderListDto.class)) })
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = OrderDto[].class)) })
     @APIResponse(responseCode = "422", description = "Business Error", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = BusinessError.class)) })
     @APIResponse(responseCode = "500", description = "System error", content = {
@@ -42,8 +41,6 @@ public class OrdersRest {
     public Response list() throws BusinessErrorException {
 
             LOG.debug("OrdersListRest + GET - begin");
-
-            OrderListDto response = new OrderListDto();
 
             List<OrderDto> listOrder = new ArrayList<>();
 
@@ -80,7 +77,7 @@ public class OrdersRest {
 
             listOrder.add(order);
 
-            response.setListOrder(listOrder);
+            OrderDto[] response = listOrder.toArray(new OrderDto[0]);
 
             return Response.status(Response.Status.OK).entity(response).build();
 
