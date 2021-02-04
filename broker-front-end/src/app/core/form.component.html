@@ -15,7 +15,12 @@
     </div>
 
     <div class="form-group">
-        <label>Price</label>
+        <label>Side</label>
+        <input class="form-control" name="side" [(ngModel)]="order.side" required pattern="^[0-9]" />
+    </div>
+
+    <div class="form-group">
+        <label>Quantity</label>
         <input class="form-control" name="orderQty" [(ngModel)]="order.orderQty" required pattern="^[0-9]" />
     </div>
 

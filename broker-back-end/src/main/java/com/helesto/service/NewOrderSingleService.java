@@ -37,6 +37,8 @@ public class NewOrderSingleService {
 
     public NewOrderSingleResponseDto newOrderSingle(NewOrderSingleRequestDto request) throws SessionNotFound {
 
+		validateRequest(request);
+
         SessionID sessionID = trader.getSessionID();
 
 		// Tag 35 MsgType = D
@@ -88,6 +90,22 @@ public class NewOrderSingleService {
 
         return response;
         
-    }
+	}
+	
+	private void validateRequest(NewOrderSingleRequestDto request) {
+
+		if (request.getAccount()==null) {
+			request.setAccount("");
+		}
+
+		if (request.getClOrdID()==null) {
+			request.setClOrdID("");
+		}
+
+		if (request.getSymbol()==null) {
+			request.setSymbol("");
+		}
+
+	}
     
 }
