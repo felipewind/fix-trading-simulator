@@ -2,7 +2,8 @@ import { Injectable, Inject, InjectionToken } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, throwError } from "rxjs"; 
 import { catchError } from "rxjs/operators";
-import { Order } from "../model/order.model";
+import { NewOrderSingle } from "../model/new-order-single/new-order-single";
+import { NewOrderSingleResponse } from "../model/new-order-single/new-order-single-response";
 
 export const REST_URL = new InjectionToken("rest_url_new_order_single");
 
@@ -11,20 +12,20 @@ export class NewOrderSingleService {
     constructor(private http: HttpClient,
         @Inject(REST_URL) private url: string) {}    
 
-    send(order: Order): Observable<Order> {
+    send(order: NewOrderSingle): Observable<NewOrderSingleResponse> {
+        let a = new NewOrderSingleResponse();
         console.log(`Antes do sendRequest order=${JSON.stringify(order)}`);
-        return this.sendRequest<Order>("POST", this.url, order);
-    }
-
-    private sendRequest<T>(verb: string, url: string, body?: Order): Observable<T> {
+    
         let myHeaders = new HttpHeaders();
         myHeaders = myHeaders.set("Access-Key", "<secret>");
-        myHeaders = myHeaders.set("Application-Names", ["broker-front-end", "fix-simulator"]);
-        console.log(`Antes do httpRequest order=${JSON.stringify(body)}`);
-        return this.http.request<T>(verb, url, { 
-            body: body ,
+        myHeaders = myHeaders.set("Application-Names", ["broker-front-end", "fix-simulator"]);        
+
+        return this.http.post<NewOrderSingleResponse>(this.url, { 
+            body: order ,
             headers: myHeaders
         }).pipe(catchError((error: Response) => 
             throwError(`Network Error: ${error.statusText} (${error.status})`)));
+
     }
+
 }

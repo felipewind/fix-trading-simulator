@@ -6,32 +6,32 @@
 
     <div class="form-group">
         <label>ClOrdId</label>
-        <input class="form-control" name="clOrdId" [(ngModel)]="order.clOrdId" required />
+        <input class="form-control" name="clOrdId" [(ngModel)]="newOrderSingle.clOrdId" required />
     </div>
 
     <div class="form-group">
         <label>Symbol</label>
-        <input class="form-control" name="symbol" [(ngModel)]="order.symbol" required />
+        <input class="form-control" name="symbol" [(ngModel)]="newOrderSingle.symbol" required />
     </div>
 
     <div class="form-group">
         <label>Side</label>
-        <input class="form-control" name="side" [(ngModel)]="order.side" required pattern="^[0-9]" />
+        <input class="form-control" name="side" [(ngModel)]="newOrderSingle.side" required pattern="^[0-9]" />
     </div>
 
     <div class="form-group">
         <label>Quantity</label>
-        <input class="form-control" name="orderQty" [(ngModel)]="order.orderQty" required pattern="^[0-9]" />
+        <input class="form-control" name="orderQty" [(ngModel)]="newOrderSingle.orderQty" required pattern="^[0-9]" />
     </div>
 
     <div class="form-group">
         <label>Price</label>
-        <input class="form-control" name="price" [(ngModel)]="order.price" required pattern="^[0-9\.]+$" />
+        <input class="form-control" name="price" [(ngModel)]="newOrderSingle.price" required pattern="^[0-9\.]+$" />
     </div>
 
     <div class="form-group">
         <label>Account</label>
-        <input class="form-control" name="account" [(ngModel)]="order.account" required />
+        <input class="form-control" name="account" [(ngModel)]="newOrderSingle.account" required />
     </div>
 
     <button type="submit" class="btn btn-primary m-1"> <!--[disabled]="form.invalid"> -->

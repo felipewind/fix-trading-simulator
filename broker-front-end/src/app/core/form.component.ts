@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { Order } from "../model/order.model";
-import { OrderRepository } from "../model/order.repository.model"
+import { NewOrderSingle } from "../model/new-order-single/new-order-single";
+import { NewOrderSingleResponse } from "../model/new-order-single/new-order-single-response";
 import { NewOrderSingleService } from "../fix/fix.newOrderSingle.service";
 
 @Component({
@@ -10,20 +10,29 @@ import { NewOrderSingleService } from "../fix/fix.newOrderSingle.service";
     styleUrls: ["form.component.css"]
 })
 export class FormComponent {
-    order: Order = new Order();
+    newOrderSingle: NewOrderSingle = new NewOrderSingle();
+    newOrderSingleResponse: NewOrderSingleResponse;
 
-    constructor(public orderRepository: OrderRepository, private newOrderSingle: NewOrderSingleService) {
+    constructor(private newOrderSingleService: NewOrderSingleService) {
     }
 
     submitForm(form: NgForm) {
         // if (form.valid) {
-            console.log(`FormComponent - antes do newOrderSingle`);
-            this.newOrderSingle.send(this.order).subscribe(data => this.order = data);
+
+        console.log(`FormComponent - antes do newOrderSingle`);
+        this.newOrderSingleService.send(this.newOrderSingle).subscribe(data => 
+            { 
+                this.newOrderSingleResponse = data; 
+                console.log(`data=${JSON.stringify(data)}`);        
+            });
+            
+        console.log(`newOrderSingleResponse=${JSON.stringify(this.newOrderSingleResponse)}`);
+
         // }
     }
 
     resetForm() {
-        this.order = new Order();
+        this.newOrderSingle = new NewOrderSingle();
     }
 
 }

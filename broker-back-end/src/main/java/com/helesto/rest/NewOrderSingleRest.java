@@ -2,6 +2,8 @@ package com.helesto.rest;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -45,9 +47,16 @@ public class NewOrderSingleRest {
             @Content(mediaType = "application/json", schema = @Schema(implementation = NewOrderSingleResponseDto.class)) })
     public Response newOrderSingleRest(NewOrderSingleRequestDto request) throws SessionNotFound {
 
-        LOG.info("Request");
+        Jsonb jsonb = JsonbBuilder.create();
+        String jsonString = jsonb.toJson(request);
+
+        LOG.debug("NewOrderSingleRest + POST - request: " + jsonString);
 
         NewOrderSingleResponseDto response = newOrderSingleService.newOrderSingle(request);
+
+        jsonString = jsonb.toJson(response);
+
+        LOG.debug("NewOrderSingleRest + POST - response: " + jsonString);
 
         return Response.status(Response.Status.OK).entity(response).build();
     }

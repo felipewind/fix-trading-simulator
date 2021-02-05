@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.agroal.api.AgroalDataSource;
+import quickfix.CompositeLogFactory;
 import quickfix.ConfigError;
 import quickfix.DefaultMessageFactory;
 import quickfix.Initiator;
@@ -34,6 +35,9 @@ public class Trader {
 
     @ConfigProperty(name = "quickfix.useDatabase")
     boolean useDatabase;
+
+    @ConfigProperty(name = "quickfix.activateScreenLog")
+    boolean activateScreenLog;
 
     @Inject
     SessionSettingsFactory sessionSettingsFactory;
@@ -80,8 +84,14 @@ public class Trader {
 
                 jdbcLogFactory.setDataSource(dataSource);
 
-                logFactory = jdbcLogFactory;
-                LOG.info("LogFactory created - JdbcLogFactory");
+                if (activateScreenLog) {
+                    logFactory = new CompositeLogFactory(
+                            new LogFactory[] { new ScreenLogFactory(sessionSettings), jdbcLogFactory });
+                    LOG.info("LogFactory created - JdbcLogFactory and ScreenLogFactory");
+                } else {
+                    logFactory = jdbcLogFactory;
+                    LOG.info("LogFactory created - JdbcLogFactory");
+                }
 
             } else {
 

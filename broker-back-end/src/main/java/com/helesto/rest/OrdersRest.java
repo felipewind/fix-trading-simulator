@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -33,57 +35,59 @@ public class OrdersRest {
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @Operation(summary = "List Orders", description = "List all Orders")
     @APIResponse(responseCode = "200", description = "Orders", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = OrderDto[].class)) })
+            @Content(mediaType = "application/json", schema = @Schema(implementation = OrderDto[].class)) })
     @APIResponse(responseCode = "422", description = "Business Error", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = BusinessError.class)) })
+            @Content(mediaType = "application/json", schema = @Schema(implementation = BusinessError.class)) })
     @APIResponse(responseCode = "500", description = "System error", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = BusinessError.class)) })
+            @Content(mediaType = "application/json", schema = @Schema(implementation = BusinessError.class)) })
     public Response list() throws BusinessErrorException {
 
-            LOG.debug("OrdersListRest + GET - begin");
+        LOG.debug("OrdersListRest + GET - begin");
 
-            List<OrderDto> listOrder = new ArrayList<>();
+        List<OrderDto> listOrder = new ArrayList<>();
 
-            OrderDto order = new OrderDto();
+        OrderDto order = new OrderDto();
 
-            order.setAccount("1");
-            order.setClOrdId("2");
-            order.setOrderQty(100.5);
-            order.setPrice(231.87);
-            order.setSymbol("BBAS3");
-            order.setSide("1");
+        order.setAccount("1");
+        order.setClOrdId("2");
+        order.setOrderQty(100.5);
+        order.setPrice(231.87);
+        order.setSymbol("BBAS3");
+        order.setSide("1");
 
-            listOrder.add(order);
+        listOrder.add(order);
 
-            order = new OrderDto();
+        order = new OrderDto();
 
-            order.setAccount("11");
-            order.setClOrdId("12");
-            order.setOrderQty(1100.5);
-            order.setPrice(2231.87);
-            order.setSymbol("PETR4");
-            order.setSide("2");
+        order.setAccount("11");
+        order.setClOrdId("12");
+        order.setOrderQty(1100.5);
+        order.setPrice(2231.87);
+        order.setSymbol("PETR4");
+        order.setSide("2");
 
-            listOrder.add(order);
+        listOrder.add(order);
 
-            order = new OrderDto();
+        order = new OrderDto();
 
-            order.setAccount("21");
-            order.setClOrdId("22");
-            order.setOrderQty(1.5);
-            order.setPrice(21.87);
-            order.setSymbol("USIM5");
-            order.setSide("1");
+        order.setAccount("21");
+        order.setClOrdId("22");
+        order.setOrderQty(1.5);
+        order.setPrice(21.87);
+        order.setSymbol("USIM5");
+        order.setSide("1");
 
-            listOrder.add(order);
+        listOrder.add(order);
 
-            OrderDto[] response = listOrder.toArray(new OrderDto[0]);
+        OrderDto[] response = listOrder.toArray(new OrderDto[0]);
 
-            return Response.status(Response.Status.OK).entity(response).build();
+        Jsonb jsonb = JsonbBuilder.create();
+        String jsonString = jsonb.toJson(response);
+
+        LOG.debug("OrdersListRest + GET - response: " + jsonString);
+
+        return Response.status(Response.Status.OK).entity(response).build();
 
     }
 
-
-
-    
 }
