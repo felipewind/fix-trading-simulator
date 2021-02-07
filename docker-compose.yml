@@ -33,7 +33,8 @@ services:
           JdbcLogIncomingTable=messages_log_incoming,
           JdbcLogOutgoingTable=messages_log_outgoing,
           JdbcLogEventTable=event_log,
-          JdbcSessionIdDefaultPropertyValue=not_null
+          JdbcSessionIdDefaultPropertyValue=not_null,
+          AllowedRemoteAddresses=127.0.0.1\,172.0.0.2\,172.0.0.3\,broker-back-end
 
   broker-back-end:
     container_name: broker-back-end
