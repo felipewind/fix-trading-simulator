@@ -1,15 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ModelModule } from "./model/model.module";
-import { CoreModule } from "./core/core.module";
-import { FixModule } from "./fix/fix.module";
-import { routing } from "./app.routing";
-import { TableComponent } from './core/table.component';
-import { FormComponent } from './core/form.component';
+import { AppComponent } from './app.component';
+import { NewOrderSingleComponent } from "./components/new-order-single/new-order-single.component";
 
 @NgModule({
-  imports: [BrowserModule, ModelModule, CoreModule, FixModule, routing],
-  providers: [],
-  bootstrap: [TableComponent, FormComponent]
+  declarations: [
+    AppComponent, NewOrderSingleComponent
+  ],
+  imports: [
+    BrowserModule
+  ],
+  providers: [],  
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

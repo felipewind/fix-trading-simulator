@@ -40,7 +40,18 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+projects/autorregulacao/src/environments/environment.local.ts
 
 # System Files
 .DS_Store
 Thumbs.db
+
+www
+/.tscache
+.baseDir.ts
+yarn.lock
+
+package-lock.json
+yarn-lock.json
+
+ofs
