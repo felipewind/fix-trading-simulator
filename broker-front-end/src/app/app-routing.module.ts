@@ -1,4 +1,4 @@
-import { NewOrderComponent } from './views/new-order/new-order.component';
+import { OrderComponent } from './views/order/order.component';
 import { HomeComponent } from './views/home/home.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -10,8 +10,8 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: "new-order",
-    component: NewOrderComponent
+    path: "order",
+    component: OrderComponent
   }  
 ];
 

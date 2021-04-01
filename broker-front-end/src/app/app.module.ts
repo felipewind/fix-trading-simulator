@@ -17,12 +17,16 @@ import { HomeComponent } from './views/home/home.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { NewOrderComponent } from './views/new-order/new-order.component';
+import { OrderComponent } from './views/order/order.component';
 import { OrderCreateComponent } from './components/order/order-create/order-create.component';
 
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { OrderRead2Component } from './components/order/order-read2/order-read2.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 
 @NgModule({
@@ -32,8 +36,9 @@ import { MatInputModule } from '@angular/material/input';
     FooterComponent,
     NavComponent,
     HomeComponent,
-    NewOrderComponent,
-    OrderCreateComponent
+    OrderComponent,
+    OrderCreateComponent,
+    OrderRead2Component
   ],
   imports: [
     BrowserModule,
@@ -48,7 +53,10 @@ import { MatInputModule } from '@angular/material/input';
     HttpClientModule,
     FormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]

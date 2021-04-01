@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.GET;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.Response;
 import com.helesto.dto.OrderDto;
 import com.helesto.exceptions.BusinessError;
 import com.helesto.exceptions.BusinessErrorException;
+import com.helesto.service.NewOrderSingleService;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -34,6 +36,9 @@ public class OrdersRest {
 
         private static final Logger LOG = LoggerFactory.getLogger(OrdersRest.class.getName());
 
+        @Inject
+        NewOrderSingleService newOrderSingleService;
+
         @POST
         @Operation(summary = "Create a new order")
         @APIResponse(responseCode = "200", description = "Create a new order", content = {
@@ -45,13 +50,13 @@ public class OrdersRest {
 
                 LOG.debug("Orders + POST - request: " + jsonString);
 
-                OrderDto response = new OrderDto();
+                newOrderSingleService.newOrderSingle(request);
 
-                jsonString = jsonb.toJson(response);
+                jsonString = jsonb.toJson(request);
 
                 LOG.debug("Orders + POST - response: " + jsonString);
 
-                return Response.status(Response.Status.OK).entity(response).build();
+                return Response.status(Response.Status.OK).entity(request).build();
         }
 
         @GET

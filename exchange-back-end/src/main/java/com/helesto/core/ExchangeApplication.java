@@ -66,6 +66,7 @@ public class ExchangeApplication extends MessageCracker implements Application {
 	public void fromApp(Message message, SessionID sessionID)
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
 		LOG.info("fromApp");
+		crack(message, sessionID);
 	}
 
 	public void onMessage(quickfix.fix44.NewOrderSingle newOrderSingle, SessionID sessionID)
