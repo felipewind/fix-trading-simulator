@@ -39,6 +39,9 @@ public class Trader {
     @ConfigProperty(name = "quickfix.activateScreenLog")
     boolean activateScreenLog;
 
+    @ConfigProperty(name = "quickfix.autoStart")
+    boolean autoStart;
+
     @Inject
     SessionSettingsFactory sessionSettingsFactory;
 
@@ -113,7 +116,9 @@ public class Trader {
 
             LOG.info("Initiator created - SocketInitiator");
 
-            logon();
+            if (autoStart) {
+                logon();
+            }
 
         } catch (ConfigError e) {
             LOG.error("ConfigError \n" + e);

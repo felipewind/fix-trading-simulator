@@ -1,9 +1,14 @@
 package com.helesto.dto;
 
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
 public class OrderDto {
 
     private String clOrdId;
     private String symbol;
+
+    // Tag 54 (Example BUY = '1' / SELL = '2')
+    @Schema(example = "1", description = "BUY = '1' / SELL = '2'")
     private String side;
     private double orderQty;
     private double price;
@@ -56,5 +61,5 @@ public class OrderDto {
     public void setAccount(String account) {
         this.account = account;
     }
-    
+
 }
