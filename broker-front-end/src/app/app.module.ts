@@ -23,10 +23,10 @@ import { OrderCreateComponent } from './components/order/order-create/order-crea
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { OrderRead2Component } from './components/order/order-read2/order-read2.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { OrderReadComponent } from './components/order/order-read/order-read.component';
 
 
 @NgModule({
@@ -37,8 +37,8 @@ import { MatSortModule } from '@angular/material/sort';
     NavComponent,
     HomeComponent,
     OrderComponent,
-    OrderCreateComponent,
-    OrderRead2Component
+    OrderCreateComponent,    
+    OrderReadComponent
   ],
   imports: [
     BrowserModule,

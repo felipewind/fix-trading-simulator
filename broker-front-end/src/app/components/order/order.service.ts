@@ -31,6 +31,13 @@ export class OrderService {
     );
   }
 
+  read(): Observable<Order[]> {
+    return this.http.get<Order[]>(this.baseUrl).pipe(
+      map((obj) => obj),
+      catchError((error) => this.errorHandler(error))
+    )
+  }
+
   errorHandler(e: any): Observable<any> {
     this.showMessage('Something wrong happened!', true);
     return EMPTY;
