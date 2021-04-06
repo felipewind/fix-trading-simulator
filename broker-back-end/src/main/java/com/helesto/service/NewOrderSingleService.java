@@ -6,8 +6,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import com.helesto.core.Trader;
-import com.helesto.dto.NewOrderSingleRequestDto;
-import com.helesto.dto.NewOrderSingleResponseDto;
 import com.helesto.dto.OrderDto;
 
 import org.slf4j.Logger;
@@ -47,7 +45,7 @@ public class NewOrderSingleService {
 		newOrderSingle.set(new ClOrdID("1"));
 
 		// Tag 55 Symbol
-		if (request.getSymbol()==null) {
+		if (request.getSymbol() == null) {
 			request.setSymbol("IBM");
 		}
 		newOrderSingle.set(new Symbol(request.getSymbol()));
@@ -89,79 +87,6 @@ public class NewOrderSingleService {
 		} catch (SessionNotFound e) {
 			LOG.error(e.getMessage());
 			throw e;
-		}
-
-	}
-
-	public NewOrderSingleResponseDto newOrderSingle(NewOrderSingleRequestDto request) throws SessionNotFound {
-
-		validateRequest(request);
-
-		SessionID sessionID = trader.getSessionID();
-
-		// Tag 35 MsgType = D
-		NewOrderSingle newOrderSingle = new NewOrderSingle();
-
-		// Tag 11 ClOrdID
-		newOrderSingle.set(new ClOrdID(request.getClOrdID()));
-
-		// Tag 55 Symbol
-		newOrderSingle.set(new Symbol(request.getSymbol()));
-
-		// Tag 54 Side
-		if (request.getSide() == '1') {
-			newOrderSingle.set(new Side(Side.BUY));
-		} else {
-			newOrderSingle.set(new Side(Side.SELL));
-		}
-
-		// Tag 60 TransactTime
-		newOrderSingle.set(new TransactTime(LocalDateTime.now()));
-
-		// Tag 38 OrderQty
-		newOrderSingle.set(new OrderQty(request.getOrderQty()));
-
-		// Tag 40 OrdType
-		newOrderSingle.set(new OrdType(OrdType.LIMIT));
-
-		// Tag 44 Price
-		newOrderSingle.set(new Price(request.getPrice()));
-
-		// Tag 1 Account
-		newOrderSingle.setField(new Account(request.getAccount()));
-
-		// Tag 22 SecurityIDSource
-		newOrderSingle.setField(new SecurityIDSource(SecurityIDSource.EXCHANGE_SYMBOL));
-
-		// Tag 59 TimeInForce
-		newOrderSingle.setField(new TimeInForce(TimeInForce.DAY));
-
-		NewOrderSingleResponseDto response = new NewOrderSingleResponseDto();
-
-		try {
-			response.setSendToTarget(Session.sendToTarget(newOrderSingle, sessionID));
-
-		} catch (SessionNotFound e) {
-			LOG.error(e.getMessage());
-			throw e;
-		}
-
-		return response;
-
-	}
-
-	private void validateRequest(NewOrderSingleRequestDto request) {
-
-		if (request.getAccount() == null) {
-			request.setAccount("");
-		}
-
-		if (request.getClOrdID() == null) {
-			request.setClOrdID("");
-		}
-
-		if (request.getSymbol() == null) {
-			request.setSymbol("");
 		}
 
 	}

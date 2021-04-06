@@ -40,6 +40,7 @@ public class OrdersRest {
         NewOrderSingleService newOrderSingleService;
 
         @POST
+        @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
         @Operation(summary = "Create a new order")
         @APIResponse(responseCode = "200", description = "Create a new order", content = {
                         @Content(mediaType = "application/json", schema = @Schema(implementation = OrderDto.class)) })

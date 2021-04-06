@@ -21,12 +21,12 @@ export class OrderCreateComponent implements OnInit {
   createOrder(): void {
     this.orderService.create(this.order).subscribe(() => {
       this.orderService.showMessage("Order created");
-      this.router.navigate(['/order']);
+      this.router.navigate(['/orders']);
     });
   }
 
   cancel(): void {
-    this.router.navigate(['/order']);
+    this.router.navigate(['/orders']);
   }
 
 }

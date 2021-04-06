@@ -136,6 +136,7 @@ public class Trader {
             LOG.info("Initiator start - logon solicited \nSessionID created: " + initiator.getSessions() + "\n");
             initiatorStarted = true;
         } else {
+
             for (SessionID sessionID : initiator.getSessions()) {
                 Session.lookupSession(sessionID).logon();
                 LOG.info("Logon solicited \nSessionID created: " + initiator.getSessions() + "\n");
@@ -165,6 +166,14 @@ public class Trader {
         } else {
             throw new RuntimeException("Initiator stopped");
         }
+    }
+
+    public Session getSession() {
+        return Session.lookupSession(getSessionID());
+    }
+
+    public boolean isInitiatorStarted() {
+        return initiatorStarted;
     }
 
     public SessionSettings getSessionSettings() {

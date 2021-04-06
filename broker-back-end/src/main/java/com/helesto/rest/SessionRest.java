@@ -2,15 +2,22 @@ package com.helesto.rest;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.helesto.core.Trader;
+import com.helesto.dto.SessionDto;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,41 +34,61 @@ public class SessionRest {
     @Inject
     Trader trader;
 
-    @Path("settings")
     @GET
-    @Operation(summary = "Return quickfixj SessionSettings")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String settingsGet() {
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Operation(summary = "Return session information")
+    @APIResponse(responseCode = "200", description = "Read session information", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = SessionDto.class)) })
+    public Response sessionGet() {
 
-        LOG.info("settingsGet");
+        LOG.info("sessionGet");
 
-        return trader.getSessionSettings().toString();
+        SessionDto sessionDto = new SessionDto();
+
+        sessionDto.setSettings(trader.getSessionSettings().toString().split(System.lineSeparator()));
+
+        sessionDto.setStart(trader.isInitiatorStarted());
+
+        Jsonb jsonb = JsonbBuilder.create();
+        String jsonString = jsonb.toJson(sessionDto);
+
+        LOG.debug("Session + GET - response: " + jsonString);
+
+        return Response.status(Response.Status.OK).entity(sessionDto).build();
     }
 
-    @Path("start")
-    @PUT
-    @Operation(summary = "Start FIX session and make logon")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String startPut() throws ConfigError {
+    @PATCH
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Operation(summary = "Change session")
+    @APIResponse(responseCode = "200", description = "Change session behavior", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = SessionDto.class)) })
+    public Response patch(SessionDto request) throws ConfigError {
 
-        LOG.info("startPut");
+        Jsonb jsonb = JsonbBuilder.create();
+        String jsonString = jsonb.toJson(request);
 
-        trader.logon();
+        LOG.debug("Session + PATCH - request: " + jsonString);
 
-        return "FIX session started";
-    }
+        if (request.isStart() && !trader.isInitiatorStarted()) {
+            trader.logon();
+        }
 
-    @Path("stop")
-    @PUT
-    @Operation(summary = "Stop FIX session and make logout")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String stopPut() {
+        if (!request.isStart() && trader.isInitiatorStarted()) {
+            trader.stop();
+        }
 
-        LOG.info("stopPut");
+        SessionDto sessionDto = new SessionDto();
 
-        trader.stop();
+        sessionDto.setSettings(trader.getSessionSettings().toString().split(System.lineSeparator()));
 
-        return "FIX session stoped";
+        sessionDto.setStart(trader.isInitiatorStarted());
+
+        jsonString = jsonb.toJson(sessionDto);
+
+        LOG.debug("Session + PATCH - response: " + jsonString);
+
+        return Response.status(Response.Status.OK).entity(sessionDto).build();
+
     }
 
 }
