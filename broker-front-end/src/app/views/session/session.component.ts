@@ -11,10 +11,9 @@ import { Component, OnInit } from '@angular/core';
 export class SessionComponent implements OnInit {
 
   session: Session = {
-    start: false
   }
 
-  constructor(private headerService: HeaderService, 
+  constructor(private headerService: HeaderService,
     private sessionService: SessionService) {
     headerService.headerData = {
       title: 'Session',
@@ -27,15 +26,13 @@ export class SessionComponent implements OnInit {
   }
 
   startSession(): void {
-    this.session.start = true;
-    this.sessionService.patch(this.session).subscribe(() => {
-      this.sessionService.showMessage("Session started");      
+    this.sessionService.startInitiator().subscribe(() => {
+      this.sessionService.showMessage("Session started");
     });
   }
 
   stopSession(): void {
-    this.session.start = false;
-    this.sessionService.patch(this.session).subscribe(() => {
+    this.sessionService.stopInitiator().subscribe(() => {
       this.sessionService.showMessage("Session stopped");
     });
   }

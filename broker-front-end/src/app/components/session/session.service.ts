@@ -24,8 +24,17 @@ export class SessionService {
     });
   }
 
-  patch(session: Session): Observable<Session> {    
-    return this.http.patch(this.baseUrl, session).pipe(
+  startInitiator(): Observable<Session> {    
+    const url = `${this.baseUrl}/start-initiator`
+    return this.http.post(url, null).pipe(
+      map((obj) => obj),
+      catchError((error) => this.errorHandler(error))
+    );
+  }
+
+  stopInitiator(): Observable<Session> {    
+    const url = `${this.baseUrl}/stop-initiator`
+    return this.http.post(url, null).pipe(
       map((obj) => obj),
       catchError((error) => this.errorHandler(error))
     );

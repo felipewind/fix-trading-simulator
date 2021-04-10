@@ -5,14 +5,14 @@ import javax.inject.Inject;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.GET;
-import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.helesto.core.Trader;
 import com.helesto.dto.SessionDto;
+import com.helesto.service.SessionService;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -32,7 +32,7 @@ public class SessionRest {
     private static final Logger LOG = LoggerFactory.getLogger(SessionRest.class.getName());
 
     @Inject
-    Trader trader;
+    SessionService sessionService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -43,11 +43,7 @@ public class SessionRest {
 
         LOG.info("sessionGet");
 
-        SessionDto sessionDto = new SessionDto();
-
-        sessionDto.setSettings(trader.getSessionSettings().toString().split(System.lineSeparator()));
-
-        sessionDto.setStart(trader.isInitiatorStarted());
+        SessionDto sessionDto = sessionService.sessionGet();
 
         Jsonb jsonb = JsonbBuilder.create();
         String jsonString = jsonb.toJson(sessionDto);
@@ -57,35 +53,43 @@ public class SessionRest {
         return Response.status(Response.Status.OK).entity(sessionDto).build();
     }
 
-    @PATCH
+    @Path("/start-initiator")
+    @POST
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    @Operation(summary = "Change session")
-    @APIResponse(responseCode = "200", description = "Change session behavior", content = {
+    @Operation(summary = "Start initiator")
+    @APIResponse(responseCode = "200", description = "Initiator started", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SessionDto.class)) })
-    public Response patch(SessionDto request) throws ConfigError {
+    public Response startInitiator() throws ConfigError {
+
+        LOG.debug("Session + POST - start initiator");
+
+        SessionDto sessionDto = sessionService.startInitiator();
 
         Jsonb jsonb = JsonbBuilder.create();
-        String jsonString = jsonb.toJson(request);
+        String jsonString = jsonb.toJson(sessionDto);
 
-        LOG.debug("Session + PATCH - request: " + jsonString);
+        LOG.debug("Session + POST - start initiator - response: " + jsonString);
 
-        if (request.isStart() && !trader.isInitiatorStarted()) {
-            trader.logon();
-        }
+        return Response.status(Response.Status.OK).entity(sessionDto).build();
 
-        if (!request.isStart() && trader.isInitiatorStarted()) {
-            trader.stop();
-        }
+    }
 
-        SessionDto sessionDto = new SessionDto();
+    @Path("/stop-initiator")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Operation(summary = "Stop initiator")
+    @APIResponse(responseCode = "200", description = "Initiator stopped", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = SessionDto.class)) })
+    public Response stopInitiator() throws ConfigError {
 
-        sessionDto.setSettings(trader.getSessionSettings().toString().split(System.lineSeparator()));
+        LOG.debug("Session + POST - stop initiator");
 
-        sessionDto.setStart(trader.isInitiatorStarted());
+        SessionDto sessionDto = sessionService.stopInitiator();
 
-        jsonString = jsonb.toJson(sessionDto);
+        Jsonb jsonb = JsonbBuilder.create();
+        String jsonString = jsonb.toJson(sessionDto);
 
-        LOG.debug("Session + PATCH - response: " + jsonString);
+        LOG.debug("Session + POST - stop initiator - response: " + jsonString);
 
         return Response.status(Response.Status.OK).entity(sessionDto).build();
 

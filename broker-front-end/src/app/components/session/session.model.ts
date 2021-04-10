@@ -1,4 +1,6 @@
 export interface Session {    
-    start: boolean,
-    settings?: string[]
+    initiatorStarted?: boolean,
+    settings?: string[],
+    isLoggedOn?: boolean,
+    startTime?: string
 }
