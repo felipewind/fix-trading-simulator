@@ -8,7 +8,7 @@ public class SessionDto {
     private boolean initiatorStarted;
 
     @Schema(description = "Is the session logged on")
-    private boolean isLoggedOn;
+    private boolean loggedOn;
 
     private String startTime;
 
@@ -31,11 +31,11 @@ public class SessionDto {
     }
 
     public boolean isLoggedOn() {
-        return isLoggedOn;
+        return loggedOn;
     }
 
-    public void setLoggedOn(boolean isLoggedOn) {
-        this.isLoggedOn = isLoggedOn;
+    public void setLoggedOn(boolean loggedOn) {
+        this.loggedOn = loggedOn;
     }
 
     public String getStartTime() {

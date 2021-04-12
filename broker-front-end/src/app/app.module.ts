@@ -28,6 +28,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { OrderReadComponent } from './components/order/order-read/order-read.component';
 import { SessionComponent } from './views/session/session.component';
+import { SessionControlComponent } from './components/session/session-control/session-control.component';
 
 
 @NgModule({
@@ -39,7 +40,7 @@ import { SessionComponent } from './views/session/session.component';
     HomeComponent,
     OrderComponent,
     OrderCreateComponent,    
-    OrderReadComponent, SessionComponent
+    OrderReadComponent, SessionComponent, SessionControlComponent
   ],
   imports: [
     BrowserModule,

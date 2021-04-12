@@ -1,5 +1,4 @@
 import { Session } from './../../components/session/session.model';
-import { SessionService } from './../../components/session/session.service';
 import { HeaderService } from './../../components/template/header/header.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -10,11 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SessionComponent implements OnInit {
 
-  session: Session = {
-  }
-
-  constructor(private headerService: HeaderService,
-    private sessionService: SessionService) {
+  constructor(private headerService: HeaderService) {
     headerService.headerData = {
       title: 'Session',
       icon: 'settings',
@@ -23,18 +18,6 @@ export class SessionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  }
-
-  startSession(): void {
-    this.sessionService.startInitiator().subscribe(() => {
-      this.sessionService.showMessage("Session started");
-    });
-  }
-
-  stopSession(): void {
-    this.sessionService.stopInitiator().subscribe(() => {
-      this.sessionService.showMessage("Session stopped");
-    });
   }
 
 }

@@ -26,7 +26,7 @@ export class SessionService {
 
   startInitiator(): Observable<Session> {    
     const url = `${this.baseUrl}/start-initiator`
-    return this.http.post(url, null).pipe(
+    return this.http.post<Session>(url, null).pipe(
       map((obj) => obj),
       catchError((error) => this.errorHandler(error))
     );
@@ -34,7 +34,14 @@ export class SessionService {
 
   stopInitiator(): Observable<Session> {    
     const url = `${this.baseUrl}/stop-initiator`
-    return this.http.post(url, null).pipe(
+    return this.http.post<Session>(url, null).pipe(
+      map((obj) => obj),
+      catchError((error) => this.errorHandler(error))
+    );
+  }
+
+  read(): Observable<Session> {        
+    return this.http.get<Session>(this.baseUrl).pipe(
       map((obj) => obj),
       catchError((error) => this.errorHandler(error))
     );
