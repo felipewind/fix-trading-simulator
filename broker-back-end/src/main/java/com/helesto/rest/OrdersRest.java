@@ -15,7 +15,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.helesto.dto.OrderDto;
-import com.helesto.exceptions.BusinessError;
 import com.helesto.exceptions.BusinessErrorException;
 import com.helesto.service.NewOrderSingleService;
 
@@ -30,7 +29,7 @@ import org.slf4j.LoggerFactory;
 import quickfix.SessionNotFound;
 
 @Path("/orders")
-@Tag(name = "Orders", description = "Orders CRUD")
+@Tag(name = "Orders")
 @RequestScoped
 public class OrdersRest {
 
@@ -65,10 +64,6 @@ public class OrdersRest {
         @Operation(summary = "List Orders", description = "List all Orders")
         @APIResponse(responseCode = "200", description = "Orders", content = {
                         @Content(mediaType = "application/json", schema = @Schema(implementation = OrderDto[].class)) })
-        @APIResponse(responseCode = "422", description = "Business Error", content = {
-                        @Content(mediaType = "application/json", schema = @Schema(implementation = BusinessError.class)) })
-        @APIResponse(responseCode = "500", description = "System error", content = {
-                        @Content(mediaType = "application/json", schema = @Schema(implementation = BusinessError.class)) })
         public Response list() throws BusinessErrorException {
 
                 LOG.debug("OrdersListRest + GET - begin");

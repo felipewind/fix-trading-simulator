@@ -10,7 +10,8 @@ import { Component, OnInit } from '@angular/core';
 export class SessionControlComponent implements OnInit {
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or resessioned. */
-  displayedColumns = ['settings'];
+  displayedColumns = ['sessionSettingsFile'];
+  displayedColumnsProperties = ['key', 'value'];
 
   session: Session;
 

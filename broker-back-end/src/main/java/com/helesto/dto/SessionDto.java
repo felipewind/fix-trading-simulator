@@ -12,7 +12,11 @@ public class SessionDto {
 
     private String startTime;
 
-    private String[] settings;
+    private String sessionID;
+
+    private SessionSettingsProperties[] sessionSettingsProperties;
+
+    private String[] sessionSettingsFile;
 
     public boolean isInitiatorStarted() {
         return initiatorStarted;
@@ -20,14 +24,6 @@ public class SessionDto {
 
     public void setInitiatorStarted(boolean initiatorStarted) {
         this.initiatorStarted = initiatorStarted;
-    }
-
-    public String[] getSettings() {
-        return settings;
-    }
-
-    public void setSettings(String[] settings) {
-        this.settings = settings;
     }
 
     public boolean isLoggedOn() {
@@ -45,5 +41,30 @@ public class SessionDto {
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
+
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(String sessionID) {
+        this.sessionID = sessionID;
+    }   
+
+    public String[] getSessionSettingsFile() {
+        return sessionSettingsFile;
+    }
+
+    public void setSessionSettingsFile(String[] sessionSettingsFile) {
+        this.sessionSettingsFile = sessionSettingsFile;
+    }
+
+    public SessionSettingsProperties[] getSessionSettingsProperties() {
+        return sessionSettingsProperties;
+    }
+
+    public void setSessionSettingsProperties(SessionSettingsProperties[] sessionSettingsProperties) {
+        this.sessionSettingsProperties = sessionSettingsProperties;
+    }
+
 
 }

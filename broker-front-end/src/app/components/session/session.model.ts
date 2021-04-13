@@ -1,6 +1,10 @@
-export interface Session {    
+import { SessionSettingsProperties } from './session-settings-properties.model';
+
+export interface Session {
     initiatorStarted?: boolean,
-    settings?: string[],
+    sessionSettingsFile?: string[],
     loggedOn?: boolean,
-    startTime?: string
+    startTime?: string,
+    sessionID?: string,
+    sessionSettingsProperties?: SessionSettingsProperties[]
 }
