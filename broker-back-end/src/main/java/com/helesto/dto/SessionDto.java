@@ -10,13 +10,20 @@ public class SessionDto {
     @Schema(description = "Is the session logged on")
     private boolean loggedOn;
 
+    @Schema(description = "Start time of the Session")
     private String startTime;
 
+    @Schema(description = "SessionID")
     private String sessionID;
 
+    @Schema(implementation = SessionSettingsProperties.class, description = "Properties of the session")
     private SessionSettingsProperties[] sessionSettingsProperties;
 
+    @Schema(description = "The same layout of a SessionSettings file")
     private String[] sessionSettingsFile;
+
+    @Schema(description = "Session Storage information")
+    private SessionStorage sessionStorage;
 
     public boolean isInitiatorStarted() {
         return initiatorStarted;
@@ -48,7 +55,7 @@ public class SessionDto {
 
     public void setSessionID(String sessionID) {
         this.sessionID = sessionID;
-    }   
+    }
 
     public String[] getSessionSettingsFile() {
         return sessionSettingsFile;
@@ -66,5 +73,74 @@ public class SessionDto {
         this.sessionSettingsProperties = sessionSettingsProperties;
     }
 
+    public SessionStorage getSessionStorage() {
+        return sessionStorage;
+    }
+
+    public void setSessionStorage(SessionStorage sessionStorage) {
+        this.sessionStorage = sessionStorage;
+    }
+
+    public static class SessionSettingsProperties {
+
+        private String key;
+
+        private String value;
+
+        public SessionSettingsProperties(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+    }
+
+    public static class SessionStorage {
+
+        private String creationTime;
+
+        private int incomingSeqnum;
+
+        private int outgoingSeqnum;
+
+        public int getIncomingSeqnum() {
+            return incomingSeqnum;
+        }
+
+        public void setIncomingSeqnum(int incomingSeqnum) {
+            this.incomingSeqnum = incomingSeqnum;
+        }
+
+        public int getOutgoingSeqnum() {
+            return outgoingSeqnum;
+        }
+
+        public void setOutgoingSeqnum(int outgoingSeqnum) {
+            this.outgoingSeqnum = outgoingSeqnum;
+        }
+
+        public String getCreationTime() {
+            return creationTime;
+        }
+
+        public void setCreationTime(String creationTime) {
+            this.creationTime = creationTime;
+        }
+    }
 
 }

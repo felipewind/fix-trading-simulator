@@ -15,7 +15,6 @@ import quickfix.Initiator;
 import quickfix.JdbcLogFactory;
 import quickfix.JdbcStoreFactory;
 import quickfix.LogFactory;
-import quickfix.MemoryStoreFactory;
 import quickfix.MessageFactory;
 import quickfix.MessageStoreFactory;
 import quickfix.ScreenLogFactory;
@@ -32,9 +31,6 @@ public class Trader {
 
     @ConfigProperty(name = "quickfix.password")
     String password;
-
-    @ConfigProperty(name = "quickfix.useDatabase")
-    boolean useDatabase;
 
     @ConfigProperty(name = "quickfix.activateScreenLog")
     boolean activateScreenLog;
@@ -72,40 +68,26 @@ public class Trader {
 
             LogFactory logFactory;
 
-            if (useDatabase) {
+            LOG.info("Initiator creation with database");
 
-                LOG.info("Initiator creation with database");
+            JdbcStoreFactory jdbcStoreFactory = new JdbcStoreFactory(sessionSettings);
 
-                JdbcStoreFactory jdbcStoreFactory = new JdbcStoreFactory(sessionSettings);
+            jdbcStoreFactory.setDataSource(dataSource);
 
-                jdbcStoreFactory.setDataSource(dataSource);
+            messageStoreFactory = jdbcStoreFactory;
+            LOG.info("MessageStoreFactory created - JdbcStoreFactory");
 
-                messageStoreFactory = jdbcStoreFactory;
-                LOG.info("MessageStoreFactory created - JdbcStoreFactory");
+            JdbcLogFactory jdbcLogFactory = new JdbcLogFactory(sessionSettings);
 
-                JdbcLogFactory jdbcLogFactory = new JdbcLogFactory(sessionSettings);
+            jdbcLogFactory.setDataSource(dataSource);
 
-                jdbcLogFactory.setDataSource(dataSource);
-
-                if (activateScreenLog) {
-                    logFactory = new CompositeLogFactory(
-                            new LogFactory[] { new ScreenLogFactory(sessionSettings), jdbcLogFactory });
-                    LOG.info("LogFactory created - JdbcLogFactory and ScreenLogFactory");
-                } else {
-                    logFactory = jdbcLogFactory;
-                    LOG.info("LogFactory created - JdbcLogFactory");
-                }
-
+            if (activateScreenLog) {
+                logFactory = new CompositeLogFactory(
+                        new LogFactory[] { new ScreenLogFactory(sessionSettings), jdbcLogFactory });
+                LOG.info("LogFactory created - JdbcLogFactory and ScreenLogFactory");
             } else {
-
-                LOG.info("Initiator creation without database");
-
-                messageStoreFactory = new MemoryStoreFactory();
-                LOG.info("MessageStoreFactory created - MemoryStoreFactory");
-
-                logFactory = new ScreenLogFactory(sessionSettings);
-                LOG.info("LogFactory created - ScreenLogFactory");
-
+                logFactory = jdbcLogFactory;
+                LOG.info("LogFactory created - JdbcLogFactory");
             }
 
             MessageFactory messageFactory = new DefaultMessageFactory();

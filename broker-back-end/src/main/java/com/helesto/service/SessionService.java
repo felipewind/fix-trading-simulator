@@ -4,14 +4,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import com.helesto.core.Trader;
+import com.helesto.dao.SessionsDao;
 import com.helesto.dto.SessionDto;
-import com.helesto.dto.SessionSettingsProperties;
+import com.helesto.dto.SessionDto.SessionSettingsProperties;
+import com.helesto.dto.SessionDto.SessionStorage;
+import com.helesto.model.SessionsEntity;
 import com.helesto.util.DateUtil;
 
 import org.slf4j.Logger;
@@ -29,6 +33,9 @@ public class SessionService {
     @Inject
     Trader trader;
 
+    @Inject
+    SessionsDao sessionsDao;
+
     public SessionDto sessionGet() {
 
         SessionDto sessionDto = new SessionDto();
@@ -39,20 +46,38 @@ public class SessionService {
 
         sessionDto.setInitiatorStarted(trader.isInitiatorStarted());
 
-        Iterator<SessionID> iteratorSessionID = sessionSettings.sectionIterator();
-
-        // Obtaining the SessionID name and parameters
         try {
+
+            // Obtaining the SessionID name
+            Iterator<SessionID> iteratorSessionID = sessionSettings.sectionIterator();
+
+            SessionID sessionID = null;
+
             while (iteratorSessionID.hasNext()) {
-                SessionID sessionID = iteratorSessionID.next();
+                sessionID = iteratorSessionID.next();
                 sessionDto.setSessionID(sessionID.toString());
-                Properties prop = sessionSettings.getSessionProperties(sessionID, true);
-                List<SessionSettingsProperties> listSessionSettingsProperties = new ArrayList<>();
-                prop.forEach((k, v) -> listSessionSettingsProperties
-                        .add(new SessionSettingsProperties(k.toString(), v.toString())));
-                sessionDto.setSessionSettingsProperties(
-                        listSessionSettingsProperties.toArray(new SessionSettingsProperties[0]));
             }
+
+            // Obtaining the Session properties
+            Properties prop = sessionSettings.getSessionProperties(sessionID, true);
+            List<SessionSettingsProperties> listSessionSettingsProperties = new ArrayList<>();
+            prop.forEach((k, v) -> listSessionSettingsProperties
+                    .add(new SessionSettingsProperties(k.toString(), v.toString())));
+            sessionDto.setSessionSettingsProperties(
+                    listSessionSettingsProperties.toArray(new SessionSettingsProperties[0]));
+
+            // Obtaining the Session Storage information
+            Optional<SessionsEntity> optionalSessionEntity = sessionsDao
+                    .readSession(sessionSettings.getString(sessionID, SessionSettings.SENDERCOMPID));
+            if (optionalSessionEntity.isPresent()) {
+                SessionsEntity sessionEntity = optionalSessionEntity.get();
+                SessionStorage sessionStorage = new SessionStorage();
+                sessionStorage.setCreationTime(sessionEntity.getCreation_time().toString());
+                sessionStorage.setIncomingSeqnum(sessionEntity.getIncoming_seqnum());
+                sessionStorage.setOutgoingSeqnum(sessionEntity.getOutgoing_seqnum());
+                sessionDto.setSessionStorage(sessionStorage);
+            }
+
         } catch (ConfigError e) {
             LOG.error("Error", e);
         }
