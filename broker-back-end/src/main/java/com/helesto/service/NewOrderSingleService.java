@@ -36,7 +36,7 @@ public class NewOrderSingleService {
 
 	public void newOrderSingle(OrderDto request) throws SessionNotFound {
 
-		SessionID sessionID = trader.getSessionID();
+		SessionID sessionID = trader.getSessionIDFromInitiator();
 
 		// Tag 35 MsgType = D
 		NewOrderSingle newOrderSingle = new NewOrderSingle();

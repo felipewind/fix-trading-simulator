@@ -18,7 +18,7 @@ export class SessionControlComponent implements OnInit {
   constructor(private sessionService: SessionService) { }
 
   ngOnInit() {
-    this.read();
+    this.read();    
   }
 
   read(): void {

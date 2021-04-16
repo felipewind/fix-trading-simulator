@@ -29,6 +29,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { OrderReadComponent } from './components/order/order-read/order-read.component';
 import { SessionComponent } from './views/session/session.component';
 import { SessionControlComponent } from './components/session/session-control/session-control.component';
+import { LogEventComponent } from './components/log/log-event/log-event.component';
+import { LogComponent } from './views/log/log.component';
 
 
 @NgModule({
@@ -40,7 +42,7 @@ import { SessionControlComponent } from './components/session/session-control/se
     HomeComponent,
     OrderComponent,
     OrderCreateComponent,    
-    OrderReadComponent, SessionComponent, SessionControlComponent
+    OrderReadComponent, SessionComponent, SessionControlComponent, LogEventComponent, LogComponent
   ],
   imports: [
     BrowserModule,

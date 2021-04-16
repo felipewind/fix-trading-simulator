@@ -1,3 +1,4 @@
+import { SessionStorage } from './session-storage.model';
 import { SessionSettingsProperties } from './session-settings-properties.model';
 
 export interface Session {
@@ -6,5 +7,6 @@ export interface Session {
     loggedOn?: boolean,
     startTime?: string,
     sessionID?: string,
-    sessionSettingsProperties?: SessionSettingsProperties[]
+    sessionSettingsProperties?: SessionSettingsProperties[],
+    sessionStorage?: SessionStorage
 }

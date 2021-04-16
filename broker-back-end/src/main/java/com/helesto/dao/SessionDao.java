@@ -11,7 +11,7 @@ import javax.persistence.Query;
 import com.helesto.model.SessionsEntity;
 
 @ApplicationScoped
-public class SessionsDao {
+public class SessionDao {
 
     @PersistenceContext
     EntityManager em;

@@ -17,6 +17,24 @@ CREATE TABLE IF NOT EXISTS sessions (
 );
 
 
+CREATE SEQUENCE IF NOT EXISTS event_log_sequence;
+
+CREATE TABLE IF NOT EXISTS event_log (
+  id INTEGER DEFAULT NEXTVAL('event_log_sequence'),
+  time TIMESTAMP NOT NULL,
+  beginstring CHAR(8) NOT NULL,
+  sendercompid VARCHAR(64) NOT NULL,
+  sendersubid VARCHAR(64) NOT NULL,
+  senderlocid VARCHAR(64) NOT NULL,
+  targetcompid VARCHAR(64) NOT NULL,
+  targetsubid VARCHAR(64) NOT NULL,
+  targetlocid VARCHAR(64) NOT NULL,
+  session_qualifier VARCHAR(64),
+  text TEXT NOT NULL,
+  PRIMARY KEY (id)
+);
+
+
 CREATE TABLE IF NOT EXISTS messages (
   beginstring CHAR(8) NOT NULL,
   sendercompid VARCHAR(64) NOT NULL,
@@ -70,21 +88,3 @@ CREATE TABLE IF NOT EXISTS messages_log_outgoing (
   PRIMARY KEY (id)
 );
 
-
-
-CREATE SEQUENCE IF NOT EXISTS event_log_sequence;
-
-CREATE TABLE IF NOT EXISTS event_log (
-  id INTEGER DEFAULT NEXTVAL('event_log_sequence'),
-  time TIMESTAMP NOT NULL,
-  beginstring CHAR(8) NOT NULL,
-  sendercompid VARCHAR(64) NOT NULL,
-  sendersubid VARCHAR(64) NOT NULL,
-  senderlocid VARCHAR(64) NOT NULL,
-  targetcompid VARCHAR(64) NOT NULL,
-  targetsubid VARCHAR(64) NOT NULL,
-  targetlocid VARCHAR(64) NOT NULL,
-  session_qualifier VARCHAR(64),
-  text TEXT NOT NULL,
-  PRIMARY KEY (id)
-);

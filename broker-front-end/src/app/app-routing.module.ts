@@ -1,3 +1,4 @@
+import { LogComponent } from './views/log/log.component';
 import { OrderCreateComponent } from './components/order/order-create/order-create.component';
 import { OrderComponent } from './views/order/order.component';
 import { HomeComponent } from './views/home/home.component';
@@ -22,7 +23,11 @@ const routes: Routes = [
   {
     path: "session",
     component: SessionComponent
-  } 
+  },
+  {
+    path: "logs",
+    component: LogComponent
+  }
 ];
 
 @NgModule({

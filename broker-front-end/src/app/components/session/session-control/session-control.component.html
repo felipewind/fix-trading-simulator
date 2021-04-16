@@ -2,6 +2,11 @@
     <mat-card-title>
         Session Control
     </mat-card-title>
+    <form>
+        <mat-form-field>
+            <input matInput placeholder="Session ID" [value]="session.sessionID" name="sessionID" disabled>
+        </mat-form-field>
+    </form>
     <button mat-raised-button (click)="startSession()" color="primary">
         Start Session
     </button>
@@ -32,7 +37,27 @@
 </mat-card>
 <mat-card class="settings">
     <mat-card-title class="settings-title">
-        Session Settings Properties <i>{{session.sessionID}}</i>
+        Session Storage
+    </mat-card-title>
+
+    <form>
+        <mat-form-field>
+            <input matInput placeholder="Creation Time" [value]="session.sessionStorage.creationTime"
+                name="creationTime" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Incoming Sequential Number" [value]="session.sessionStorage.incomingSeqnum"
+                name="incomingSeqnum" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Outgoing Sequential Number" [value]="session.sessionStorage.outgoingSeqnum"
+                name="outgoingSeqnum" disabled>
+        </mat-form-field>
+    </form>
+</mat-card>
+<mat-card class="settings">
+    <mat-card-title class="settings-title">
+        Session Settings Properties
     </mat-card-title>
 
     <div class="mat-elevation-z4">
@@ -58,7 +83,7 @@
 </mat-card>
 <mat-card class="settings">
     <mat-card-title class="settings-title">
-        Session Settings Raw Information
+        Session Settings File
     </mat-card-title>
 
     <div class="mat-elevation-z4">

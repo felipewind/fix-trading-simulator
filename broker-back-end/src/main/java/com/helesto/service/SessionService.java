@@ -2,7 +2,6 @@ package com.helesto.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -11,7 +10,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import com.helesto.core.Trader;
-import com.helesto.dao.SessionsDao;
+import com.helesto.dao.SessionDao;
 import com.helesto.dto.SessionDto;
 import com.helesto.dto.SessionDto.SessionSettingsProperties;
 import com.helesto.dto.SessionDto.SessionStorage;
@@ -34,7 +33,7 @@ public class SessionService {
     Trader trader;
 
     @Inject
-    SessionsDao sessionsDao;
+    SessionDao sessionsDao;
 
     public SessionDto sessionGet() {
 
@@ -46,18 +45,11 @@ public class SessionService {
 
         sessionDto.setInitiatorStarted(trader.isInitiatorStarted());
 
+        SessionID sessionID = trader.getSessionIDFromSettings();
+
+        sessionDto.setSessionID(sessionID.toString());
+
         try {
-
-            // Obtaining the SessionID name
-            Iterator<SessionID> iteratorSessionID = sessionSettings.sectionIterator();
-
-            SessionID sessionID = null;
-
-            while (iteratorSessionID.hasNext()) {
-                sessionID = iteratorSessionID.next();
-                sessionDto.setSessionID(sessionID.toString());
-            }
-
             // Obtaining the Session properties
             Properties prop = sessionSettings.getSessionProperties(sessionID, true);
             List<SessionSettingsProperties> listSessionSettingsProperties = new ArrayList<>();
@@ -67,16 +59,16 @@ public class SessionService {
                     listSessionSettingsProperties.toArray(new SessionSettingsProperties[0]));
 
             // Obtaining the Session Storage information
+            SessionStorage sessionStorage = new SessionStorage();
             Optional<SessionsEntity> optionalSessionEntity = sessionsDao
-                    .readSession(sessionSettings.getString(sessionID, SessionSettings.SENDERCOMPID));
+                    .readSession(trader.getStringFromSettings(SessionSettings.SENDERCOMPID));
             if (optionalSessionEntity.isPresent()) {
                 SessionsEntity sessionEntity = optionalSessionEntity.get();
-                SessionStorage sessionStorage = new SessionStorage();
                 sessionStorage.setCreationTime(sessionEntity.getCreation_time().toString());
                 sessionStorage.setIncomingSeqnum(sessionEntity.getIncoming_seqnum());
                 sessionStorage.setOutgoingSeqnum(sessionEntity.getOutgoing_seqnum());
-                sessionDto.setSessionStorage(sessionStorage);
             }
+            sessionDto.setSessionStorage(sessionStorage);
 
         } catch (ConfigError e) {
             LOG.error("Error", e);
