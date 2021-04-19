@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Session } from './../session.model';
 import { SessionService } from './../session.service';
 import { Component, OnInit } from '@angular/core';
@@ -14,12 +15,16 @@ export class SessionPropertiesComponent implements OnInit {
 
   session: Session;
 
-  constructor(private sessionService: SessionService) { }
+  constructor(private sessionService: SessionService, private router: Router) { }
 
   ngOnInit(): void {
     this.sessionService.read().subscribe(session => {
       this.session = session;
     })    
+  }
+
+  back(): void {    
+    this.router.navigate(['/session']);
   }
 
 }

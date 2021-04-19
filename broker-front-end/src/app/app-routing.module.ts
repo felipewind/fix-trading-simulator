@@ -1,3 +1,4 @@
+import { SessionPropertiesComponent } from './components/session/session-properties/session-properties.component';
 import { LogMessageComponent } from './components/log/log-message/log-message.component';
 import { SessionControlComponent } from './components/session/session-control/session-control.component';
 import { MessagesComponent } from './components/session/messages/messages.component';
@@ -36,6 +37,10 @@ const routes: Routes = [
     path: "session/messages",
     component: MessagesComponent
   },
+  {
+    path: "session/properties",
+    component: SessionPropertiesComponent
+  },  
   {
     path: "logs",
     component: LogComponent

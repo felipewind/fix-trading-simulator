@@ -29,4 +29,8 @@ export class SessionComponent implements OnInit {
     this.router.navigate(['/session/control']);
   }
 
+  navigateToSessionProperties(): void {
+    this.router.navigate(['/session/properties']);
+  }
+
 }
