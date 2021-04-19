@@ -1,4 +1,5 @@
 import { LogEvent } from './log-event.model';
+import { LogMessage } from './log-message.model';
 import { catchError, map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
@@ -9,7 +10,7 @@ import { EMPTY, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class LogEventService {
+export class LogService {
 
   baseUrl = 'http://localhost:8080/logs';
 
@@ -30,6 +31,16 @@ export class LogEventService {
     const url = `${this.baseUrl}/event`;
 
     return this.http.get<LogEvent[]>(url).pipe(
+      map((obj) => obj),
+      catchError((error) => this.errorHandler(error))
+    )
+  }
+
+  readMessagesIncoming(): Observable<LogMessage[]> {
+
+    const url = `${this.baseUrl}/messages-incoming`;
+
+    return this.http.get<LogMessage[]>(url).pipe(
       map((obj) => obj),
       catchError((error) => this.errorHandler(error))
     )

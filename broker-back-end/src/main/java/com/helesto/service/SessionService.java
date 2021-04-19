@@ -10,7 +10,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import com.helesto.core.Trader;
-import com.helesto.dao.SessionDao;
+import com.helesto.dao.SessionsDao;
 import com.helesto.dto.SessionDto;
 import com.helesto.dto.SessionDto.SessionSettingsProperties;
 import com.helesto.dto.SessionDto.SessionStorage;
@@ -33,7 +33,7 @@ public class SessionService {
     Trader trader;
 
     @Inject
-    SessionDao sessionsDao;
+    SessionsDao sessionsDao;
 
     public SessionDto sessionGet() {
 

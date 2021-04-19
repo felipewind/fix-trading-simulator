@@ -1,3 +1,4 @@
+import { Message } from './message.model';
 import { Session } from './session.model';
 import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
@@ -24,7 +25,7 @@ export class SessionService {
     });
   }
 
-  startInitiator(): Observable<Session> {    
+  startInitiator(): Observable<Session> {
     const url = `${this.baseUrl}/start-initiator`
     return this.http.post<Session>(url, null).pipe(
       map((obj) => obj),
@@ -32,7 +33,7 @@ export class SessionService {
     );
   }
 
-  stopInitiator(): Observable<Session> {    
+  stopInitiator(): Observable<Session> {
     const url = `${this.baseUrl}/stop-initiator`
     return this.http.post<Session>(url, null).pipe(
       map((obj) => obj),
@@ -40,11 +41,21 @@ export class SessionService {
     );
   }
 
-  read(): Observable<Session> {        
+  read(): Observable<Session> {
     return this.http.get<Session>(this.baseUrl).pipe(
       map((obj) => obj),
       catchError((error) => this.errorHandler(error))
     );
+  }
+
+  readMessages(): Observable<Message[]> {
+
+    const url = `${this.baseUrl}/messages`;
+
+    return this.http.get<Message[]>(url).pipe(
+      map((obj) => obj),
+      catchError((error) => this.errorHandler(error))
+    )
   }
 
   errorHandler(e: any): Observable<any> {

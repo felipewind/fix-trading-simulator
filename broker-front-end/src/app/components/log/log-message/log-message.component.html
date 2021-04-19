@@ -1,8 +1,8 @@
 <mat-card>
     <mat-card-title>
-        Event Log
+        {{title}}
     </mat-card-title>
-    <button mat-raised-button (click)="readLogEvent(true)" color="primary">
+    <button mat-raised-button (click)="readMessages(true)" color="primary">
         Refresh
     </button>
     <button mat-raised-button (click)="back()" color="secondary">
@@ -10,7 +10,7 @@
     </button>
 </mat-card>
 <div class="mat-elevation-z4">
-    <table mat-table [dataSource]="logEvents">
+    <table mat-table [dataSource]="logMessages">
         <!-- ID Column -->
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>Id</th>

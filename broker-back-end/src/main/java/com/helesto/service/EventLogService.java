@@ -26,8 +26,9 @@ public class EventLogService {
 
         List<EventLogDto> listEventLogDto = new ArrayList<>();
 
-        eventLogDao.listEventLog(trader.getStringFromSettings(SessionSettings.SENDERCOMPID)).forEach(eventLog -> listEventLogDto
-                .add(new EventLogDto(eventLog.getId(), eventLog.getTime().toString(), eventLog.getText())));
+        eventLogDao.listEventLog(trader.getStringFromSettings(SessionSettings.SENDERCOMPID))
+                .forEach(eventLog -> listEventLogDto
+                        .add(new EventLogDto(eventLog.getId(), eventLog.getTime().toString(), eventLog.getText())));
 
         return listEventLogDto.toArray(new EventLogDto[0]);
 

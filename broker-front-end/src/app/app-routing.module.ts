@@ -1,3 +1,7 @@
+import { LogMessageComponent } from './components/log/log-message/log-message.component';
+import { SessionControlComponent } from './components/session/session-control/session-control.component';
+import { MessagesComponent } from './components/session/messages/messages.component';
+import { LogEventComponent } from './components/log/log-event/log-event.component';
 import { LogComponent } from './views/log/log.component';
 import { OrderCreateComponent } from './components/order/order-create/order-create.component';
 import { OrderComponent } from './views/order/order.component';
@@ -23,10 +27,26 @@ const routes: Routes = [
   {
     path: "session",
     component: SessionComponent
+  },  
+  {
+    path: "session/control",
+    component: SessionControlComponent
+  },  
+  {
+    path: "session/messages",
+    component: MessagesComponent
   },
   {
     path: "logs",
     component: LogComponent
+  },
+  {
+    path: "logs/event",
+    component: LogEventComponent
+  },
+  {
+    path: "logs/messages",
+    component: LogMessageComponent
   }
 ];
 

@@ -11,7 +11,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.helesto.dto.EventLogDto;
+import com.helesto.dto.MessageDto;
+import com.helesto.dto.MessageLogDto;
 import com.helesto.service.EventLogService;
+import com.helesto.service.MessageLogService;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -33,6 +36,9 @@ public class LogsRest {
     @Inject
     EventLogService eventLogService;
 
+    @Inject
+    MessageLogService messageLogService;
+
     @Path("/event")
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -51,6 +57,26 @@ public class LogsRest {
         LOG.debug("Session + GET - response: " + jsonString);
 
         return Response.status(Response.Status.OK).entity(eventLogDto).build();
+    }
+
+    @Path("/messages-incoming")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Operation(summary = "Return Message Log Incoming")
+    @APIResponse(responseCode = "200", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = MessageDto[].class)) })
+    public Response messageLogGet() throws ConfigError {
+
+        LOG.info("messageLogGet - incoming");
+
+        MessageLogDto[] messageLogDto = messageLogService.messageLogGet();
+
+        Jsonb jsonb = JsonbBuilder.create();
+        String jsonString = jsonb.toJson(messageLogDto);
+
+        LOG.debug("Session + GET - response: " + jsonString);
+
+        return Response.status(Response.Status.OK).entity(messageLogDto).build();
     }
 
 }

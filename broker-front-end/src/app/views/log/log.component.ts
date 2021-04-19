@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { HeaderService } from './../../components/template/header/header.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LogComponent implements OnInit {
 
-  constructor(private headerService: HeaderService) {
+  constructor(private headerService: HeaderService, private router: Router) {
     headerService.headerData = {
       title: 'Logs',
       icon: 'history',
@@ -17,6 +18,14 @@ export class LogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  navigateToEventLog(): void {    
+    this.router.navigate(['/logs/event']);
+  }
+
+  navigateToMessageIncoming(): void {    
+    this.router.navigate(['/logs/messages']);
   }
 
 }

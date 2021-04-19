@@ -1,1 +1,11 @@
-<app-log-event></app-log-event>
+<mat-card>
+    <mat-card-title>
+        Session Control
+    </mat-card-title>
+    <button mat-raised-button (click)="navigateToEventLog()" color="primary">
+        Events
+    </button>
+    <button mat-raised-button (click)="navigateToMessageIncoming()" color="primary">
+        Messages Incoming
+    </button>    
+</mat-card>

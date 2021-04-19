@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Session } from '../session.model';
 import { SessionService } from '../session.service';
 import { Component, OnInit } from '@angular/core';
@@ -9,20 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SessionControlComponent implements OnInit {
 
-  /** Columns displayed in the table. Columns IDs can be added, removed, or resessioned. */
-  displayedColumns = ['sessionSettingsFile'];
-  displayedColumnsProperties = ['key', 'value'];
-
   session: Session;
 
-  constructor(private sessionService: SessionService) { }
+  constructor(private sessionService: SessionService, private router: Router) { }
 
   ngOnInit() {
-    this.read();    
+    this.read(false);
   }
 
-  read(): void {
+  read(showMessage: boolean): void {
     this.sessionService.read().subscribe(session => {
+      if (showMessage) {
+        this.sessionService.showMessage("Refresh done");
+      }
       this.session = session;
     })
   }
@@ -40,5 +40,8 @@ export class SessionControlComponent implements OnInit {
     });
   }
 
+  back(): void {    
+    this.router.navigate(['/session']);
+  }
 
 }

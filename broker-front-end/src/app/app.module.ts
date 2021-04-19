@@ -31,6 +31,9 @@ import { SessionComponent } from './views/session/session.component';
 import { SessionControlComponent } from './components/session/session-control/session-control.component';
 import { LogEventComponent } from './components/log/log-event/log-event.component';
 import { LogComponent } from './views/log/log.component';
+import { MessagesComponent } from './components/session/messages/messages.component';
+import { SessionPropertiesComponent } from './components/session/session-properties/session-properties.component';
+import { LogMessageComponent } from './components/log/log-message/log-message.component';
 
 
 @NgModule({
@@ -41,8 +44,8 @@ import { LogComponent } from './views/log/log.component';
     NavComponent,
     HomeComponent,
     OrderComponent,
-    OrderCreateComponent,    
-    OrderReadComponent, SessionComponent, SessionControlComponent, LogEventComponent, LogComponent
+    OrderCreateComponent,
+    OrderReadComponent, SessionComponent, SessionControlComponent, LogEventComponent, LogComponent, MessagesComponent, SessionPropertiesComponent, LogMessageComponent
   ],
   imports: [
     BrowserModule,
