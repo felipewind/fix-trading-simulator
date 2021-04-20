@@ -25,7 +25,11 @@ export class LogComponent implements OnInit {
   }
 
   navigateToMessageIncoming(): void {    
-    this.router.navigate(['/logs/messages']);
+    this.router.navigate(['/logs/messages/incoming']);
+  }
+
+  navigateToMessageOutgoing(): void {    
+    this.router.navigate(['/logs/messages/outgoing']);
   }
 
 }

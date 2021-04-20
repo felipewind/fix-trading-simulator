@@ -36,9 +36,9 @@ export class LogService {
     )
   }
 
-  readMessagesIncoming(): Observable<LogMessage[]> {
+  readMessages(mode: string): Observable<LogMessage[]> {
 
-    const url = `${this.baseUrl}/messages-incoming`;
+    const url = `${this.baseUrl}/messages-${mode}`;    
 
     return this.http.get<LogMessage[]>(url).pipe(
       map((obj) => obj),

@@ -40,7 +40,7 @@ public class ExecutionReportService {
 			ExecutionReport executionReport = new ExecutionReport();
 
 			// Tag 37 OrderID
-			executionReport.set(new OrderID("1"));
+			executionReport.set(new OrderID(newOrderSingle.getClOrdID().toString()));
 
 			// Tag 11 Execution ID
 			executionReport.set(new ExecID("1"));

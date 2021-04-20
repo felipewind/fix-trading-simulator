@@ -15,19 +15,9 @@ public class OrdersEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "DT_ORD")
-    private LocalDate dateOrder;
+    @Column(name = "ClOrdID")
+    private String ClOrdID;
 
-    @Id
-    @Column(name = "NR_SEQ_ORD")
-    private int numberSequentialOrder;
 
-    public int getNumberSequentialOrder() {
-        return numberSequentialOrder;
-    }
-
-    public void setNumberSequentialOrder(int numberSequentialOrder) {
-        this.numberSequentialOrder = numberSequentialOrder;
-    }    
 
 }

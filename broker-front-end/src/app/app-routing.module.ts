@@ -14,21 +14,13 @@ import { SessionComponent } from './views/session/session.component';
 
 const routes: Routes = [
   {
-    path: "",
-    component: HomeComponent
+    path: "orders/create",
+    component: OrderCreateComponent
   },
   {
     path: "orders",
     component: OrderComponent
   },
-  {
-    path: "orders/create",
-    component: OrderCreateComponent
-  },
-  {
-    path: "session",
-    component: SessionComponent
-  },  
   {
     path: "session/control",
     component: SessionControlComponent
@@ -42,17 +34,25 @@ const routes: Routes = [
     component: SessionPropertiesComponent
   },  
   {
-    path: "logs",
-    component: LogComponent
-  },
+    path: "session",
+    component: SessionComponent
+  },  
   {
     path: "logs/event",
     component: LogEventComponent
   },
   {
-    path: "logs/messages",
+    path: "logs/messages/:mode",
     component: LogMessageComponent
-  }
+  },
+  {
+    path: "logs",
+    component: LogComponent
+  },
+  {
+    path: "",
+    component: HomeComponent
+  },
 ];
 
 @NgModule({

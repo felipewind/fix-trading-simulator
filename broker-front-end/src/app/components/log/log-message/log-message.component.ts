@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LogService } from './../log.service';
 import { LogMessage } from './../log-message.model';
 import { Component, OnInit } from '@angular/core';
@@ -12,22 +12,40 @@ export class LogMessageComponent implements OnInit {
 
   displayedColumns = ['id', 'time', 'text'];
 
-  title = "Message Log Incoming";
+  mode: string = "";
+
+  title: string = "";
 
   logMessages: LogMessage[];
 
-  constructor(private logService: LogService, private router: Router) { }
+  constructor(private logService: LogService, private router: Router, private activatedRoute: ActivatedRoute) {
+    if (activatedRoute.snapshot.params["mode"] === 'incoming') {
+      this.mode = "Incoming";
+    } else {
+      this.mode = "Outgoing";
+    }
+    this.title = `Message Log ${this.mode}`;
+  }
 
   ngOnInit() {
     this.readMessages(false);
   }
 
   readMessages(showMessage: boolean) {
-    this.logService.readMessagesIncoming().subscribe(messageIncoming => {
+    let url = "";
+
+    if (this.mode === "Incoming") {
+      url = "incoming";
+    }
+    else {
+      url = "outgoing";
+    }
+
+    this.logService.readMessages(url).subscribe(logMessages => {
       if (showMessage) {
         this.logService.showMessage("Refresh done");
       }
-      this.logMessages = messageIncoming;
+      this.logMessages = logMessages;
     })
   }
 
