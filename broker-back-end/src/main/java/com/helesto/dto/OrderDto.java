@@ -4,18 +4,27 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 public class OrderDto {
 
+    @Schema(example = "1010")
     private String clOrdId;
-
-    private String symbol;
 
     // Tag 54 (Example BUY = '1' / SELL = '2')
     @Schema(example = "1", description = "BUY = '1' / SELL = '2'")
     private String side;
+    
 
+
+
+    @Schema(example = "LNUX")
+    private String symbol;
+
+
+    @Schema(example = "1000")
     private double orderQty;
 
-    private double price;
+    @Schema(example = "56.43")
+    private double price;    
     
+    @Schema(example = "1234")
     private String account;
 
     public String getClOrdId() {

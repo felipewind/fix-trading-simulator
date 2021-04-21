@@ -36,20 +36,22 @@ public class ExecutionReportService {
 
 		try {
 
+			// Return an execution report with OrdStatus = New
+
 			// Tag 35 MsgType = 8
 			ExecutionReport executionReport = new ExecutionReport();
 
 			// Tag 37 OrderID
-			executionReport.set(new OrderID(newOrderSingle.getClOrdID().toString()));
+			executionReport.set(new OrderID(newOrderSingle.getClOrdID().getValue()));
 
-			// Tag 11 Execution ID
-			executionReport.set(new ExecID("1"));
+			// Tag 11 ExecID
+			executionReport.set(new ExecID(newOrderSingle.getClOrdID().getValue()));
 
 			// Tag 150 ExecType
 			executionReport.set(new ExecType(ExecType.FILL));
 
 			// Tag 39 OrdStatus
-			executionReport.set(new OrdStatus(OrdStatus.FILLED));
+			executionReport.set(new OrdStatus(OrdStatus.NEW));
 
 			// Tag 54 Side
 			executionReport.set(newOrderSingle.getSide());
@@ -61,10 +63,29 @@ public class ExecutionReportService {
 			executionReport.set(new CumQty(0));
 
 			// Tag 6 AvgPx
-			executionReport.set(new AvgPx(newOrderSingle.getPrice().getValue()));
+			executionReport.set(new AvgPx(0));
+
+			// Tag 11 ClOrdID
+			executionReport.set(newOrderSingle.getClOrdID());
 
 			// Tag 55 Symbol
 			executionReport.set(newOrderSingle.getSymbol());
+
+			Session.sendToTarget(executionReport, sessionID);
+
+			// Return an execution report with OrdStatus = Filled
+
+			// Tag 39 OrdStatus
+			executionReport.set(new OrdStatus(OrdStatus.FILLED));
+
+			// Tag 151 LeavesQty
+			executionReport.set(new LeavesQty(0));
+
+			// Tag 14 CumQty
+			executionReport.set(newOrderSingle.getOrderQty());
+
+			// Tag 6 AvgPx
+			executionReport.set(new AvgPx(newOrderSingle.getPrice().getValue()));
 
 			Session.sendToTarget(executionReport, sessionID);
 

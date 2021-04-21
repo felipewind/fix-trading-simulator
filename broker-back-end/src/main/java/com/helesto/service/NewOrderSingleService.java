@@ -44,12 +44,6 @@ public class NewOrderSingleService {
 		// Tag 11 ClOrdID
 		newOrderSingle.set(new ClOrdID("1"));
 
-		// Tag 55 Symbol
-		if (request.getSymbol() == null) {
-			request.setSymbol("IBM");
-		}
-		newOrderSingle.set(new Symbol(request.getSymbol()));
-
 		// Tag 54 Side
 		if (request.getSide() == null) {
 			request.setSide("1");
@@ -63,11 +57,17 @@ public class NewOrderSingleService {
 		// Tag 60 TransactTime
 		newOrderSingle.set(new TransactTime(LocalDateTime.now()));
 
+		// Tag 40 OrdType
+		newOrderSingle.set(new OrdType(OrdType.LIMIT));
+
 		// Tag 38 OrderQty
 		newOrderSingle.set(new OrderQty(request.getOrderQty()));
 
-		// Tag 40 OrdType
-		newOrderSingle.set(new OrdType(OrdType.LIMIT));
+		// Tag 55 Symbol
+		if (request.getSymbol() == null) {
+			request.setSymbol("IBM");
+		}
+		newOrderSingle.set(new Symbol(request.getSymbol()));
 
 		// Tag 44 Price
 		newOrderSingle.set(new Price(request.getPrice()));
