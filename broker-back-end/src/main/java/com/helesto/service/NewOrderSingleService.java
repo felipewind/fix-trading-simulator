@@ -4,9 +4,12 @@ import java.time.LocalDateTime;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import com.helesto.core.Trader;
+import com.helesto.dao.OrderDao;
 import com.helesto.dto.OrderDto;
+import com.helesto.model.OrderEntity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +37,10 @@ public class NewOrderSingleService {
 	@Inject
 	Trader trader;
 
+	@Inject
+	OrderDao orderDao;
+
+	@Transactional(rollbackOn = Exception.class)
 	public void newOrderSingle(OrderDto request) throws SessionNotFound {
 
 		SessionID sessionID = trader.getSessionIDFromInitiator();
@@ -45,10 +52,7 @@ public class NewOrderSingleService {
 		newOrderSingle.set(new ClOrdID("1"));
 
 		// Tag 54 Side
-		if (request.getSide() == null) {
-			request.setSide("1");
-		}
-		if (request.getSide().equals("1")) {
+		if (request.getSide() == '1') {
 			newOrderSingle.set(new Side(Side.BUY));
 		} else {
 			newOrderSingle.set(new Side(Side.SELL));
@@ -81,6 +85,8 @@ public class NewOrderSingleService {
 		// Tag 59 TimeInForce
 		newOrderSingle.setField(new TimeInForce(TimeInForce.DAY));
 
+		insertOrder(request);
+
 		try {
 			Session.sendToTarget(newOrderSingle, sessionID);
 
@@ -88,6 +94,15 @@ public class NewOrderSingleService {
 			LOG.error(e.getMessage());
 			throw e;
 		}
+
+	}
+
+	public void insertOrder(OrderDto request) {
+
+		OrderEntity order = new OrderEntity(0, request.getSide(), OrderEntity.NOT_CONFIRMED_BY_COUNTERPARTY,
+				request.getSymbol(), request.getPrice(), request.getOrderQty(), 0);
+
+		orderDao.persistOrder(order);
 
 	}
 

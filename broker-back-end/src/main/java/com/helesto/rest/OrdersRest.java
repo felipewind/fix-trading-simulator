@@ -1,8 +1,5 @@
 package com.helesto.rest;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.json.bind.Jsonb;
@@ -15,8 +12,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.helesto.dto.OrderDto;
-import com.helesto.exceptions.BusinessErrorException;
 import com.helesto.service.NewOrderSingleService;
+import com.helesto.service.OrderService;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -26,6 +23,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import quickfix.ConfigError;
 import quickfix.SessionNotFound;
 
 @Path("/orders")
@@ -37,6 +35,9 @@ public class OrdersRest {
 
         @Inject
         NewOrderSingleService newOrderSingleService;
+
+        @Inject
+        OrderService orderService;
 
         @POST
         @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -64,46 +65,11 @@ public class OrdersRest {
         @Operation(summary = "List Orders", description = "List all Orders")
         @APIResponse(responseCode = "200", description = "Orders", content = {
                         @Content(mediaType = "application/json", schema = @Schema(implementation = OrderDto[].class)) })
-        public Response list() throws BusinessErrorException {
+        public Response list() throws ConfigError {
 
                 LOG.debug("OrdersListRest + GET - begin");
 
-                List<OrderDto> listOrder = new ArrayList<>();
-
-                OrderDto order = new OrderDto();
-
-                order.setAccount("1");
-                order.setClOrdId("2");
-                order.setOrderQty(100.5);
-                order.setPrice(231.87);
-                order.setSymbol("BBAS3");
-                order.setSide("1");
-
-                listOrder.add(order);
-
-                order = new OrderDto();
-
-                order.setAccount("11");
-                order.setClOrdId("12");
-                order.setOrderQty(1100.5);
-                order.setPrice(2231.87);
-                order.setSymbol("PETR4");
-                order.setSide("2");
-
-                listOrder.add(order);
-
-                order = new OrderDto();
-
-                order.setAccount("21");
-                order.setClOrdId("22");
-                order.setOrderQty(1.5);
-                order.setPrice(21.87);
-                order.setSymbol("USIM5");
-                order.setSide("1");
-
-                listOrder.add(order);
-
-                OrderDto[] response = listOrder.toArray(new OrderDto[0]);
+                OrderDto[] response = orderService.listOrders();
 
                 Jsonb jsonb = JsonbBuilder.create();
                 String jsonString = jsonb.toJson(response);

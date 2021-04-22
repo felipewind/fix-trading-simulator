@@ -4,34 +4,71 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 public class OrderDto {
 
+    public OrderDto() {
+        
+    }
+
+    public OrderDto(int clOrdId, char side, char ordStatus, String symbol, double price, double orderQty,
+            double cumQty) {
+        this.clOrdId = clOrdId;
+        this.side = side;
+        this.ordStatus = ordStatus;
+        this.symbol = symbol;
+        this.price = price;
+        this.orderQty = orderQty;
+        this.cumQty = cumQty;
+    }
+
     @Schema(example = "1010")
-    private String clOrdId;
+    private int clOrdId;
 
     // Tag 54 (Example BUY = '1' / SELL = '2')
     @Schema(example = "1", description = "BUY = '1' / SELL = '2'")
-    private String side;
-    
+    private char side;
 
-
+    private char ordStatus;
 
     @Schema(example = "LNUX")
     private String symbol;
 
+    @Schema(example = "56.43")
+    private double price;
 
     @Schema(example = "1000")
     private double orderQty;
 
-    @Schema(example = "56.43")
-    private double price;    
-    
-    @Schema(example = "1234")
-    private String account;
+    @Schema(description = "Total number of shares or contracts filled.")
+    private double cumQty;
 
-    public String getClOrdId() {
+    public char getSide() {
+        return side;
+    }
+
+    public void setSide(char side) {
+        this.side = side;
+    }
+
+    public char getOrdStatus() {
+        return ordStatus;
+    }
+
+    public void setOrdStatus(char ordStatus) {
+        this.ordStatus = ordStatus;
+    }
+
+    public double getCumQty() {
+        return cumQty;
+    }
+
+    public void setCumQty(double cumQty) {
+        this.cumQty = cumQty;
+    }
+
+    public int getClOrdId() {
         return clOrdId;
     }
 
-    public void setClOrdId(String clOrdId) {
+    public void setClOrdId(int clOrdId) {
         this.clOrdId = clOrdId;
     }
 
@@ -41,14 +78,6 @@ public class OrderDto {
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
-    }
-
-    public String getSide() {
-        return side;
-    }
-
-    public void setSide(String side) {
-        this.side = side;
     }
 
     public double getOrderQty() {
@@ -65,14 +94,6 @@ public class OrderDto {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
     }
 
 }
