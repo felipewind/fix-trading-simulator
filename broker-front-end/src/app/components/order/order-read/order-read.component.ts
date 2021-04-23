@@ -10,14 +10,21 @@ import { Component, OnInit } from '@angular/core';
 export class OrderReadComponent implements OnInit {
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['clOrdId', 'symbol'];
+  displayedColumns = ['clOrdId', 'sideText', 'symbol', 'ordStatusText', 'price', 'orderQty', 'cumQty'];
 
   orders: Order[];
 
   constructor(private orderService: OrderService) { }
 
   ngOnInit() {
+    this.readOrders(false);
+  }
+
+  readOrders(showMessage: boolean) {
     this.orderService.read().subscribe(orders => {
+      if (showMessage) {
+        this.orderService.showMessage("Refresh done");
+      }
       this.orders = orders;
     })
   }

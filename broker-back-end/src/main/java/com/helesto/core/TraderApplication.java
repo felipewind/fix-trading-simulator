@@ -3,6 +3,8 @@ package com.helesto.core;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.helesto.service.ExecutionReportService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +32,11 @@ public class TraderApplication extends MessageCracker implements Application {
 	@Inject
 	Bootstrap bootstrap;
 
+	@Inject
+	ExecutionReportService executionReportService;
+
 	public TraderApplication() {
-		LOG.info("Constructor");		
+		LOG.info("Constructor");
 	}
 
 	@Override
@@ -72,6 +77,7 @@ public class TraderApplication extends MessageCracker implements Application {
 	public void fromApp(Message message, SessionID sessionID)
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
 		LOG.info("fromApp");
+		crack(message, sessionID);
 	}
 
 	private void addLogonField(Message message, SessionID sessionID) {
@@ -82,7 +88,8 @@ public class TraderApplication extends MessageCracker implements Application {
 		message.getHeader().setField(new RawData(bootstrap.getTrader().getPassword()));
 
 		// Tag 58 Text
-		// message.getHeader().setField(new Text(bootstrap.getTrader().getAppVersion()));
+		// message.getHeader().setField(new
+		// Text(bootstrap.getTrader().getAppVersion()));
 
 	}
 
@@ -97,6 +104,13 @@ public class TraderApplication extends MessageCracker implements Application {
 
 	private void logErrorToSessionLog(Message message, FieldNotFound e) {
 		LogUtil.logThrowable(MessageUtils.getSessionID(message), e.getMessage(), e);
+	}
+
+	public void onMessage(quickfix.fix44.ExecutionReport executionReport, SessionID sessionID)
+			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
+		LOG.info("onMessage quickfix.fix44.ExecutionReport");
+		executionReportService.executionReport(executionReport, sessionID);
+
 	}
 
 }

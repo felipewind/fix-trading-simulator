@@ -21,6 +21,14 @@ import javax.persistence.Table;
                 "SELECT * " +                                
                 "FROM  orders ",
         resultClass = OrderEntity.class
+    ),
+    @NamedNativeQuery(
+        name = "Orders.findByClOrdID",
+        query = 
+                "SELECT * " +                                
+                "FROM  orders " +
+                "WHERE ClOrdID = :clOrdID",
+        resultClass = OrderEntity.class
     )
 })
 public class OrderEntity implements Serializable {
@@ -33,7 +41,7 @@ public class OrderEntity implements Serializable {
 
     public OrderEntity(int clOrdID, char side, char ordStatus, String symbol, double price, double orderQty,
             double cumQty) {
-        ClOrdID = clOrdID;
+        this.clOrdID = clOrdID;
         this.side = side;
         this.ordStatus = ordStatus;
         this.symbol = symbol;
@@ -51,7 +59,7 @@ public class OrderEntity implements Serializable {
             initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_sequence")
     @Column(name = "ClOrdID")
-    private int ClOrdID;
+    private int clOrdID;
 
     // Tag 54
     @Column(name = "Side", length = 1)
@@ -78,11 +86,11 @@ public class OrderEntity implements Serializable {
     private double cumQty;
 
     public int getClOrdID() {
-        return ClOrdID;
+        return clOrdID;
     }
 
     public void setClOrdID(int clOrdID) {
-        ClOrdID = clOrdID;
+        this.clOrdID = clOrdID;
     }
 
     public char getSide() {

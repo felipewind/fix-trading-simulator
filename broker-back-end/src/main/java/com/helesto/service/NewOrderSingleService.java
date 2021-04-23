@@ -48,9 +48,6 @@ public class NewOrderSingleService {
 		// Tag 35 MsgType = D
 		NewOrderSingle newOrderSingle = new NewOrderSingle();
 
-		// Tag 11 ClOrdID
-		newOrderSingle.set(new ClOrdID("1"));
-
 		// Tag 54 Side
 		if (request.getSide() == '1') {
 			newOrderSingle.set(new Side(Side.BUY));
@@ -85,7 +82,10 @@ public class NewOrderSingleService {
 		// Tag 59 TimeInForce
 		newOrderSingle.setField(new TimeInForce(TimeInForce.DAY));
 
-		insertOrder(request);
+		ClOrdID clOrdID = insertOrder(request);
+
+		// Tag 11 ClOrdID
+		newOrderSingle.set(clOrdID);
 
 		try {
 			Session.sendToTarget(newOrderSingle, sessionID);
@@ -97,12 +97,14 @@ public class NewOrderSingleService {
 
 	}
 
-	public void insertOrder(OrderDto request) {
+	public ClOrdID insertOrder(OrderDto request) {
 
 		OrderEntity order = new OrderEntity(0, request.getSide(), OrderEntity.NOT_CONFIRMED_BY_COUNTERPARTY,
 				request.getSymbol(), request.getPrice(), request.getOrderQty(), 0);
 
 		orderDao.persistOrder(order);
+
+		return new ClOrdID(order.getClOrdID() + "");
 
 	}
 

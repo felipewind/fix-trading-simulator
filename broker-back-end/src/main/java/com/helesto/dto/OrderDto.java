@@ -1,18 +1,20 @@
 package com.helesto.dto;
 
+import com.helesto.util.FixValues;
+
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 public class OrderDto {
 
     public OrderDto() {
-        
+
     }
 
     public OrderDto(int clOrdId, char side, char ordStatus, String symbol, double price, double orderQty,
             double cumQty) {
         this.clOrdId = clOrdId;
-        this.side = side;
-        this.ordStatus = ordStatus;
+        setSide(side);
+        setOrdStatus(ordStatus);
         this.symbol = symbol;
         this.price = price;
         this.orderQty = orderQty;
@@ -26,7 +28,11 @@ public class OrderDto {
     @Schema(example = "1", description = "BUY = '1' / SELL = '2'")
     private char side;
 
+    private String sideText;
+
     private char ordStatus;
+
+    private String ordStatusText;
 
     @Schema(example = "LNUX")
     private String symbol;
@@ -46,6 +52,7 @@ public class OrderDto {
 
     public void setSide(char side) {
         this.side = side;
+        this.sideText = FixValues.getSideText(side);
     }
 
     public char getOrdStatus() {
@@ -54,6 +61,7 @@ public class OrderDto {
 
     public void setOrdStatus(char ordStatus) {
         this.ordStatus = ordStatus;
+        this.ordStatusText = FixValues.getOrdStatusText(ordStatus);
     }
 
     public double getCumQty() {
@@ -94,6 +102,14 @@ public class OrderDto {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getSideText() {
+        return sideText;
+    }
+
+    public String getOrdStatusText() {
+        return ordStatusText;
     }
 
 }

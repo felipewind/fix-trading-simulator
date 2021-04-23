@@ -1,10 +1,14 @@
 package com.helesto.service;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import com.helesto.core.Exchange;
 
+import org.eclipse.microprofile.faulttolerance.Asynchronous;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +34,8 @@ public class ExecutionReportService {
 	@Inject
 	Exchange exchange;
 
-	public void executionReport(NewOrderSingle newOrderSingle, SessionID sessionID) {
+	@Asynchronous
+	public Future<String> executionReport(NewOrderSingle newOrderSingle, SessionID sessionID) {
 
 		LOG.info("executionReport - NewOrderSingle");
 
@@ -74,6 +79,7 @@ public class ExecutionReportService {
 			Session.sendToTarget(executionReport, sessionID);
 
 			// Return an execution report with OrdStatus = Filled
+			Thread.sleep(5000);
 
 			// Tag 39 OrdStatus
 			executionReport.set(new OrdStatus(OrdStatus.FILLED));
@@ -82,7 +88,7 @@ public class ExecutionReportService {
 			executionReport.set(new LeavesQty(0));
 
 			// Tag 14 CumQty
-			executionReport.set(newOrderSingle.getOrderQty());
+			executionReport.set(new CumQty(newOrderSingle.getOrderQty().getValue()));
 
 			// Tag 6 AvgPx
 			executionReport.set(new AvgPx(newOrderSingle.getPrice().getValue()));
@@ -93,7 +99,11 @@ public class ExecutionReportService {
 			LOG.error(e.getMessage());
 		} catch (FieldNotFound e) {
 			LOG.error(e.getMessage());
+		} catch (InterruptedException e) {
+			LOG.error(e.getMessage());
 		}
+
+		return CompletableFuture.completedFuture("End");
 
 	}
 

@@ -1,10 +1,13 @@
 package com.helesto.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.helesto.model.OrderEntity;
@@ -23,10 +26,22 @@ public class OrderDao {
 
     }
 
+    public Optional<OrderEntity> readByClOrdID(int clOrdID) {
+
+        Query query = em.createNamedQuery("Orders.findByClOrdID");
+
+        query.setParameter("clOrdID", clOrdID);
+
+        try {
+            return Optional.of((OrderEntity) query.getSingleResult());
+        } catch (NoResultException nre) {
+            return Optional.empty();
+        }
+
+    }
+
     public void persistOrder(OrderEntity order) {
         em.persist(order);
     }
-
-
 
 }
