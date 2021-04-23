@@ -1,5 +1,6 @@
 package com.helesto.dto;
 
+import com.helesto.model.OrderEntity;
 import com.helesto.util.FixValues;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -10,15 +11,14 @@ public class OrderDto {
 
     }
 
-    public OrderDto(int clOrdId, char side, char ordStatus, String symbol, double price, double orderQty,
-            double cumQty) {
-        this.clOrdId = clOrdId;
-        setSide(side);
-        setOrdStatus(ordStatus);
-        this.symbol = symbol;
-        this.price = price;
-        this.orderQty = orderQty;
-        this.cumQty = cumQty;
+    public OrderDto(OrderEntity order) {
+        this.clOrdId = order.getClOrdID();
+        setSide(order.getSide());
+        setOrdStatus(order.getOrdStatus());
+        this.symbol = order.getSymbol();
+        this.price = order.getPrice();
+        this.orderQty = order.getOrderQty();
+        this.cumQty = order.getCumQty();
     }
 
     @Schema(example = "1010")

@@ -77,7 +77,11 @@ public class TraderApplication extends MessageCracker implements Application {
 	public void fromApp(Message message, SessionID sessionID)
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
 		LOG.info("fromApp");
-		crack(message, sessionID);
+		try {
+			crack(message, sessionID);
+		} catch (UnsupportedMessageType e) {
+			LOG.error("UnsupportedMessageType \n" + message.toRawString() + "\n", e);
+		}
 	}
 
 	private void addLogonField(Message message, SessionID sessionID) {

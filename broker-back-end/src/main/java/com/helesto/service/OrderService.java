@@ -21,8 +21,7 @@ public class OrderService {
 
         List<OrderDto> listOrderDto = new ArrayList<>();
 
-        orderDao.listOrders().forEach(order -> listOrderDto.add(new OrderDto(order.getClOrdID(), order.getSide(),
-                order.getOrdStatus(), order.getSymbol(), order.getPrice(), order.getOrderQty(), order.getCumQty())));
+        orderDao.listOrders().forEach(order -> listOrderDto.add(new OrderDto(order)));
 
         return listOrderDto.toArray(new OrderDto[0]);
 
