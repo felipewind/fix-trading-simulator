@@ -1,5 +1,5 @@
 export interface Order {    
-    clOrdId?: number,
+    clOrdID?: number,
     side?: string,
     sideText?: string,
     ordStatus?: string,

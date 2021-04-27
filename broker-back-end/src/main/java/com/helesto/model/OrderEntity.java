@@ -35,7 +35,8 @@ public class OrderEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final char NOT_CONFIRMED_BY_COUNTERPARTY = 'Z';
+    public static final char NEW_ORDER_NOT_CONFIRMED = 'Z';
+    public static final char CANCEL_NOT_CONFIRMED = 'X';
 
     public OrderEntity() {}
 

@@ -78,7 +78,7 @@ public class OrderCancelRequestService {
 
     public ClOrdID insertOrder(OrderDto request) {
 
-        OrderEntity order = new OrderEntity(0, request.getSide(), OrderEntity.NOT_CONFIRMED_BY_COUNTERPARTY,
+        OrderEntity order = new OrderEntity(0, request.getSide(), OrderEntity.NEW_ORDER_NOT_CONFIRMED,
                 request.getSymbol(), request.getPrice(), request.getOrderQty(), 0);
 
         orderDao.persistOrder(order);

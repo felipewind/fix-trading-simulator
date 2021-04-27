@@ -12,7 +12,7 @@ public class OrderDto {
     }
 
     public OrderDto(OrderEntity order) {
-        this.clOrdId = order.getClOrdID();
+        this.clOrdID = order.getClOrdID();
         setSide(order.getSide());
         setOrdStatus(order.getOrdStatus());
         this.symbol = order.getSymbol();
@@ -22,7 +22,7 @@ public class OrderDto {
     }
 
     @Schema(example = "1010")
-    private int clOrdId;
+    private int clOrdID;
 
     // Tag 54 (Example BUY = '1' / SELL = '2')
     @Schema(example = "1", description = "BUY = '1' / SELL = '2'")
@@ -72,12 +72,12 @@ public class OrderDto {
         this.cumQty = cumQty;
     }
 
-    public int getClOrdId() {
-        return clOrdId;
+    public int getClOrdID() {
+        return clOrdID;
     }
 
-    public void setClOrdId(int clOrdId) {
-        this.clOrdId = clOrdId;
+    public void setClOrdID(int clOrdID) {
+        this.clOrdID = clOrdID;
     }
 
     public String getSymbol() {

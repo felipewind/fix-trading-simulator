@@ -23,8 +23,10 @@ import quickfix.field.ExecType;
 import quickfix.field.LeavesQty;
 import quickfix.field.OrdStatus;
 import quickfix.field.OrderID;
+import quickfix.field.OrigClOrdID;
 import quickfix.fix44.ExecutionReport;
 import quickfix.fix44.NewOrderSingle;
+import quickfix.fix44.OrderCancelRequest;
 
 @ApplicationScoped
 public class ExecutionReportService {
@@ -78,7 +80,7 @@ public class ExecutionReportService {
 
 			Session.sendToTarget(executionReport, sessionID);
 
-			// Return an execution report with OrdStatus = Filled
+			// >>> Return an execution report with OrdStatus = Filled <<<<
 			Thread.sleep(5000);
 
 			// Tag 39 OrdStatus
@@ -92,6 +94,73 @@ public class ExecutionReportService {
 
 			// Tag 6 AvgPx
 			executionReport.set(new AvgPx(newOrderSingle.getPrice().getValue()));
+
+			Session.sendToTarget(executionReport, sessionID);
+
+		} catch (SessionNotFound e) {
+			LOG.error(e.getMessage());
+		} catch (FieldNotFound e) {
+			LOG.error(e.getMessage());
+		} catch (InterruptedException e) {
+			LOG.error(e.getMessage());
+		}
+
+		return CompletableFuture.completedFuture("End");
+
+	}
+
+	@Asynchronous
+	public Future<String> executionReport(OrderCancelRequest orderCancelRequest, SessionID sessionID) {
+
+		LOG.info("executionReport - OrderCancelRequest");
+
+		try {
+
+			// Return an execution report with OrdStatus = Pending Cancel
+
+			// Tag 35 MsgType = 8
+			ExecutionReport executionReport = new ExecutionReport();
+
+			// Tag 37 OrderID
+			executionReport.set(new OrderID(orderCancelRequest.getClOrdID().getValue()));
+
+			// Tag 41 OrigClOrdID
+			executionReport.set(new OrigClOrdID(orderCancelRequest.getOrigClOrdID().getValue()));
+
+			// Tag 11 ClOrdID
+			executionReport.set(orderCancelRequest.getClOrdID());
+
+			// Tag 11 ExecID
+			executionReport.set(new ExecID(orderCancelRequest.getClOrdID().getValue()));
+
+			// Tag 150 ExecType
+			executionReport.set(new ExecType(ExecType.FILL));
+
+			// Tag 39 OrdStatus
+			executionReport.set(new OrdStatus(OrdStatus.PENDING_CANCEL));
+
+			// Tag 54 Side
+			executionReport.set(orderCancelRequest.getSide());
+
+			// Tag 55 Symbol
+			executionReport.set(orderCancelRequest.getSymbol());
+
+			// Tag 6 AvgPx
+			executionReport.set(new AvgPx(0));
+
+			// Tag 151 LeavesQty
+			executionReport.set(new LeavesQty(0));
+
+			// Tag 14 CumQty
+			executionReport.set(new CumQty(0));
+
+			Session.sendToTarget(executionReport, sessionID);
+
+			// >>> Return an execution report with OrdStatus = Filled <<<<
+			Thread.sleep(5000);
+
+			// Tag 39 OrdStatus
+			executionReport.set(new OrdStatus(OrdStatus.CANCELED));
 
 			Session.sendToTarget(executionReport, sessionID);
 

@@ -28,9 +28,12 @@ public final class FixValues {
     public static final Map<Character, String> ordStatusMap = new TreeMap<>();
 
     static {
-        ordStatusMap.put(OrderEntity.NOT_CONFIRMED_BY_COUNTERPARTY, "Pending Confirmation");
+        ordStatusMap.put(OrderEntity.NEW_ORDER_NOT_CONFIRMED, "Pending Confirmation");
+        ordStatusMap.put(OrderEntity.CANCEL_NOT_CONFIRMED, "Cancel Pending Confirmation");
         ordStatusMap.put(OrdStatus.NEW, "New");
         ordStatusMap.put(OrdStatus.FILLED, "Filled");
+        ordStatusMap.put(OrdStatus.PENDING_CANCEL, "Pending Cancel");
+        ordStatusMap.put(OrdStatus.CANCELED, "Canceled");
     }
 
     public static String getOrdStatusText(char ordStatus) {

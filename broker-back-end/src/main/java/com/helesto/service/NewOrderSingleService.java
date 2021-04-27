@@ -40,7 +40,6 @@ public class NewOrderSingleService {
 	@Inject
 	OrderDao orderDao;
 
-	@Transactional(rollbackOn = Exception.class)
 	public void newOrderSingle(OrderDto request) throws SessionNotFound {
 
 		SessionID sessionID = trader.getSessionIDFromInitiator();
@@ -97,9 +96,10 @@ public class NewOrderSingleService {
 
 	}
 
+	@Transactional(rollbackOn = Exception.class)
 	public ClOrdID insertOrder(OrderDto request) {
 
-		OrderEntity order = new OrderEntity(0, request.getSide(), OrderEntity.NOT_CONFIRMED_BY_COUNTERPARTY,
+		OrderEntity order = new OrderEntity(0, request.getSide(), OrderEntity.NEW_ORDER_NOT_CONFIRMED,
 				request.getSymbol(), request.getPrice(), request.getOrderQty(), 0);
 
 		orderDao.persistOrder(order);

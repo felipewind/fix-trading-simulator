@@ -27,4 +27,10 @@ public class OrderService {
 
     }
 
+    public OrderDto gerOrder(int clORdID) throws ConfigError {
+
+        return new OrderDto(orderDao.readByClOrdID(clORdID).get());
+
+    }
+
 }

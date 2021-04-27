@@ -78,6 +78,7 @@ public class ExchangeApplication extends MessageCracker implements Application {
 	public void onMessage(quickfix.fix44.OrderCancelRequest orderCancelRequest, SessionID sessionID)
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
 		LOG.info("onMessage quickfix.fix44.OrderCancelRequest");
+		executionReportService.executionReport(orderCancelRequest, sessionID);
 	}
 
 }

@@ -34,6 +34,7 @@ import { LogComponent } from './views/log/log.component';
 import { MessagesComponent } from './components/session/messages/messages.component';
 import { SessionPropertiesComponent } from './components/session/session-properties/session-properties.component';
 import { LogMessageComponent } from './components/log/log-message/log-message.component';
+import { OrderCancelComponent } from './components/order/order-cancel/order-cancel.component';
 
 
 @NgModule({
@@ -45,7 +46,7 @@ import { LogMessageComponent } from './components/log/log-message/log-message.co
     HomeComponent,
     OrderComponent,
     OrderCreateComponent,
-    OrderReadComponent, SessionComponent, SessionControlComponent, LogEventComponent, LogComponent, MessagesComponent, SessionPropertiesComponent, LogMessageComponent
+    OrderReadComponent, SessionComponent, SessionControlComponent, LogEventComponent, LogComponent, MessagesComponent, SessionPropertiesComponent, LogMessageComponent, OrderCancelComponent
   ],
   imports: [
     BrowserModule,

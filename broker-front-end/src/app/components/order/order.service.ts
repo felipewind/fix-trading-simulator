@@ -38,6 +38,22 @@ export class OrderService {
     )
   }
 
+  readById(clOrdID: number): Observable<Order> {
+    const url = `${this.baseUrl}/${clOrdID}`;
+    return this.http.get<Order>(url).pipe(
+      map((obj) => obj),
+      catchError((error) => this.errorHandler(error))
+    )
+  }
+
+  cancel(clOrdID: number): Observable<Order> {
+    const url = `${this.baseUrl}/${clOrdID}`;
+    return this.http.delete<Order>(url).pipe(
+      map((obj) => obj),
+      catchError((error) => this.errorHandler(error))
+    )
+  }
+
   errorHandler(e: any): Observable<any> {
     this.showMessage('Something wrong happened!', true);
     return EMPTY;

@@ -25,7 +25,7 @@ export class OrderCreateComponent implements OnInit {
     });
   }
 
-  cancel(): void {
+  back(): void {
     this.router.navigate(['/orders']);
   }
 

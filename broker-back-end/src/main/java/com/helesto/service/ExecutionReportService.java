@@ -34,11 +34,20 @@ public class ExecutionReportService {
 		LOG.info("executionReport service");
 
 		try {
-			Optional<OrderEntity> optionalOrderEntity = orderDao
-					.readByClOrdID(Integer.valueOf(executionReport.getClOrdID().getValue()));
+
+			int clOrdID = 0;
+
+			try {
+				clOrdID = Integer.valueOf(executionReport.getOrigClOrdID().getValue());
+			} catch (FieldNotFound e) {
+				clOrdID = Integer.valueOf(executionReport.getClOrdID().getValue());
+			}
+
+			Optional<OrderEntity> optionalOrderEntity = orderDao.readByClOrdID(clOrdID);
 
 			if (optionalOrderEntity.isEmpty()) {
-				LOG.error("ClOrdID=[" + executionReport.getClOrdID().getValue() + "] not found in table order");
+				LOG.error("ClOrdID=[" + clOrdID + "] not found in table order");
+				return;
 			}
 
 			OrderEntity orderEntity = optionalOrderEntity.get();

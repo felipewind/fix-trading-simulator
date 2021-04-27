@@ -88,14 +88,36 @@ public class OrdersRest {
         }
 
         @Path("{clOrdID}")
+        @GET
+        @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+        @Operation(summary = "Get Order by ClOrdID")
+        @APIResponse(responseCode = "200", description = "Order", content = {
+                        @Content(mediaType = "application/json", schema = @Schema(implementation = OrderDto.class)) })
+        public Response getByID(
+                        @Parameter(description = "The order id to READ.", required = true) @PathParam("clOrdID") int clOrdID)
+                        throws ConfigError {
+
+                LOG.debug("OrderGetRest + GET BY ID - begin - clOrdID=[" + clOrdID + "]");
+
+                OrderDto response = orderService.gerOrder(clOrdID);
+
+                Jsonb jsonb = JsonbBuilder.create();
+                String jsonString = jsonb.toJson(response);
+
+                LOG.debug("OrderGetRest + GET - response: " + jsonString);
+
+                return Response.status(Response.Status.OK).entity(response).build();
+
+        }
+
+        @Path("{clOrdID}")
         @DELETE
         @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
         @Operation(summary = "Cancel an order")
         @APIResponse(responseCode = "200", description = "Order cancelled", content = {
                         @Content(mediaType = "application/json", schema = @Schema(implementation = OrderDto.class)) })
         public Response cancel(
-                        @Parameter(description = "The order id to cancel.", required = true) 
-                        @PathParam("clOrdID") int clOrdID)
+                        @Parameter(description = "The order id to cancel.", required = true) @PathParam("clOrdID") int clOrdID)
                         throws SessionNotFound {
 
                 LOG.debug("Orders + DELETE - clOrdID=[" + clOrdID + "]");

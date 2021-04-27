@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class OrderReadComponent implements OnInit {
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['clOrdId', 'sideText', 'symbol', 'ordStatusText', 'price', 'orderQty', 'cumQty'];
+  displayedColumns = ['clOrdID', 'sideText', 'symbol', 'ordStatusText', 'price', 'orderQty', 'cumQty', 'action'];
 
   orders: Order[];
 

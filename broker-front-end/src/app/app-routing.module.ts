@@ -1,3 +1,4 @@
+import { OrderCancelComponent } from './components/order/order-cancel/order-cancel.component';
 import { SessionPropertiesComponent } from './components/session/session-properties/session-properties.component';
 import { LogMessageComponent } from './components/log/log-message/log-message.component';
 import { SessionControlComponent } from './components/session/session-control/session-control.component';
@@ -18,13 +19,17 @@ const routes: Routes = [
     component: OrderCreateComponent
   },
   {
+    path: "orders/cancel/:clOrdID",
+    component: OrderCancelComponent
+  },
+  {
     path: "orders",
     component: OrderComponent
   },
   {
     path: "session/control",
     component: SessionControlComponent
-  },  
+  },
   {
     path: "session/messages",
     component: MessagesComponent
@@ -32,11 +37,11 @@ const routes: Routes = [
   {
     path: "session/properties",
     component: SessionPropertiesComponent
-  },  
+  },
   {
     path: "session",
     component: SessionComponent
-  },  
+  },
   {
     path: "logs/event",
     component: LogEventComponent
