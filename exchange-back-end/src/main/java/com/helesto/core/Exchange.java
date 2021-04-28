@@ -1,5 +1,7 @@
 package com.helesto.core;
 
+import java.util.Iterator;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -145,6 +147,39 @@ public class Exchange {
 
     public SessionSettings getSessionSettings() {
         return sessionSettings;
+    }
+
+    public boolean isAcceptorStarted() {
+        return acceptorStarted;
+    }
+
+    public SessionID getSessionIDFromSettings() {
+
+        Iterator<SessionID> iteratorSessionID = sessionSettings.sectionIterator();
+
+        SessionID sessionID = null;
+
+        while (iteratorSessionID.hasNext()) {
+            sessionID = iteratorSessionID.next();
+        }
+
+        return sessionID;
+    }
+
+    public String getStringFromSettings(String key) throws ConfigError {
+        return sessionSettings.getString(getSessionIDFromSettings(), key);
+    }
+
+    public Session getSession() {
+        return Session.lookupSession(getSessionIDFromAcceptor());
+    }
+
+    public SessionID getSessionIDFromAcceptor() {
+        if (acceptorStarted) {
+            return acceptor.getSessions().get(0);
+        } else {
+            throw new RuntimeException("Acceptor stopped");
+        }
     }
 
 }

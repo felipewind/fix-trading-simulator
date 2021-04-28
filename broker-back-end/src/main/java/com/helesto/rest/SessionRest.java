@@ -61,7 +61,7 @@ public class SessionRest {
     @Path("/start-initiator")
     @POST
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    @Operation(summary = "Start initiator")
+    @Operation(summary = "Start initiator and make logon")
     @APIResponse(responseCode = "200", description = "Initiator started", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SessionDto.class)) })
     public Response startInitiator() throws ConfigError {
@@ -82,7 +82,7 @@ public class SessionRest {
     @Path("/stop-initiator")
     @POST
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    @Operation(summary = "Stop initiator")
+    @Operation(summary = "Logout and stop initiator")
     @APIResponse(responseCode = "200", description = "Initiator stopped", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SessionDto.class)) })
     public Response stopInitiator() throws ConfigError {
@@ -95,6 +95,27 @@ public class SessionRest {
         String jsonString = jsonb.toJson(sessionDto);
 
         LOG.debug("Session + POST - stop initiator - response: " + jsonString);
+
+        return Response.status(Response.Status.OK).entity(sessionDto).build();
+
+    }
+
+    @Path("/logout")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Operation(summary = "Logout")
+    @APIResponse(responseCode = "200", description = "Logout done", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = SessionDto.class)) })
+    public Response logout() throws ConfigError {
+
+        LOG.debug("Session + POST - logout");
+
+        SessionDto sessionDto = sessionService.logout();
+
+        Jsonb jsonb = JsonbBuilder.create();
+        String jsonString = jsonb.toJson(sessionDto);
+
+        LOG.debug("Session + POST - logout - response: " + jsonString);
 
         return Response.status(Response.Status.OK).entity(sessionDto).build();
 
@@ -119,7 +140,5 @@ public class SessionRest {
 
         return Response.status(Response.Status.OK).entity(messageDto).build();
     }
-
-
 
 }

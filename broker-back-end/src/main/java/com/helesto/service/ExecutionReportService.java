@@ -50,10 +50,12 @@ public class ExecutionReportService {
 				return;
 			}
 
-			OrderEntity orderEntity = optionalOrderEntity.get();
+			OrderEntity order = optionalOrderEntity.get();
 
-			orderEntity.setCumQty(executionReport.getCumQty().getValue());
-			orderEntity.setOrdStatus(executionReport.getOrdStatus().getValue());
+			order.setCumQty(executionReport.getCumQty().getValue());
+			order.setOrdStatus(executionReport.getOrdStatus().getValue());
+
+			orderDao.updateOrder(order);
 
 		} catch (FieldNotFound e) {
 			LOG.error("FieldNotFound", e);

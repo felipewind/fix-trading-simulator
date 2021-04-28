@@ -9,7 +9,7 @@ import java.util.Properties;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
-import com.helesto.core.Trader;
+import com.helesto.core.Exchange;
 import com.helesto.dao.SessionsDao;
 import com.helesto.dto.SessionDto;
 import com.helesto.dto.SessionDto.SessionSettingsProperties;
@@ -30,7 +30,7 @@ public class SessionService {
     private static final Logger LOG = LoggerFactory.getLogger(SessionService.class.getName());
 
     @Inject
-    Trader trader;
+    Exchange exchange;
 
     @Inject
     SessionsDao sessionsDao;
@@ -39,13 +39,13 @@ public class SessionService {
 
         SessionDto sessionDto = new SessionDto();
 
-        SessionSettings sessionSettings = trader.getSessionSettings();
+        SessionSettings sessionSettings = exchange.getSessionSettings();
 
         sessionDto.setSessionSettingsFile(sessionSettings.toString().split(System.lineSeparator()));
 
-        sessionDto.setInitiatorStarted(trader.isInitiatorStarted());
+        sessionDto.setAcceptorStarted(exchange.isAcceptorStarted());
 
-        SessionID sessionID = trader.getSessionIDFromSettings();
+        SessionID sessionID = exchange.getSessionIDFromSettings();
 
         sessionDto.setSessionID(sessionID.toString());
 
@@ -61,7 +61,7 @@ public class SessionService {
             // Obtaining the Session Storage information
             SessionStorage sessionStorage = new SessionStorage();
             Optional<SessionsEntity> optionalSessionEntity = sessionsDao
-                    .readSession(trader.getStringFromSettings(SessionSettings.SENDERCOMPID));
+                    .readSession(exchange.getStringFromSettings(SessionSettings.SENDERCOMPID));
             if (optionalSessionEntity.isPresent()) {
                 SessionsEntity sessionEntity = optionalSessionEntity.get();
                 sessionStorage.setCreationTime(sessionEntity.getCreation_time().toString());
@@ -74,11 +74,11 @@ public class SessionService {
             LOG.error("Error", e);
         }
 
-        if (trader.isInitiatorStarted()) {
-            sessionDto.setLoggedOn(trader.getSession().isLoggedOn());
+        if (exchange.isAcceptorStarted()) {
+            sessionDto.setLoggedOn(exchange.getSession().isLoggedOn());
 
             try {
-                sessionDto.setStartTime(DateUtil.dateToLocalDateTime(trader.getSession().getStartTime()).toString());
+                sessionDto.setStartTime(DateUtil.dateToLocalDateTime(exchange.getSession().getStartTime()).toString());
             } catch (IOException e) {
                 sessionDto.setStartTime(null);
             }
@@ -91,19 +91,9 @@ public class SessionService {
         return sessionDto;
     }
 
-    public SessionDto startInitiator() throws ConfigError {
+    public SessionDto startAcceptor() throws ConfigError {
 
-        trader.logon();
-
-        SessionDto sessionDto = sessionGet();
-
-        return sessionDto;
-
-    }
-
-    public SessionDto stopInitiator() throws ConfigError {
-
-        trader.stop();
+        exchange.start();
 
         SessionDto sessionDto = sessionGet();
 
@@ -111,9 +101,9 @@ public class SessionService {
 
     }
 
-    public SessionDto logout() throws ConfigError {
+    public SessionDto stopAcceptor() throws ConfigError {
 
-        trader.logout();
+        exchange.stop();
 
         SessionDto sessionDto = sessionGet();
 

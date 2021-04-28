@@ -28,7 +28,7 @@ export class SessionControlComponent implements OnInit {
   }
   startSession(): void {
     this.sessionService.startInitiator().subscribe(session => {
-      this.sessionService.showMessage("Session started");
+      this.sessionService.showMessage("Session started and logon submitted");
       this.session = session;
     });
   }
@@ -36,6 +36,13 @@ export class SessionControlComponent implements OnInit {
   stopSession(): void {
     this.sessionService.stopInitiator().subscribe(session => {
       this.sessionService.showMessage("Session stopped");
+      this.session = session;
+    });
+  }
+
+  logout(): void {
+    this.sessionService.logout().subscribe(session => {
+      this.sessionService.showMessage("Logout submitted");
       this.session = session;
     });
   }

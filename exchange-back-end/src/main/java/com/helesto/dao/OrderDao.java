@@ -26,11 +26,25 @@ public class OrderDao {
 
     }
 
-    public Optional<OrderEntity> readByClOrdID(int clOrdID) {
+    public Optional<OrderEntity> readByOrderID(int orderID) {
 
-        Query query = em.createNamedQuery("Orders.findByClOrdID");
+        Query query = em.createNamedQuery("Orders.findByOrderID");
 
-        query.setParameter("clOrdID", clOrdID);
+        query.setParameter("orderID", orderID);
+
+        try {
+            return Optional.of((OrderEntity) query.getSingleResult());
+        } catch (NoResultException nre) {
+            return Optional.empty();
+        }
+
+    }
+
+    public Optional<OrderEntity> readByOrigClOrdID(int origClOrdID) {
+
+        Query query = em.createNamedQuery("Orders.findByOrigClOrdID");
+
+        query.setParameter("origClOrdID", origClOrdID);
 
         try {
             return Optional.of((OrderEntity) query.getSingleResult());
