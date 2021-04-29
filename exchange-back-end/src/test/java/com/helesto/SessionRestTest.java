@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-public class GetSessionSettingsRestTest {
+public class SessionRestTest {
 
     @Test
     public void testSessionSettingsEndpoint() {
         given()
-          .when().get("/session-settings")
+          .when().get("/session/settings")
           .then()
              .statusCode(200);
     }

@@ -139,7 +139,7 @@ public class Exchange {
 
     public synchronized void stop() {
         LOG.info("stop");
-        if (!acceptorStarted) {
+        if (acceptorStarted) {
             acceptor.stop();
             acceptorStarted = false;
         }
