@@ -1,12 +1,8 @@
-table {
-    width: 100%;
-}
-
 button {
     margin-top: 20px;
     margin-right: 20px;
 }
 
-.mat-card {
+.session-header {
     margin-bottom: 20px;
 }

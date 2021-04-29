@@ -29,7 +29,7 @@ export class LogEventComponent implements OnInit {
     })
   }
 
-  back(): void {    
+  back(): void {
     this.router.navigate(['/logs']);
   }
 

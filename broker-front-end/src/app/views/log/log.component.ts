@@ -9,6 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LogComponent implements OnInit {
 
+  mode: string = 'Outgoing';
+  component: string = 'Event';
+
   constructor(private headerService: HeaderService, private router: Router) {
     headerService.headerData = {
       title: 'Logs',
@@ -18,18 +21,33 @@ export class LogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.navigateToEventLog();
   }
 
-  navigateToEventLog(): void {    
-    this.router.navigate(['/logs/event']);
+  navigateToEventLog(): void {
+    // this.router.navigate(['/logs/event']);
   }
 
-  navigateToMessageIncoming(): void {    
-    this.router.navigate(['/logs/messages/incoming']);
+  eventLog(): void {
+    this.component = 'Event';
   }
 
-  navigateToMessageOutgoing(): void {    
-    this.router.navigate(['/logs/messages/outgoing']);
+  messageIncoming(): void {
+    this.mode = 'Incoming';   
+    this.component = 'Message'; 
+  }
+
+  messageOutgoing(): void {
+    this.mode = 'Outgoing';  
+    this.component = 'Message';  
+  }
+
+  showComponent(component: string): boolean {
+    if (component === this.component) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

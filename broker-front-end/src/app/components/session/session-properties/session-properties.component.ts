@@ -23,8 +23,4 @@ export class SessionPropertiesComponent implements OnInit {
     })    
   }
 
-  back(): void {    
-    this.router.navigate(['/session']);
-  }
-
 }

@@ -13,6 +13,11 @@ export class OrderCreateComponent implements OnInit {
   order: Order = {
   }
 
+  sides: Side[] = [
+    {value: '1', viewValue: 'Buy'},
+    {value: '2', viewValue: 'Sell'}
+  ];
+
   constructor(private orderService: OrderService, private router: Router) { }
 
   ngOnInit(): void {
@@ -29,4 +34,9 @@ export class OrderCreateComponent implements OnInit {
     this.router.navigate(['/orders']);
   }
 
+}
+
+interface Side {
+  value: string;
+  viewValue: string;
 }

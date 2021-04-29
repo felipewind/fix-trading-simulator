@@ -1,14 +1,14 @@
-import { SessionService } from './../session.service';
+import { SessionService } from '../session.service';
 import { Router } from '@angular/router';
 import { Message } from '../message.model';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-messages',
-  templateUrl: './messages.component.html',
-  styleUrls: ['./messages.component.css']
+  templateUrl: './session-messages.component.html',
+  styleUrls: ['./session-messages.component.css']
 })
-export class MessagesComponent implements OnInit {
+export class SessionMessagesComponent implements OnInit {
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['msgseqnum', 'message'];
@@ -28,10 +28,6 @@ export class MessagesComponent implements OnInit {
       }
       this.messages = messages;
     })
-  }
-
-  back(): void {
-    this.router.navigate(['/session']);
   }
 
 }

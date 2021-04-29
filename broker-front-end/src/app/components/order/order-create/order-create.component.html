@@ -4,21 +4,22 @@
     </mat-card-title>
     <form>
         <mat-form-field>
-            <input matInput placeholder="Symbol" 
-                [(ngModel)]="order.symbol" name="symbol">
+            <input matInput placeholder="Symbol" [(ngModel)]="order.symbol" name="symbol">
         </mat-form-field>
         <mat-form-field>
-            <input matInput placeholder="Side" 
-                [(ngModel)]="order.side" name="side">
-        </mat-form-field>        
+            <mat-label>Side</mat-label>
+            <mat-select [(ngModel)]="order.side" name="side">
+                <mat-option *ngFor="let side of sides" [value]="side.value">
+                    {{side.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
         <mat-form-field>
-            <input matInput placeholder="Quantity" 
-                [(ngModel)]="order.orderQty" name="quantity">
-        </mat-form-field>        
+            <input matInput placeholder="Quantity" [(ngModel)]="order.orderQty" name="quantity">
+        </mat-form-field>
         <mat-form-field>
-            <input matInput placeholder="Limit" 
-                [(ngModel)]="order.price" name="limit">
-        </mat-form-field>        
+            <input matInput placeholder="Limit ($)" [(ngModel)]="order.price" name="limit">
+        </mat-form-field>
     </form>
 
     <button mat-raised-button (click)="createOrder()" color="primary">

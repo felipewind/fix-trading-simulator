@@ -3,30 +3,6 @@ button {
     margin-right: 20px;
 }
 
-table {
-    width: 100%;
-}
-
-.edit {
-    margin-right: 7px;
-}
-
-.edit > i {
-    color: #d9cd26;
-}
-
-.delete > i {
-    color: #e35e6b;
-}
-
-.settings {
-    margin-top: 20px;
-}
-
-.settings-title {
-    margin-bottom: 30px;
-}
-
 form {
     display: flex;
     flex-direction: column;

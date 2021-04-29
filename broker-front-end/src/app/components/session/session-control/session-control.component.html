@@ -1,14 +1,11 @@
+<app-session-header dontShow='control'></app-session-header>
 <mat-card>
     <mat-card-title>
         Session Control
     </mat-card-title>
-    <form>
-        <mat-form-field>
-            <input matInput placeholder="Session ID" [value]="session.sessionID" name="sessionID" disabled>
-        </mat-form-field>
-    </form>
+
     <button mat-raised-button (click)="startSession()" color="primary">
-        Start/Logon
+        Start / Logon
     </button>
     <button mat-raised-button (click)="stopSession()" color="primary">
         Stop
@@ -19,14 +16,16 @@
     <button mat-raised-button (click)="read(true)" color="primary">
         Refresh
     </button>
-    <button mat-raised-button (click)="back()" color="secondary">
-        Back
-    </button>
-</mat-card>
-<mat-card>
-    <mat-card-title>
+
+    <form>
+        <mat-form-field>
+            <input matInput placeholder="Session ID" [value]="session.sessionID" name="sessionID" disabled>
+        </mat-form-field>
+    </form>
+
+    <mat-card-content>
         Session Status
-    </mat-card-title>
+    </mat-card-content>
 
     <form>
         <mat-form-field>
@@ -40,11 +39,9 @@
             <input matInput placeholder="Start time" [value]="session.startTime" name="startTime" disabled>
         </mat-form-field>
     </form>
-</mat-card>
-<mat-card>
-    <mat-card-title>
+    <mat-card-content>
         Session Storage
-    </mat-card-title>
+    </mat-card-content>
 
     <form>
         <mat-form-field>
@@ -60,4 +57,5 @@
                 name="outgoingSeqnum" disabled>
         </mat-form-field>
     </form>
+
 </mat-card>

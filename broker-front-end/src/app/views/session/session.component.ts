@@ -1,5 +1,4 @@
 import { Router } from '@angular/router';
-import { Session } from './../../components/session/session.model';
 import { HeaderService } from './../../components/template/header/header.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -19,18 +18,11 @@ export class SessionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  }
-
-  navigateToMessages(): void {
-    this.router.navigate(['/session/messages']);
+    this.navigateToSessionControl();
   }
 
   navigateToSessionControl(): void {
     this.router.navigate(['/session/control']);
-  }
-
-  navigateToSessionProperties(): void {
-    this.router.navigate(['/session/properties']);
   }
 
 }

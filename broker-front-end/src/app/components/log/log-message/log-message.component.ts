@@ -1,7 +1,6 @@
-import { ActivatedRoute, Router } from '@angular/router';
 import { LogService } from './../log.service';
 import { LogMessage } from './../log-message.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-log-message',
@@ -12,26 +11,28 @@ export class LogMessageComponent implements OnInit {
 
   displayedColumns = ['id', 'time', 'text'];
 
-  mode: string = "";
+  @Input() mode: string = "";
 
   title: string = "";
 
   logMessages: LogMessage[];
 
-  constructor(private logService: LogService, private router: Router, private activatedRoute: ActivatedRoute) {
-    if (activatedRoute.snapshot.params["mode"] === 'incoming') {
-      this.mode = "Incoming";
-    } else {
-      this.mode = "Outgoing";
-    }
-    this.title = `Message Log ${this.mode}`;
+  constructor(private logService: LogService) {
   }
 
   ngOnInit() {
     this.readMessages(false);
   }
 
+  ngOnChanges(change: SimpleChanges) {
+    if (change.mode) {
+      this.readMessages(false);
+    }
+  }
+
   readMessages(showMessage: boolean) {
+    this.title = `Message Log ${this.mode}`;
+
     let url = "";
 
     if (this.mode === "Incoming") {
@@ -47,10 +48,6 @@ export class LogMessageComponent implements OnInit {
       }
       this.logMessages = logMessages;
     })
-  }
-
-  back(): void {
-    this.router.navigate(['/logs']);
   }
 
 }

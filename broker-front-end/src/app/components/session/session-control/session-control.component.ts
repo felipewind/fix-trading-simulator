@@ -47,8 +47,4 @@ export class SessionControlComponent implements OnInit {
     });
   }
 
-  back(): void {    
-    this.router.navigate(['/session']);
-  }
-
 }
