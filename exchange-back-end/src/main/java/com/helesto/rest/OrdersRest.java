@@ -67,7 +67,7 @@ public class OrdersRest {
 
                 LOG.debug("OrderGetRest + GET BY ID - begin - orderID=[" + orderID + "]");
 
-                OrderDto response = orderService.gerOrder(orderID);
+                OrderDto response = orderService.getOrder(orderID);
 
                 Jsonb jsonb = JsonbBuilder.create();
                 String jsonString = jsonb.toJson(response);

@@ -17,6 +17,9 @@ public class OrderService {
     @Inject
     OrderDao orderDao;
 
+    @Inject
+    ExecutionReportService executionReportService;
+
     public OrderDto[] listOrders() throws ConfigError {
 
         List<OrderDto> listOrderDto = new ArrayList<>();
@@ -27,10 +30,18 @@ public class OrderService {
 
     }
 
-    public OrderDto gerOrder(int orderID) throws ConfigError {
+    public OrderDto getOrder(int orderID) throws ConfigError {
 
         return new OrderDto(orderDao.readByOrderID(orderID).get());
 
     }
+
+    public OrderDto cancelOrder(int orderID) {
+
+        return new OrderDto();
+
+    }
+
+    
 
 }
