@@ -57,16 +57,18 @@
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef>Actions</th>
                 <td mat-cell *matCellDef="let row">
-                    <a routerLink="/orders/cancel/{{ row.clOrdID }}" class="delete">
+                    <a routerLink="/orders/edit/{{ row.orderID }}" class="edit">
+                        <i class="material-icons">
+                            edit
+                        </i>
+                    </a>
+                    <a routerLink="/orders/cancel/{{ row.orderID }}" class="delete">
                         <i class="material-icons">
                             delete
                         </i>
                     </a>
                 </td>
             </ng-container>
-
-
-
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

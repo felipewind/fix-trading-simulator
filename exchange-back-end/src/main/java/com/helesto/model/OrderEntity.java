@@ -155,6 +155,13 @@ public class OrderEntity implements Serializable {
 
     public void setCumQty(double cumQty) {
         this.cumQty = cumQty;
-    }    
+    }
+
+    @Override
+    public String toString() {
+        return "OrderEntity [clOrdID=" + clOrdID + ", cumQty=" + cumQty + ", ordStatus=" + ordStatus + ", orderID="
+                + orderID + ", orderQty=" + orderQty + ", origClOrdID=" + origClOrdID + ", price=" + price + ", side="
+                + side + ", symbol=" + symbol + "]";
+    }        
 
 }

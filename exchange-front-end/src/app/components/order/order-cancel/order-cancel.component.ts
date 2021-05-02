@@ -16,14 +16,14 @@ export class OrderCancelComponent implements OnInit {
   constructor(private orderService: OrderService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    const clOrdID = +this.activatedRoute.snapshot.paramMap.get('clOrdID');
-    this.orderService.readById(clOrdID).subscribe((order) => {
+    const orderID = +this.activatedRoute.snapshot.paramMap.get('orderID');
+    this.orderService.readById(orderID).subscribe((order) => {
       this.order = order;
     });
   }
 
   cancelOrder(): void {
-    this.orderService.cancel(this.order.clOrdID).subscribe(() => {
+    this.orderService.cancel(this.order.orderID).subscribe(() => {
       this.orderService.showMessage("Order cancelation submitted");
       this.router.navigate(['/orders']);
     });

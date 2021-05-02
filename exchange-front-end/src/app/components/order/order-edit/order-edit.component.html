@@ -16,7 +16,12 @@
             <input matInput placeholder="Symbol" [value]="order.symbol" name="symbol" disabled>
         </mat-form-field>
         <mat-form-field>
-            <input matInput placeholder="Status" [value]="order.ordStatusText" name="status" disabled>
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="order.ordStatus" name="side">
+                <mat-option *ngFor="let status of statusList" [value]="status.value">
+                    {{status.viewValue}}
+                </mat-option>
+            </mat-select>
         </mat-form-field>
         <mat-form-field>
             <input matInput placeholder="Limit" [value]="order.price" name="limit" disabled>
@@ -25,12 +30,12 @@
             <input matInput placeholder="Quantity" [value]="order.orderQty" name="quantity" disabled>
         </mat-form-field>
         <mat-form-field>
-            <input matInput placeholder="Executed Quantity" [value]="order.cumQty" name="cumQty" disabled>
+            <input matInput placeholder="Executed Quantity" [(ngModel)]="order.cumQty" name="cumQty">
         </mat-form-field>
     </form>
 
-    <button mat-raised-button (click)="cancelOrder()" color="primary">
-        Submit cancelation
+    <button mat-raised-button (click)="editOrder()" color="primary">
+        Submit update
     </button>
 
     <button mat-raised-button (click)="back()">

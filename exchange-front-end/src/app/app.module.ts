@@ -34,6 +34,7 @@ import { SessionPropertiesComponent } from './components/session/session-propert
 import { LogMessageComponent } from './components/log/log-message/log-message.component';
 import { OrderCancelComponent } from './components/order/order-cancel/order-cancel.component';
 import { SessionHeaderComponent } from './components/session/session-header/session-header.component';
+import { OrderEditComponent } from './components/order/order-edit/order-edit.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,7 @@ import { SessionHeaderComponent } from './components/session/session-header/sess
     SessionPropertiesComponent, 
     LogMessageComponent, 
     OrderCancelComponent, 
-    SessionHeaderComponent
+    SessionHeaderComponent, OrderEditComponent
   ],
   imports: [
     BrowserModule,

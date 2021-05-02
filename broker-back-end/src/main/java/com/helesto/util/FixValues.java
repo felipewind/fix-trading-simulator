@@ -31,9 +31,11 @@ public final class FixValues {
         ordStatusMap.put(OrderEntity.NEW_ORDER_NOT_CONFIRMED, "Pending Confirmation");
         ordStatusMap.put(OrderEntity.CANCEL_NOT_CONFIRMED, "Cancel Pending Confirmation");
         ordStatusMap.put(OrdStatus.NEW, "New");
+        ordStatusMap.put(OrdStatus.PARTIALLY_FILLED, "Partially Filled");
         ordStatusMap.put(OrdStatus.FILLED, "Filled");
         ordStatusMap.put(OrdStatus.PENDING_CANCEL, "Pending Cancel");
         ordStatusMap.put(OrdStatus.CANCELED, "Canceled");
+        ordStatusMap.put(OrdStatus.REJECTED, "Rejected");
     }
 
     public static String getOrdStatusText(char ordStatus) {

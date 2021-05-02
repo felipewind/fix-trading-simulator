@@ -27,9 +27,11 @@ public final class FixValues {
 
     static {
         ordStatusMap.put(OrdStatus.NEW, "New");
+        ordStatusMap.put(OrdStatus.PARTIALLY_FILLED, "Partially Filled");
         ordStatusMap.put(OrdStatus.FILLED, "Filled");
         ordStatusMap.put(OrdStatus.PENDING_CANCEL, "Pending Cancel");
         ordStatusMap.put(OrdStatus.CANCELED, "Canceled");
+        ordStatusMap.put(OrdStatus.REJECTED, "Rejected");
     }
 
     public static String getOrdStatusText(char ordStatus) {

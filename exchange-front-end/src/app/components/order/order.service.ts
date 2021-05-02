@@ -1,9 +1,9 @@
-import { catchError, map } from 'rxjs/operators';
-import { Order } from './order.model';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HttpClient } from '@angular/common/http';
 import { EMPTY, Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { Order } from './order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,17 +38,25 @@ export class OrderService {
     )
   }
 
-  readById(clOrdID: number): Observable<Order> {
-    const url = `${this.baseUrl}/${clOrdID}`;
+  readById(orderID: number): Observable<Order> {
+    const url = `${this.baseUrl}/${orderID}`;
     return this.http.get<Order>(url).pipe(
       map((obj) => obj),
       catchError((error) => this.errorHandler(error))
     )
   }
 
-  cancel(clOrdID: number): Observable<Order> {
-    const url = `${this.baseUrl}/${clOrdID}`;
+  cancel(orderID: number): Observable<Order> {
+    const url = `${this.baseUrl}/${orderID}`;
     return this.http.delete<Order>(url).pipe(
+      map((obj) => obj),
+      catchError((error) => this.errorHandler(error))
+    )
+  }
+
+  edit(order: Order, orderID: number): Observable<Order> {
+    const url = `${this.baseUrl}/${orderID}`;
+    return this.http.patch<Order>(url, order).pipe(
       map((obj) => obj),
       catchError((error) => this.errorHandler(error))
     )
