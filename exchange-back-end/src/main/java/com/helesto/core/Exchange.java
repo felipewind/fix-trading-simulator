@@ -37,6 +37,12 @@ public class Exchange {
     @ConfigProperty(name = "quickfix.activateScreenLog")
     boolean activateScreenLog;
 
+    @ConfigProperty(name = "quickfix.automatic.trade", defaultValue = "false")
+    boolean automaticTrade;
+
+    @ConfigProperty(name = "quickfix.automatic.trade.seconds", defaultValue = "5")
+    int automaticTradeSeconds;
+
     @Inject
     SessionSettingsFactory sessionSettingsFactory;
 
@@ -180,6 +186,22 @@ public class Exchange {
         } else {
             throw new RuntimeException("Acceptor stopped");
         }
+    }
+
+    public boolean isAutomaticTrade() {
+        return automaticTrade;
+    }
+
+    public void setAutomaticTrade(boolean automaticTrade) {
+        this.automaticTrade = automaticTrade;
+    }
+
+    public int getAutomaticTradeSeconds() {
+        return automaticTradeSeconds;
+    }
+
+    public void setAutomaticTradeSeconds(int automaticTradeSeconds) {
+        this.automaticTradeSeconds = automaticTradeSeconds;
     }
 
 }

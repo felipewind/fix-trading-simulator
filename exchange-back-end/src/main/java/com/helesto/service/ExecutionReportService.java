@@ -53,12 +53,14 @@ public class ExecutionReportService {
 
 			OrderEntity order = insertOrder(newOrderSingle, sessionID);
 
-			Thread.sleep(5000);
+			if (exchange.isAutomaticTrade()) {
+				Thread.sleep(exchange.getAutomaticTradeSeconds() * 1000);
 
-			order.setOrdStatus(OrdStatus.FILLED);
-			order.setCumQty(newOrderSingle.getOrderQty().getValue());
+				order.setOrdStatus(OrdStatus.FILLED);
+				order.setCumQty(newOrderSingle.getOrderQty().getValue());
 
-			updateOrderAndSendExecutionReport(order, sessionID);
+				updateOrderAndSendExecutionReport(order, sessionID);
+			}
 
 		} catch (Exception e) {
 			LOG.error("Error", e);

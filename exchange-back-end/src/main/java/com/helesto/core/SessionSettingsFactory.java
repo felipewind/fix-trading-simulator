@@ -1,7 +1,5 @@
 package com.helesto.core;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,11 +31,7 @@ public class SessionSettingsFactory {
         LOG.info("quickfixSessionSettings - original parameter: \n"
                 + quickfixSessionSettings.stream().collect(Collectors.joining("\n")));
 
-        byte[] bytes = quickfixSessionSettings.stream().collect(Collectors.joining("\n")).getBytes();
-
-        InputStream inputStream = new ByteArrayInputStream(bytes);
-
-        SessionSettings sessionSettings = new SessionSettings(inputStream); 
+        SessionSettings sessionSettings = new SessionSettings(quickfixSessionSettings); 
 
         return sessionSettings;
 
