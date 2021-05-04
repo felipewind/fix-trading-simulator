@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -48,7 +49,11 @@ public class OrderEntity implements Serializable {
   
     // Tag 37
     @Id
-    @SequenceGenerator(name = "orders_sequence", sequenceName = "orders_sequence", allocationSize = 1, initialValue = 1)
+    @SequenceGenerator(
+            name = "orders_sequence",
+            sequenceName = "orders_sequence",
+            allocationSize = 1,
+            initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_sequence")
     @Column(name = "OrderID")
     private int orderID;

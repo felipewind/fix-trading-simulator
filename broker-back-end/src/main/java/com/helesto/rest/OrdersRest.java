@@ -58,13 +58,13 @@ public class OrdersRest {
 
                 LOG.debug("Orders + POST - request: " + jsonString);
 
-                newOrderSingleService.newOrderSingle(request);
+                OrderDto response = newOrderSingleService.newOrderSingle(request);
 
-                jsonString = jsonb.toJson(request);
+                jsonString = jsonb.toJson(response);
 
                 LOG.debug("Orders + POST - response: " + jsonString);
 
-                return Response.status(Response.Status.OK).entity(request).build();
+                return Response.status(Response.Status.OK).entity(response).build();
         }
 
         @GET

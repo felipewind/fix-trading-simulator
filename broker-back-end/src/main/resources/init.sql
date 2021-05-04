@@ -32,7 +32,6 @@ CREATE TABLE IF NOT EXISTS messages (
                msgseqnum)
 );
 
-
 CREATE SEQUENCE IF NOT EXISTS event_log_sequence;
 
 CREATE TABLE IF NOT EXISTS event_log (
@@ -90,13 +89,12 @@ CREATE SEQUENCE IF NOT EXISTS orders_sequence;
 
 create table IF NOT EXISTS orders (
        ClOrdID integer DEFAULT NEXTVAL('orders_sequence'),
-        CumQty double,
+        CumQty BIGINT,
         OrdStatus char(1),
-        OrderQty double,
-        Price double,
+        OrderQty BIGINT,
+        Price DECIMAL(17,2),
         Side char(1),
         Symbol varchar(20),
         primary key (ClOrdID)
     );
-
 

@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -54,8 +55,8 @@ import { NegotiationEditComponent } from './components/negotiation/negotiation-e
     SessionPropertiesComponent,
     LogMessageComponent,
     OrderCancelComponent,
-    SessionHeaderComponent, 
-    OrderEditComponent, 
+    SessionHeaderComponent,
+    OrderEditComponent,
     NegotiationEditComponent
   ],
   imports: [
@@ -75,7 +76,8 @@ import { NegotiationEditComponent } from './components/negotiation/negotiation-e
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

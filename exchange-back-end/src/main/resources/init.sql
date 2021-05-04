@@ -95,10 +95,10 @@ create table IF NOT EXISTS orders (
         OrderID integer DEFAULT NEXTVAL('orders_sequence'),
         ClOrdID integer,
         OrigClOrdID integer,
-        CumQty double,
+        CumQty BIGINT,
         OrdStatus char(1),
-        OrderQty double,
-        Price double,
+        OrderQty BIGINT,
+        Price DECIMAL(17,2),
         Side char(1),
         Symbol varchar(20),
         primary key (ClOrdID)

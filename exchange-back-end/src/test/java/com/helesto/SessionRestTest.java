@@ -12,7 +12,7 @@ public class SessionRestTest {
     @Test
     public void testSessionSettingsEndpoint() {
         given()
-          .when().get("/session/settings")
+          .when().get("/session")
           .then()
              .statusCode(200);
     }

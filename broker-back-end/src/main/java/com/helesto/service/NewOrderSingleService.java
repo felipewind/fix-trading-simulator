@@ -40,7 +40,7 @@ public class NewOrderSingleService {
 	@Inject
 	OrderDao orderDao;
 
-	public void newOrderSingle(OrderDto request) throws SessionNotFound {
+	public OrderDto newOrderSingle(OrderDto request) throws SessionNotFound {
 
 		SessionID sessionID = trader.getSessionIDFromInitiator();
 
@@ -81,13 +81,15 @@ public class NewOrderSingleService {
 		// Tag 59 TimeInForce
 		newOrderSingle.setField(new TimeInForce(TimeInForce.DAY));
 
-		ClOrdID clOrdID = insertOrder(request);
+		// Generate the order
+		OrderEntity order = insertOrder(request);
 
 		// Tag 11 ClOrdID
-		newOrderSingle.set(clOrdID);
+		newOrderSingle.set(new ClOrdID(order.getClOrdID() + ""));
 
 		try {
 			Session.sendToTarget(newOrderSingle, sessionID);
+			return new OrderDto(order);
 
 		} catch (SessionNotFound e) {
 			LOG.error(e.getMessage());
@@ -97,14 +99,14 @@ public class NewOrderSingleService {
 	}
 
 	@Transactional(rollbackOn = Exception.class)
-	public ClOrdID insertOrder(OrderDto request) {
+	public OrderEntity insertOrder(OrderDto request) {
 
 		OrderEntity order = new OrderEntity(0, request.getSide(), OrderEntity.NEW_ORDER_NOT_CONFIRMED,
 				request.getSymbol(), request.getPrice(), request.getOrderQty(), 0);
 
 		orderDao.persistOrder(order);
 
-		return new ClOrdID(order.getClOrdID() + "");
+		return order;
 
 	}
 

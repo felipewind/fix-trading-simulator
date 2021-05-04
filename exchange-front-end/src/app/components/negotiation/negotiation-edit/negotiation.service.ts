@@ -25,7 +25,7 @@ export class NegotiationService {
   }
 
   edit(order: Negotiation): Observable<Negotiation> {
-    return this.http.post<Negotiation>(this.baseUrl, order).pipe(
+    return this.http.put<Negotiation>(this.baseUrl, order).pipe(
       map((obj) => obj),
       catchError((error) => this.errorHandler(error))
     );

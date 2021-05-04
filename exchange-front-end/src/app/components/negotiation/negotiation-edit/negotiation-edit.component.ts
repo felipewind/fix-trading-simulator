@@ -11,19 +11,33 @@ export class NegotiationEditComponent implements OnInit {
 
   negotiation: Negotiation;
 
-  checked: boolean = true;
+  checked: boolean;
+
+  buttonDescription: string;
+
+  negotiationDescription: string;
 
   constructor(private negotiationService: NegotiationService) { }
 
   ngOnInit(): void {
     this.negotiationService.read().subscribe(negotiation => {
       this.negotiation = negotiation;
-      this.checked = negotiation.automaticTrade;
-    })    
+      console.log(`this.checked = ${this.negotiation.automaticTrade}`);
+      this.checked = this.negotiation.automaticTrade;
+    })
   }
 
-  click(): void {
-    console.log(`click checked=${this.checked}`);
+  changeAutomaticNegotiation(): void {
+    this.negotiation.automaticTrade = !this.negotiation.automaticTrade;
+    this.checked = this.negotiation.automaticTrade;
+    this.negotiationService.edit(this.negotiation).subscribe(negotiation => {
+      this.negotiation = negotiation;
+      if (this.negotiation.automaticTrade === true) {
+        this.negotiationService.showMessage('Automatic Negotiation Activated to new orders');
+      } else {
+        this.negotiationService.showMessage('Automatic Negotiation Deactivated to new orders');
+      }
+    })
   }
 
 }

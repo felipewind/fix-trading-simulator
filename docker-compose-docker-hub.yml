@@ -4,9 +4,6 @@ services:
   exchange-back-end:
     container_name: exchange-back-end
     image: felipewind/exchange-back-end:1.0
-    build:
-      context: ./exchange-back-end/
-      dockerfile: ./src/main/docker/Dockerfile.jvm
     ports:
       - 8090:8090
     networks:
@@ -39,9 +36,6 @@ services:
   broker-back-end:
     container_name: broker-back-end
     image: felipewind/broker-back-end:1.0
-    build:
-      context: ./broker-back-end
-      dockerfile: ./src/main/docker/Dockerfile.jvm
     ports:
       - 8080:8080
     networks:
@@ -90,9 +84,6 @@ services:
   exchange-front-end:
     container_name: exchange-front-end
     image: felipewind/exchange-front-end:1.0
-    build:
-      context: ./exchange-front-end/
-      dockerfile: ./Dockerfile
     ports:
       - 90:80
     networks:
@@ -103,9 +94,6 @@ services:
   broker-front-end:
     container_name: broker-front-end
     image: felipewind/broker-front-end:1.0
-    build:
-      context: ./broker-front-end/
-      dockerfile: ./Dockerfile
     ports:
       - 80:80
     networks:

@@ -159,4 +159,83 @@ public class SessionsEntity implements Serializable {
         this.outgoing_seqnum = outgoing_seqnum;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((beginstring == null) ? 0 : beginstring.hashCode());
+        result = prime * result + ((creation_time == null) ? 0 : creation_time.hashCode());
+        result = prime * result + incoming_seqnum;
+        result = prime * result + outgoing_seqnum;
+        result = prime * result + ((sendercompid == null) ? 0 : sendercompid.hashCode());
+        result = prime * result + ((senderlocid == null) ? 0 : senderlocid.hashCode());
+        result = prime * result + ((sendersubid == null) ? 0 : sendersubid.hashCode());
+        result = prime * result + ((session_qualifier == null) ? 0 : session_qualifier.hashCode());
+        result = prime * result + ((targetcompid == null) ? 0 : targetcompid.hashCode());
+        result = prime * result + ((targetlocid == null) ? 0 : targetlocid.hashCode());
+        result = prime * result + ((targetsubid == null) ? 0 : targetsubid.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        SessionsEntity other = (SessionsEntity) obj;
+        if (beginstring == null) {
+            if (other.beginstring != null)
+                return false;
+        } else if (!beginstring.equals(other.beginstring))
+            return false;
+        if (creation_time == null) {
+            if (other.creation_time != null)
+                return false;
+        } else if (!creation_time.equals(other.creation_time))
+            return false;
+        if (incoming_seqnum != other.incoming_seqnum)
+            return false;
+        if (outgoing_seqnum != other.outgoing_seqnum)
+            return false;
+        if (sendercompid == null) {
+            if (other.sendercompid != null)
+                return false;
+        } else if (!sendercompid.equals(other.sendercompid))
+            return false;
+        if (senderlocid == null) {
+            if (other.senderlocid != null)
+                return false;
+        } else if (!senderlocid.equals(other.senderlocid))
+            return false;
+        if (sendersubid == null) {
+            if (other.sendersubid != null)
+                return false;
+        } else if (!sendersubid.equals(other.sendersubid))
+            return false;
+        if (session_qualifier == null) {
+            if (other.session_qualifier != null)
+                return false;
+        } else if (!session_qualifier.equals(other.session_qualifier))
+            return false;
+        if (targetcompid == null) {
+            if (other.targetcompid != null)
+                return false;
+        } else if (!targetcompid.equals(other.targetcompid))
+            return false;
+        if (targetlocid == null) {
+            if (other.targetlocid != null)
+                return false;
+        } else if (!targetlocid.equals(other.targetlocid))
+            return false;
+        if (targetsubid == null) {
+            if (other.targetsubid != null)
+                return false;
+        } else if (!targetsubid.equals(other.targetsubid))
+            return false;
+        return true;
+    }
+
 }
