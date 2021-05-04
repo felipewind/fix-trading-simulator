@@ -1,11 +1,5 @@
 CREATE SCHEMA IF NOT EXISTS exchange;
 
-CREATE TABLE IF NOT EXISTS exchange.orders (
-       NR_SEQ_ORD INTEGER not null,
-        DT_ORD DATE not null,
-        primary key (NR_SEQ_ORD, DT_ORD)
-    );
-
 CREATE TABLE IF NOT EXISTS exchange.sessions (
   beginstring CHAR(8) NOT NULL,
   sendercompid VARCHAR(64) NOT NULL,
@@ -94,3 +88,19 @@ CREATE TABLE IF NOT EXISTS exchange.event_log (
   text TEXT NOT NULL,
   PRIMARY KEY (id)
 );
+
+CREATE SEQUENCE IF NOT EXISTS exchange.orders_sequence;
+
+create table IF NOT EXISTS exchange.orders (
+        OrderID integer DEFAULT NEXTVAL('exchange.orders_sequence'),
+        ClOrdID integer,
+        OrigClOrdID integer,
+        CumQty BIGINT,
+        OrdStatus char(1),
+        OrderQty BIGINT,
+        Price DECIMAL(17,2),
+        Side char(1),
+        Symbol varchar(20),
+        primary key (ClOrdID)
+    );
+

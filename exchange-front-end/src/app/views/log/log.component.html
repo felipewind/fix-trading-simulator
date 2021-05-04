@@ -1,0 +1,13 @@
+<mat-card class="log-header">
+    <button mat-raised-button (click)="eventLog()" color="primary">
+        Events
+    </button>
+    <button mat-raised-button (click)="messageIncoming()" color="primary">
+        Messages Incoming
+    </button>    
+    <button mat-raised-button (click)="messageOutgoing()" color="primary">
+        Messages Outgoing
+    </button>        
+</mat-card>
+<app-log-message [mode]="mode" *ngIf="showComponent('Message')"></app-log-message>
+<app-log-event *ngIf="showComponent('Event')"></app-log-event>

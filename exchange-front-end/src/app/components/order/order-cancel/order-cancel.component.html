@@ -1,0 +1,39 @@
+<mat-card>
+    <mat-card-title>
+        Cancel Order
+    </mat-card-title>
+    <form>
+        <mat-form-field>
+            <input matInput placeholder="OrderID" [value]="order.orderID" name="orderID" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="OrigClOrdID" [value]="order.origClOrdID" name="origClOrdID" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Side" [value]="order.sideText" name="side" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Symbol" [value]="order.symbol" name="symbol" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Status" [value]="order.ordStatusText" name="status" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Limit" [value]="order.price" name="limit" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Quantity" [value]="order.orderQty" name="quantity" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Executed Quantity" [value]="order.cumQty" name="cumQty" disabled>
+        </mat-form-field>
+    </form>
+
+    <button mat-raised-button (click)="cancelOrder()" color="primary">
+        Submit cancelation
+    </button>
+
+    <button mat-raised-button (click)="back()">
+        Back
+    </button>
+</mat-card>

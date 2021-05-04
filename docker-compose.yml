@@ -3,10 +3,10 @@ version: "3.8"
 services:
   exchange-back-end:
     container_name: exchange-back-end
-    image: exchange-back-end:latest    
+    image: felipewind/exchange-back-end:1.0
     build:
       context: ./exchange-back-end/
-      dockerfile: ./src/main/docker/Dockerfile.fast-jar
+      dockerfile: ./src/main/docker/Dockerfile.jvm
     ports:
       - 8090:8090
     networks:
@@ -33,14 +33,15 @@ services:
           JdbcLogIncomingTable=messages_log_incoming,
           JdbcLogOutgoingTable=messages_log_outgoing,
           JdbcLogEventTable=event_log,
-          JdbcSessionIdDefaultPropertyValue=not_null
+          JdbcSessionIdDefaultPropertyValue=not_null,
+          AllowedRemoteAddresses=127.0.0.1\,172.0.0.2\,172.0.0.3\,broker-back-end
 
   broker-back-end:
     container_name: broker-back-end
-    image: broker-back-end:latest    
+    image: felipewind/broker-back-end:1.0
     build:
       context: ./broker-back-end
-      dockerfile: ./src/main/docker/Dockerfile.fast-jar
+      dockerfile: ./src/main/docker/Dockerfile.jvm
     ports:
       - 8080:8080
     networks:
@@ -86,6 +87,32 @@ services:
       - ./init-exchange.sql:/docker-entrypoint-initdb.d/init-exchange.sql
       - ./init-broker.sql:/docker-entrypoint-initdb.d/init-broker.sql
 
+  exchange-front-end:
+    container_name: exchange-front-end
+    image: felipewind/exchange-front-end:1.0
+    build:
+      context: ./exchange-front-end/
+      dockerfile: ./Dockerfile
+    ports:
+      - 90:80
+    networks:
+      - fix-trading-simulator-net
+    depends_on:      
+      - exchange-back-end
+
+  broker-front-end:
+    container_name: broker-front-end
+    image: felipewind/broker-front-end:1.0
+    build:
+      context: ./broker-front-end/
+      dockerfile: ./Dockerfile
+    ports:
+      - 80:80
+    networks:
+      - fix-trading-simulator-net
+    depends_on:      
+      - broker-back-end
+      
 networks:
   fix-trading-simulator-net:
     driver: bridge

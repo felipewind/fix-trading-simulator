@@ -1,5 +1,7 @@
 package com.helesto.core;
 
+import java.util.Iterator;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -9,12 +11,12 @@ import org.slf4j.LoggerFactory;
 
 import io.agroal.api.AgroalDataSource;
 import quickfix.Acceptor;
+import quickfix.CompositeLogFactory;
 import quickfix.ConfigError;
 import quickfix.DefaultMessageFactory;
 import quickfix.JdbcLogFactory;
 import quickfix.JdbcStoreFactory;
 import quickfix.LogFactory;
-import quickfix.MemoryStoreFactory;
 import quickfix.MessageFactory;
 import quickfix.MessageStoreFactory;
 import quickfix.ScreenLogFactory;
@@ -28,8 +30,14 @@ public class Exchange {
 
     private static final Logger LOG = LoggerFactory.getLogger(Exchange.class.getName());
 
-    @ConfigProperty(name = "quickfix.useDatabase")
-    boolean useDatabase;
+    @ConfigProperty(name = "quickfix.activateScreenLog")
+    boolean activateScreenLog;
+
+    @ConfigProperty(name = "quickfix.automatic.trade", defaultValue = "false")
+    boolean automaticTrade;
+
+    @ConfigProperty(name = "quickfix.automatic.trade.seconds", defaultValue = "5")
+    int automaticTradeSeconds;
 
     @Inject
     SessionSettingsFactory sessionSettingsFactory;
@@ -61,34 +69,26 @@ public class Exchange {
 
             LogFactory logFactory;
 
-            if (useDatabase) {
+            LOG.info("Acceptor creation with database");
 
-                LOG.info("Acceptor creation with database");
+            JdbcStoreFactory jdbcStoreFactory = new JdbcStoreFactory(sessionSettings);
 
-                JdbcStoreFactory jdbcStoreFactory = new JdbcStoreFactory(sessionSettings);
+            jdbcStoreFactory.setDataSource(dataSource);
 
-                jdbcStoreFactory.setDataSource(dataSource);
+            messageStoreFactory = jdbcStoreFactory;
+            LOG.info("MessageStoreFactory created - JdbcStoreFactory");
 
-                messageStoreFactory = jdbcStoreFactory;
-                LOG.info("MessageStoreFactory created - JdbcStoreFactory");
+            JdbcLogFactory jdbcLogFactory = new JdbcLogFactory(sessionSettings);
 
-                JdbcLogFactory jdbcLogFactory = new JdbcLogFactory(sessionSettings);
+            jdbcLogFactory.setDataSource(dataSource);
 
-                jdbcLogFactory.setDataSource(dataSource);
-
+            if (activateScreenLog) {
+                logFactory = new CompositeLogFactory(
+                        new LogFactory[] { new ScreenLogFactory(sessionSettings), jdbcLogFactory });
+                LOG.info("LogFactory created - JdbcLogFactory and ScreenLogFactory");
+            } else {
                 logFactory = jdbcLogFactory;
                 LOG.info("LogFactory created - JdbcLogFactory");
-
-            } else {
-
-                LOG.info("Acceptor creation without database");
-
-                messageStoreFactory = new MemoryStoreFactory();
-                LOG.info("MessageStoreFactory created - MemoryStoreFactory");
-
-                logFactory = new ScreenLogFactory(sessionSettings);
-                LOG.info("LogFactory created - ScreenLogFactory");
-
             }
 
             MessageFactory messageFactory = new DefaultMessageFactory();
@@ -127,7 +127,7 @@ public class Exchange {
 
     public synchronized void stop() {
         LOG.info("stop");
-        if (!acceptorStarted) {
+        if (acceptorStarted) {
             acceptor.stop();
             acceptorStarted = false;
         }
@@ -135,6 +135,55 @@ public class Exchange {
 
     public SessionSettings getSessionSettings() {
         return sessionSettings;
+    }
+
+    public boolean isAcceptorStarted() {
+        return acceptorStarted;
+    }
+
+    public SessionID getSessionIDFromSettings() {
+
+        Iterator<SessionID> iteratorSessionID = sessionSettings.sectionIterator();
+
+        SessionID sessionID = null;
+
+        while (iteratorSessionID.hasNext()) {
+            sessionID = iteratorSessionID.next();
+        }
+
+        return sessionID;
+    }
+
+    public String getStringFromSettings(String key) throws ConfigError {
+        return sessionSettings.getString(getSessionIDFromSettings(), key);
+    }
+
+    public Session getSession() {
+        return Session.lookupSession(getSessionIDFromAcceptor());
+    }
+
+    public SessionID getSessionIDFromAcceptor() {
+        if (acceptorStarted) {
+            return acceptor.getSessions().get(0);
+        } else {
+            throw new RuntimeException("Acceptor stopped");
+        }
+    }
+
+    public boolean isAutomaticTrade() {
+        return automaticTrade;
+    }
+
+    public void setAutomaticTrade(boolean automaticTrade) {
+        this.automaticTrade = automaticTrade;
+    }
+
+    public int getAutomaticTradeSeconds() {
+        return automaticTradeSeconds;
+    }
+
+    public void setAutomaticTradeSeconds(int automaticTradeSeconds) {
+        this.automaticTradeSeconds = automaticTradeSeconds;
     }
 
 }

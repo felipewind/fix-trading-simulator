@@ -1,0 +1,61 @@
+<app-session-header dontShow='control'></app-session-header>
+<mat-card>
+    <mat-card-title>
+        Session Control
+    </mat-card-title>
+
+    <button mat-raised-button (click)="startSession()" color="primary">
+        Start / Logon
+    </button>
+    <button mat-raised-button (click)="stopSession()" color="primary">
+        Stop
+    </button>
+    <button mat-raised-button (click)="logout()" color="primary">
+        Logout
+    </button>
+    <button mat-raised-button (click)="read(true)" color="primary">
+        Refresh
+    </button>
+
+    <form>
+        <mat-form-field>
+            <input matInput placeholder="Session ID" [value]="session.sessionID" name="sessionID" disabled>
+        </mat-form-field>
+    </form>
+
+    <mat-card-content>
+        Session Status
+    </mat-card-content>
+
+    <form>
+        <mat-form-field>
+            <input matInput placeholder="Initiator started" [value]="session.initiatorStarted" name="initiatorStarted"
+                disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Logged on" [value]="session.loggedOn" name="loggedOn" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Start time" [value]="session.startTime" name="startTime" disabled>
+        </mat-form-field>
+    </form>
+    <mat-card-content>
+        Session Storage
+    </mat-card-content>
+
+    <form>
+        <mat-form-field>
+            <input matInput placeholder="Creation Time" [value]="session.sessionStorage.creationTime"
+                name="creationTime" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Incoming Sequential Number" [value]="session.sessionStorage.incomingSeqnum"
+                name="incomingSeqnum" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Outgoing Sequential Number" [value]="session.sessionStorage.outgoingSeqnum"
+                name="outgoingSeqnum" disabled>
+        </mat-form-field>
+    </form>
+
+</mat-card>

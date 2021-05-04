@@ -1,5 +1,7 @@
 package com.helesto.core;
 
+import java.util.Iterator;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -8,13 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.agroal.api.AgroalDataSource;
+import quickfix.CompositeLogFactory;
 import quickfix.ConfigError;
 import quickfix.DefaultMessageFactory;
 import quickfix.Initiator;
 import quickfix.JdbcLogFactory;
 import quickfix.JdbcStoreFactory;
 import quickfix.LogFactory;
-import quickfix.MemoryStoreFactory;
 import quickfix.MessageFactory;
 import quickfix.MessageStoreFactory;
 import quickfix.ScreenLogFactory;
@@ -32,8 +34,11 @@ public class Trader {
     @ConfigProperty(name = "quickfix.password")
     String password;
 
-    @ConfigProperty(name = "quickfix.useDatabase")
-    boolean useDatabase;
+    @ConfigProperty(name = "quickfix.activateScreenLog")
+    boolean activateScreenLog;
+
+    @ConfigProperty(name = "quickfix.autoStart")
+    boolean autoStart;
 
     @Inject
     SessionSettingsFactory sessionSettingsFactory;
@@ -65,34 +70,26 @@ public class Trader {
 
             LogFactory logFactory;
 
-            if (useDatabase) {
+            LOG.info("Initiator creation with database");
 
-                LOG.info("Initiator creation with database");
+            JdbcStoreFactory jdbcStoreFactory = new JdbcStoreFactory(sessionSettings);
 
-                JdbcStoreFactory jdbcStoreFactory = new JdbcStoreFactory(sessionSettings);
+            jdbcStoreFactory.setDataSource(dataSource);
 
-                jdbcStoreFactory.setDataSource(dataSource);
+            messageStoreFactory = jdbcStoreFactory;
+            LOG.info("MessageStoreFactory created - JdbcStoreFactory");
 
-                messageStoreFactory = jdbcStoreFactory;
-                LOG.info("MessageStoreFactory created - JdbcStoreFactory");
+            JdbcLogFactory jdbcLogFactory = new JdbcLogFactory(sessionSettings);
 
-                JdbcLogFactory jdbcLogFactory = new JdbcLogFactory(sessionSettings);
+            jdbcLogFactory.setDataSource(dataSource);
 
-                jdbcLogFactory.setDataSource(dataSource);
-
+            if (activateScreenLog) {
+                logFactory = new CompositeLogFactory(
+                        new LogFactory[] { new ScreenLogFactory(sessionSettings), jdbcLogFactory });
+                LOG.info("LogFactory created - JdbcLogFactory and ScreenLogFactory");
+            } else {
                 logFactory = jdbcLogFactory;
                 LOG.info("LogFactory created - JdbcLogFactory");
-
-            } else {
-
-                LOG.info("Initiator creation without database");
-
-                messageStoreFactory = new MemoryStoreFactory();
-                LOG.info("MessageStoreFactory created - MemoryStoreFactory");
-
-                logFactory = new ScreenLogFactory(sessionSettings);
-                LOG.info("LogFactory created - ScreenLogFactory");
-
             }
 
             MessageFactory messageFactory = new DefaultMessageFactory();
@@ -103,7 +100,9 @@ public class Trader {
 
             LOG.info("Initiator created - SocketInitiator");
 
-            logon();
+            if (autoStart) {
+                logon();
+            }
 
         } catch (ConfigError e) {
             LOG.error("ConfigError \n" + e);
@@ -121,6 +120,7 @@ public class Trader {
             LOG.info("Initiator start - logon solicited \nSessionID created: " + initiator.getSessions() + "\n");
             initiatorStarted = true;
         } else {
+
             for (SessionID sessionID : initiator.getSessions()) {
                 Session.lookupSession(sessionID).logon();
                 LOG.info("Logon solicited \nSessionID created: " + initiator.getSessions() + "\n");
@@ -144,12 +144,37 @@ public class Trader {
         }
     }
 
-    public SessionID getSessionID() {
+    public SessionID getSessionIDFromInitiator() {
         if (initiatorStarted) {
             return initiator.getSessions().get(0);
         } else {
             throw new RuntimeException("Initiator stopped");
         }
+    }
+
+    public SessionID getSessionIDFromSettings() {
+
+        Iterator<SessionID> iteratorSessionID = sessionSettings.sectionIterator();
+
+        SessionID sessionID = null;
+
+        while (iteratorSessionID.hasNext()) {
+            sessionID = iteratorSessionID.next();
+        }
+
+        return sessionID;
+    }
+
+    public String getStringFromSettings(String key) throws ConfigError {
+        return sessionSettings.getString(getSessionIDFromSettings(), key);
+    }
+
+    public Session getSession() {
+        return Session.lookupSession(getSessionIDFromInitiator());
+    }
+
+    public boolean isInitiatorStarted() {
+        return initiatorStarted;
     }
 
     public SessionSettings getSessionSettings() {

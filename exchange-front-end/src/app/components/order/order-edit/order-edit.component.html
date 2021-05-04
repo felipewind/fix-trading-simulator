@@ -1,0 +1,44 @@
+<mat-card>
+    <mat-card-title>
+        Edit Order
+    </mat-card-title>
+    <form>
+        <mat-form-field>
+            <input matInput placeholder="OrderID" [value]="order.orderID" name="orderID" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="OrigClOrdID" [value]="order.origClOrdID" name="origClOrdID" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Side" [value]="order.sideText" name="side" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Symbol" [value]="order.symbol" name="symbol" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="order.ordStatus" name="side">
+                <mat-option *ngFor="let status of statusList" [value]="status.value">
+                    {{status.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Limit" [value]="order.price" name="limit" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Quantity" [value]="order.orderQty" name="quantity" disabled>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Executed Quantity" [(ngModel)]="order.cumQty" name="cumQty">
+        </mat-form-field>
+    </form>
+
+    <button mat-raised-button (click)="editOrder()" color="primary">
+        Submit update
+    </button>
+
+    <button mat-raised-button (click)="back()">
+        Back
+    </button>
+</mat-card>
