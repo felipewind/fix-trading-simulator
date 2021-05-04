@@ -4,6 +4,7 @@
 - [Project Structure](#project-structure)
 - [Features](#features)
 - [Running the project](#running-the-project)
+- [Images](#images)
 - [Help Queries](#help-queries)
 
 
@@ -79,6 +80,16 @@ After start, access project at:
   - user: postgres
   - password: postgres
 
+The containers should be running like this:
+```
+docker ps
+CONTAINER ID        IMAGE                               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+8191a0fcde2f        felipewind/exchange-front-end:1.0   "/docker-entrypoint.…"   16 minutes ago      Up 16 minutes       0.0.0.0:90->80/tcp       exchange-front-end
+1178d4e1c02f        felipewind/broker-front-end:1.0     "/docker-entrypoint.…"   16 minutes ago      Up 16 minutes       0.0.0.0:80->80/tcp       broker-front-end
+2370c47d0a2d        felipewind/broker-back-end:1.0      "/deployments/run-ja…"   16 minutes ago      Up 16 minutes       0.0.0.0:8080->8080/tcp   broker-back-end
+8106b9a48217        felipewind/exchange-back-end:1.0    "/deployments/run-ja…"   16 minutes ago      Up 16 minutes       0.0.0.0:8090->8090/tcp   exchange-back-end
+6b53a07b72ac        postgres                            "docker-entrypoint.s…"   16 minutes ago      Up 16 minutes       0.0.0.0:5432->5432/tcp   fix-trading-simulator_postgresql-qfj_1
+```
 
 ### Using the Docker Hub Images
 
@@ -141,6 +152,39 @@ $ ng serve
 ```
 
 Access http://localhost:4200
+
+
+# Images
+
+## Session Control
+
+![image](./documentation/images/broker-session-control.png)
+
+## Session Properties
+
+![image](./documentation/images/broker-session-properties.png)
+
+## Session Messages
+
+![image](./documentation/images/broker-session-messages.png)
+
+## Orders list
+
+### Broker
+
+![image](./documentation/images/broker-orders-list.png)
+
+### Exchange
+
+![image](./documentation/images/exchange-orders-list.png)
+
+## Logs - FIX Events
+
+![image](./documentation/images/broker-logs-events.png)
+
+## Logs - Messages incoming
+
+![image](./documentation/images/broker-logs-incoming-messages.png)
 
 
 
