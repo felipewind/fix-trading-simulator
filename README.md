@@ -12,7 +12,9 @@
 
 A trading simulator between a Broker and a Stock Exchange using the [Financial Information eXchange (FIX) Protocol](https://www.fixtrading.org/). It's a study project using [QuickFIX/J](https://www.quickfixj.org/), [Quarkus](https://quarkus.io/), [Angular](https://angular.io/) and [PostgreSQL](https://www.postgresql.org/).
 
-Both Broker and Exchange systems were built with Quarkus to the back-end and Angular to the front-end. The back-ends communicate each other with QuickFIX/J and each has a schema into the PostgreSQL.
+If you want to participate on this project, just open an issue and we can talk about!
+
+Both Broker and Exchange systems were built with Quarkus on the back-end and Angular on the front-end. The back-ends communicate each other with QuickFIX/J and each has a schema into the PostgreSQL.
 
 System architecture:
 - Stock exchange:
@@ -41,7 +43,7 @@ System architecture:
 
 ## Orders
 
-You can submit, cancel and list your orders.
+You can submit, negotiate, cancel and list your orders.
 
 It's possible to set the Exchange to automatically negotiate the orders.
 
@@ -113,7 +115,7 @@ After the first build, you can use the `run-after-local-build` script.
 
 ## Without docker-compose 
 
-The default version of the back-end projects is using H2 data base (in memory).
+The default version of the development back-end projects is using H2 data base (in memory).
 
 It's possible to change the `application.properties` and set them to run with PostgreSQL, in this case you should start a PostgreSQL container:
 ```
@@ -186,6 +188,13 @@ Access http://localhost:4200
 
 ![image](./documentation/images/broker-logs-incoming-messages.png)
 
+## Broker - Swagger
+
+![image](./documentation/images/broker-swagger.png)
+
+## Exchange - Swagger
+
+![image](./documentation/images/exchange-swagger.png)
 
 
 
