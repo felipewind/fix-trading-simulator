@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 import com.helesto.core.Trader;
 import com.helesto.dao.OrderDao;
+import com.helesto.dto.OrderDto;
 import com.helesto.model.OrderEntity;
 
 import org.slf4j.Logger;
@@ -27,6 +28,9 @@ public class ExecutionReportService {
 
 	@Inject
 	OrderDao orderDao;
+
+	@Inject
+	BrokerService brokerService;
 
 	@Transactional(rollbackOn = Exception.class)
 	public void executionReport(ExecutionReport executionReport, SessionID sessionID) {
@@ -56,6 +60,8 @@ public class ExecutionReportService {
 			order.setOrdStatus(executionReport.getOrdStatus().getValue());
 
 			orderDao.updateOrder(order);
+
+			brokerService.sendMessageToMQTT(new OrderDto(order));
 
 		} catch (FieldNotFound e) {
 			LOG.error("FieldNotFound", e);

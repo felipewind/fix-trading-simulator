@@ -4,7 +4,14 @@
 
 Run:
 ```bash
-docker run -d --name postgres-qfj -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=postgres postgres
+$ docker run -d --name postgres-qfj -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=postgres postgres
+```
+
+# Mosquitto - MQTT
+
+Run:
+```
+$ docker run -it --rm -p 1883:1883 -p 9001:9001 --name mosquitto eclipse-mosquitto:1.6.2
 ```
 
 # Quarkus
