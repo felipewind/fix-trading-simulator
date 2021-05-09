@@ -8,9 +8,7 @@ import javax.transaction.Transactional;
 
 import com.helesto.core.Trader;
 import com.helesto.dao.OrderDao;
-import com.helesto.dto.OrderDto;
 import com.helesto.model.OrderEntity;
-import com.helesto.socket.OrderSocket;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +27,6 @@ public class ExecutionReportService {
 
 	@Inject
 	OrderDao orderDao;
-
-	@Inject
-	OrderSocket orderSocket;
 
 	@Transactional(rollbackOn = Exception.class)
 	public void executionReport(ExecutionReport executionReport, SessionID sessionID) {
@@ -61,7 +56,6 @@ public class ExecutionReportService {
 			order.setOrdStatus(executionReport.getOrdStatus().getValue());
 
 			orderDao.updateOrder(order);
-			orderSocket.broadcast(new OrderDto(order));
 
 		} catch (FieldNotFound e) {
 			LOG.error("FieldNotFound", e);

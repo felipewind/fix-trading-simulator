@@ -22,7 +22,6 @@ export class NegotiationEditComponent implements OnInit {
   ngOnInit(): void {
     this.negotiationService.read().subscribe(negotiation => {
       this.negotiation = negotiation;
-      console.log(`this.checked = ${this.negotiation.automaticTrade}`);
       this.checked = this.negotiation.automaticTrade;
     })
   }

@@ -10,13 +10,18 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import com.helesto.dto.OrderDto;
 import com.helesto.model.OrderEntity;
+import com.helesto.socket.OrderSocket;
 
 @ApplicationScoped
 public class OrderDao {
 
     @Inject
     EntityManager em;
+
+    @Inject
+    OrderSocket orderSocket;
 
     public List<OrderEntity> listOrders() {
 
@@ -56,10 +61,12 @@ public class OrderDao {
 
     public void persistOrder(OrderEntity order) {
         em.persist(order);
+        orderSocket.broadcast(new OrderDto(order));
     }
 
     public void updateOrder(OrderEntity order) {
         em.merge(order);
+        orderSocket.broadcast(new OrderDto(order));
     }
 
 }

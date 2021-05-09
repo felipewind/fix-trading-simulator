@@ -14,7 +14,11 @@ A trading simulator between a Broker and a Stock Exchange using the [Financial I
 
 If you want to participate on this project, just open an issue and we can talk about!
 
-Both Broker and Exchange systems were built with Quarkus on the back-end and Angular on the front-end. The back-ends communicate each other with QuickFIX/J and each has a schema into the PostgreSQL.
+Both Broker and Exchange systems were built with Quarkus on the back-end and Angular on the front-end. 
+
+The back-ends communicate each other with QuickFIX/J and each has a schema into the PostgreSQL.
+
+Each Angular front-end communicates with the Quarkus back-end using REST and Websockets.
 
 System architecture:
 - Stock exchange:
@@ -46,6 +50,8 @@ System architecture:
 You can submit, negotiate, cancel and list your orders.
 
 It's possible to set the Exchange to automatically negotiate the orders.
+
+Every change in the orders are broadcasted using websockets and are imeaditelly updated on the front-end.
 
 ## Session
 
