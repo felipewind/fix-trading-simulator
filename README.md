@@ -107,6 +107,12 @@ $ chmod +x ./run-from-docker-hub.sh
 $ ./run-from-docker-hub.sh
 ```
 
+Docker Hub images:
+- [exchange-back-end](https://hub.docker.com/repository/docker/felipewind/exchange-back-end)
+- [exchange-front-end](https://hub.docker.com/repository/docker/felipewind/exchange-front-end)
+- [broker-back-end](https://hub.docker.com/repository/docker/felipewind/broker-back-end)
+- [broker-front-end](https://hub.docker.com/repository/docker/felipewind/broker-front-end)
+
 ### Building the Docker images locally
 
 Inside the root folder of the project, execute:
