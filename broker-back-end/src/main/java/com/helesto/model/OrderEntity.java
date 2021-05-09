@@ -19,7 +19,8 @@ import javax.persistence.Table;
         name = "Orders.findAll",
         query = 
                 "SELECT * " +                                
-                "FROM  orders ",
+                "FROM  orders " +
+                "ORDER BY ClOrdID ASC",
         resultClass = OrderEntity.class
     ),
     @NamedNativeQuery(
