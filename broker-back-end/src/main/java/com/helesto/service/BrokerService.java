@@ -4,6 +4,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 
 import com.helesto.dto.OrderDto;
 
@@ -13,6 +15,7 @@ import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Path("/test")
 @ApplicationScoped
 public class BrokerService {
 
@@ -43,5 +46,18 @@ public class BrokerService {
         }
 
     }
+
+    @GET
+    public String testSendMessageToMQTT() {
+
+        LOG.info("testSendMessageToMQTT");
+
+        sendMessageToMQTT(new OrderDto());
+
+        return "Test OK";
+
+        
+    }
+
 
 }
