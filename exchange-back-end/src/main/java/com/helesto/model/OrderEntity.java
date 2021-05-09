@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity

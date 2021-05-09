@@ -7,5 +7,6 @@ export interface Order {
     symbol?: string,
     price?: number,
     orderQty?: number,
-    cumQty?: number    
+    cumQty?: number        
 }
+

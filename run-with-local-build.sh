@@ -27,6 +27,7 @@ printf "\n\n\n"
 printf "======== Building local Exchange Front End Project with local Angular/NPM =========\n"
 printf "\n"
 cd exchange-front-end/
+npm install
 ng build --prod
 cd ..
 printf "\n"
@@ -37,6 +38,7 @@ printf "\n\n\n"
 printf "========= Building local Broker Front End Project with local Angular/NPM ==========\n"
 printf "\n"
 cd broker-front-end/
+npm install
 ng build --prod
 cd ..
 printf "\n"
