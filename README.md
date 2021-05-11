@@ -1,6 +1,7 @@
 # Fix Trading Simulator
 
 - [Overview](#overview)
+- [System Architecture](#system-architecture)
 - [Project Structure](#project-structure)
 - [Features](#features)
 - [Running the project](#running-the-project)
