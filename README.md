@@ -20,16 +20,9 @@ The back-ends communicate each other with QuickFIX/J and each has a schema into 
 
 Each Angular front-end communicates with the Quarkus back-end using REST and Websockets.
 
-System architecture:
-- Stock exchange:
-  - Back-end - Quarkus + QuickFIX/J;
-  - Front-end - Angular;
-- Broker:
-  - Back-end - Quarkus + QuickFIX/J;
-  - Front-end - Angular;
-- PostgreSQL
-  - One schema for each back-end.
+# System Architecture
 
+![image](./documentation/design/fix-trading-simulator-design.png)
 
 # Project Structure
 
