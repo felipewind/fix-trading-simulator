@@ -221,3 +221,8 @@ select * from exchange.messages_log_incoming order by id desc;
 select * from exchange.messages_log_outgoing order by id desc;
 ```
 
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)
