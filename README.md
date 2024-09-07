@@ -153,7 +153,7 @@ $ ng serve
 Access http://localhost:4300
 
 
-### Enter inside the `exchange-back-end` folder and type:
+### Enter inside the `broker-front-end` folder and type:
 ```
 $ npm install
 $ ng serve
